@@ -46,6 +46,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\DatPhongBLL.cs" />
+    <Compile Include="BLL\DichVuBLL.cs" />
+    <Compile Include="BLL\KhachHangBLL.cs" />
+    <Compile Include="BLL\MuaDichVuBLL.cs" />
+    <Compile Include="BLL\NhanVienBLL.cs" />
+    <Compile Include="BLL\PhongBLL.cs" />
+    <Compile Include="BLL\TaiKhoanBLL.cs" />
+    <Compile Include="BLL\ThongKeBLL.cs" />
+    <Compile Include="DAL\DatPhongDAL.cs" />
+    <Compile Include="DAL\DichVuDAL.cs" />
+    <Compile Include="DAL\KhachHangDAL.cs" />
+    <Compile Include="DAL\MuaDichVuDAL.cs" />
+    <Compile Include="DAL\NhanVienDAL.cs" />
+    <Compile Include="DAL\PhongDAL.cs" />
+    <Compile Include="DAL\TaiKhoanDAL.cs" />
+    <Compile Include="DAL\ThongKeDAL.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +70,54 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\DatPhongForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DatPhongForm.Designer.cs">
+      <DependentUpon>DatPhongForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DichVuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DichVuForm.Designer.cs">
+      <DependentUpon>DichVuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\KhachHangForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\KhachHangForm.Designer.cs">
+      <DependentUpon>KhachHangForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MuaDichVuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MuaDichVuForm.Designer.cs">
+      <DependentUpon>MuaDichVuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\NhanVienForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\NhanVienForm.Designer.cs">
+      <DependentUpon>NhanVienForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PhongForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PhongForm.Designer.cs">
+      <DependentUpon>PhongForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TaiKhoanForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TaiKhoanForm.Designer.cs">
+      <DependentUpon>TaiKhoanForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ThongKeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ThongKeForm.Designer.cs">
+      <DependentUpon>ThongKeForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -76,10 +140,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BLL\" />
-    <Folder Include="DAL\" />
-    <Folder Include="UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
