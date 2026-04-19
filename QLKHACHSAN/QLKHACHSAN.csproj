@@ -138,7 +138,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\DangNhapForm.resx">
+      <DependentUpon>DangNhapForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\DichVuForm.resx">
       <DependentUpon>DichVuForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,6 +168,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\{070775A8-8CBD-4EC8-9143-AA2A5C7064A3}.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\z7738595353635_f0458a46613e5b57cea3326fca87bed6.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gemini_Generated_Image_ncty52ncty52ncty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gemini_Generated_Image_rjlogrjlogrjlogr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\z7738595353635_f0458a46613e5b57cea3326fca87bed61.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gemini_Generated_Image_rjlogrjlogrjlogr1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
