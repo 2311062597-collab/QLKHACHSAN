@@ -19,7 +19,7 @@
             }
             base.Dispose(disposing);
         }
-
+      
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -28,21 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            
             this.dgvKH = new System.Windows.Forms.DataGridView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnRefreshKH = new System.Windows.Forms.Button();
+            this.btnSuaKH = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtCCCDKH = new System.Windows.Forms.TextBox();
             this.txtSDTKH = new System.Windows.Forms.TextBox();
             this.txtTenKH = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtTimKH = new System.Windows.Forms.TextBox();
-            this.txtCCCDKH = new System.Windows.Forms.TextBox();
-            this.btnTimKH = new System.Windows.Forms.Button();
-            this.btnSuaKH = new System.Windows.Forms.Button();
-            this.btnRefreshKH = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.btnTimKH = new System.Windows.Forms.Button();
+            this.txtTimKH = new System.Windows.Forms.TextBox();
+            this.btnThemKH = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvKH)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -58,6 +60,7 @@
             this.dgvKH.RowTemplate.Height = 24;
             this.dgvKH.Size = new System.Drawing.Size(1457, 686);
             this.dgvKH.TabIndex = 9;
+            this.dgvKH.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKH_CellContentClick);
             // 
             // groupBox4
             // 
@@ -71,8 +74,33 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Chức Năng";
             // 
+            // btnRefreshKH
+            // 
+            this.btnRefreshKH.BackColor = System.Drawing.Color.Navy;
+            this.btnRefreshKH.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnRefreshKH.Location = new System.Drawing.Point(163, 29);
+            this.btnRefreshKH.Name = "btnRefreshKH";
+            this.btnRefreshKH.Size = new System.Drawing.Size(118, 35);
+            this.btnRefreshKH.TabIndex = 11;
+            this.btnRefreshKH.Text = "Refresh";
+            this.btnRefreshKH.UseVisualStyleBackColor = false;
+            this.btnRefreshKH.Click += new System.EventHandler(this.btnRefreshKH_Click);
+            // 
+            // btnSuaKH
+            // 
+            this.btnSuaKH.BackColor = System.Drawing.Color.Navy;
+            this.btnSuaKH.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnSuaKH.Location = new System.Drawing.Point(22, 29);
+            this.btnSuaKH.Name = "btnSuaKH";
+            this.btnSuaKH.Size = new System.Drawing.Size(118, 35);
+            this.btnSuaKH.TabIndex = 11;
+            this.btnSuaKH.Text = "Sửa";
+            this.btnSuaKH.UseVisualStyleBackColor = false;
+            this.btnSuaKH.Click += new System.EventHandler(this.btnSuaKH_Click);
+            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnThemKH);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.label2);
@@ -87,19 +115,56 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tài Khoản";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(17, 227);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(87, 25);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "CCCD : ";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 133);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(69, 25);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "SĐT : ";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 42);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(172, 25);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Tên Khách Hàng :";
+            // 
+            // txtCCCDKH
+            // 
+            this.txtCCCDKH.Location = new System.Drawing.Point(22, 265);
+            this.txtCCCDKH.Name = "txtCCCDKH";
+            this.txtCCCDKH.Size = new System.Drawing.Size(259, 30);
+            this.txtCCCDKH.TabIndex = 3;
+            this.txtCCCDKH.TextChanged += new System.EventHandler(this.txtCCCDKH_TextChanged);
+            // 
             // txtSDTKH
             // 
-            this.txtSDTKH.Location = new System.Drawing.Point(22, 217);
+            this.txtSDTKH.Location = new System.Drawing.Point(22, 171);
             this.txtSDTKH.Name = "txtSDTKH";
             this.txtSDTKH.Size = new System.Drawing.Size(259, 30);
             this.txtSDTKH.TabIndex = 2;
+            this.txtSDTKH.TextChanged += new System.EventHandler(this.txtSDTKH_TextChanged);
             // 
             // txtTenKH
             // 
-            this.txtTenKH.Location = new System.Drawing.Point(22, 118);
+            this.txtTenKH.Location = new System.Drawing.Point(22, 83);
             this.txtTenKH.Name = "txtTenKH";
             this.txtTenKH.Size = new System.Drawing.Size(259, 30);
             this.txtTenKH.TabIndex = 1;
+            this.txtTenKH.TextChanged += new System.EventHandler(this.txtTenKH_TextChanged);
             // 
             // groupBox1
             // 
@@ -114,19 +179,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tìm Kiếm ";
             // 
-            // txtTimKH
+            // label1
             // 
-            this.txtTimKH.Location = new System.Drawing.Point(22, 78);
-            this.txtTimKH.Name = "txtTimKH";
-            this.txtTimKH.Size = new System.Drawing.Size(259, 30);
-            this.txtTimKH.TabIndex = 0;
-            // 
-            // txtCCCDKH
-            // 
-            this.txtCCCDKH.Location = new System.Drawing.Point(22, 323);
-            this.txtCCCDKH.Name = "txtCCCDKH";
-            this.txtCCCDKH.Size = new System.Drawing.Size(259, 30);
-            this.txtCCCDKH.TabIndex = 3;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(209, 25);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Tìm Theo Tên / SĐT : ";
             // 
             // btnTimKH
             // 
@@ -138,64 +198,27 @@
             this.btnTimKH.TabIndex = 10;
             this.btnTimKH.Text = "Tìm Kiếm";
             this.btnTimKH.UseVisualStyleBackColor = false;
+            this.btnTimKH.Click += new System.EventHandler(this.btnTimKH_Click);
             // 
-            // btnSuaKH
+            // txtTimKH
             // 
-            this.btnSuaKH.BackColor = System.Drawing.Color.Navy;
-            this.btnSuaKH.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnSuaKH.Location = new System.Drawing.Point(22, 29);
-            this.btnSuaKH.Name = "btnSuaKH";
-            this.btnSuaKH.Size = new System.Drawing.Size(118, 35);
-            this.btnSuaKH.TabIndex = 11;
-            this.btnSuaKH.Text = "Sửa";
-            this.btnSuaKH.UseVisualStyleBackColor = false;
+            this.txtTimKH.Location = new System.Drawing.Point(22, 78);
+            this.txtTimKH.Name = "txtTimKH";
+            this.txtTimKH.Size = new System.Drawing.Size(259, 30);
+            this.txtTimKH.TabIndex = 0;
+            this.txtTimKH.TextChanged += new System.EventHandler(this.txtTimKH_TextChanged);
             // 
-            // btnRefreshKH
+            // btnThemKH
             // 
-            this.btnRefreshKH.BackColor = System.Drawing.Color.Navy;
-            this.btnRefreshKH.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnRefreshKH.Location = new System.Drawing.Point(163, 29);
-            this.btnRefreshKH.Name = "btnRefreshKH";
-            this.btnRefreshKH.Size = new System.Drawing.Size(118, 35);
-            this.btnRefreshKH.TabIndex = 11;
-            this.btnRefreshKH.Text = "Refresh";
-            this.btnRefreshKH.UseVisualStyleBackColor = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(209, 25);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Tìm Theo Tên / SĐT : ";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 67);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(172, 25);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Tên Khách Hàng :";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 172);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 25);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "SĐT : ";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 284);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(87, 25);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "CCCD : ";
+            this.btnThemKH.BackColor = System.Drawing.Color.Navy;
+            this.btnThemKH.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnThemKH.Location = new System.Drawing.Point(79, 333);
+            this.btnThemKH.Name = "btnThemKH";
+            this.btnThemKH.Size = new System.Drawing.Size(118, 35);
+            this.btnThemKH.TabIndex = 14;
+            this.btnThemKH.Text = "Thêm";
+            this.btnThemKH.UseVisualStyleBackColor = false;
+            this.btnThemKH.Click += new System.EventHandler(this.btnThemKH_Click);
             // 
             // KhachHangForm
             // 
@@ -235,5 +258,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnThemKH;
     }
 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QLKHACHSAN.DAL
 {
@@ -13,47 +8,60 @@ namespace QLKHACHSAN.DAL
         private string connectionString =
             @"Server=.\SQLEXPRESS;Database=QuanLyKhachSan;Trusted_Connection=True;TrustServerCertificate=True";
 
-        // Mở kết nối
         public SqlConnection GetConnection()
         {
             return new SqlConnection(connectionString);
         }
 
-        // Execute SELECT (trả về DataTable)
-        public DataTable ExecuteQuery(string query)
+        public DataTable ExecuteQuery(string query, SqlParameter[] parameters = null)
         {
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = GetConnection())
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(query, conn);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                da.Fill(dt);
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    if (parameters != null)
+                        cmd.Parameters.AddRange(parameters);
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                    }
+                }
             }
 
             return dt;
         }
 
-        // Execute INSERT, UPDATE, DELETE
-        public int ExecuteNonQuery(string query)
+        public int ExecuteNonQuery(string query, SqlParameter[] parameters = null)
         {
             using (SqlConnection conn = GetConnection())
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(query, conn);
-                return cmd.ExecuteNonQuery();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    if (parameters != null)
+                        cmd.Parameters.AddRange(parameters);
+
+                    return cmd.ExecuteNonQuery();
+                }
             }
         }
 
-        // Execute scalar (lấy 1 giá trị)
-        public object ExecuteScalar(string query)
+        public object ExecuteScalar(string query, SqlParameter[] parameters = null)
         {
             using (SqlConnection conn = GetConnection())
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(query, conn);
-                return cmd.ExecuteScalar();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    if (parameters != null)
+                        cmd.Parameters.AddRange(parameters);
+
+                    return cmd.ExecuteScalar();
+                }
             }
         }
     }
