@@ -61,7 +61,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(255, 895);
+            this.panel1.Size = new System.Drawing.Size(255, 741);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -69,7 +69,7 @@
             // 
             this.btnDangXuat.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnDangXuat.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnDangXuat.Location = new System.Drawing.Point(0, 837);
+            this.btnDangXuat.Location = new System.Drawing.Point(0, 684);
             this.btnDangXuat.Name = "btnDangXuat";
             this.btnDangXuat.Size = new System.Drawing.Size(255, 55);
             this.btnDangXuat.TabIndex = 4;
@@ -197,7 +197,7 @@
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.Location = new System.Drawing.Point(255, 0);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1584, 895);
+            this.pnlMain.Size = new System.Drawing.Size(1584, 741);
             this.pnlMain.TabIndex = 1;
             this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
@@ -205,7 +205,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1839, 895);
+            this.ClientSize = new System.Drawing.Size(1839, 741);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.panel1);
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;

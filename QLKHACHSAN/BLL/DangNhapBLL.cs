@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using QLKHACHSAN.DAL;
 
 namespace QLKHACHSAN.BLL
 {
-    internal class DangNhapBLL
+    public class DangNhapBLL
     {
+        private DangNhapDAL dal = new DangNhapDAL();
+
+        public DataTable KiemTraDangNhap(string tenDangNhap, string matKhau)
+        {
+            return dal.KiemTraDangNhap(tenDangNhap, matKhau);
+        }
     }
 }
