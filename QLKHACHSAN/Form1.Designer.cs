@@ -208,7 +208,7 @@
             this.ClientSize = new System.Drawing.Size(1839, 741);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.panel1);
-            this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
