@@ -1,12 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using QLKHACHSAN.DAL;
 
 namespace QLKHACHSAN.BLL
 {
-    internal class PhongBLL
+    public class PhongBLL
     {
+        private PhongDAL dal = new PhongDAL();
+
+        public DataTable GetDanhSachPhong()
+        {
+            return dal.GetDanhSachPhong();
+        }
+
+        public DataTable TimPhong(string soPhong, string tang, string maLoaiPhong)
+        {
+            return dal.TimPhong(soPhong, tang, maLoaiPhong);
+        }
+
+        public DataTable GetLoaiPhong()
+        {
+            return dal.GetLoaiPhong();
+        }
+
+        public bool ThemPhong(string soPhong, int tang, int maLoaiPhong, string trangThai)
+        {
+            return dal.ThemPhong(soPhong, tang, maLoaiPhong, trangThai);
+        }
+
+        public bool SuaPhong(int maPhong, string soPhong, int tang, int maLoaiPhong, string trangThai)
+        {
+            return dal.SuaPhong(maPhong, soPhong, tang, maLoaiPhong, trangThai);
+        }
     }
 }
