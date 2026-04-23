@@ -50,6 +50,7 @@
     <Compile Include="BLL\DatPhongBLL.cs" />
     <Compile Include="BLL\DichVuBLL.cs" />
     <Compile Include="BLL\KhachHangBLL.cs" />
+    <Compile Include="BLL\LoaiDichVuBLL.cs" />
     <Compile Include="BLL\MuaDichVuBLL.cs" />
     <Compile Include="BLL\NhanVienBLL.cs" />
     <Compile Include="BLL\PhongBLL.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="DAL\DBConnection.cs" />
     <Compile Include="DAL\DichVuDAL.cs" />
     <Compile Include="DAL\KhachHangDAL.cs" />
+    <Compile Include="DAL\LoaiDichVuDAL.cs" />
     <Compile Include="DAL\MuaDichVuDAL.cs" />
     <Compile Include="DAL\NhanVienDAL.cs" />
     <Compile Include="DAL\PhongDAL.cs" />
@@ -96,6 +98,12 @@
     </Compile>
     <Compile Include="UI\KhachHangForm.Designer.cs">
       <DependentUpon>KhachHangForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LoaiDichVuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LoaiDichVuForm.Designer.cs">
+      <DependentUpon>LoaiDichVuForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MuaDichVuForm.cs">
       <SubType>Form</SubType>
@@ -148,6 +156,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\KhachHangForm.resx">
       <DependentUpon>KhachHangForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LoaiDichVuForm.resx">
+      <DependentUpon>LoaiDichVuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MuaDichVuForm.resx">
+      <DependentUpon>MuaDichVuForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\NhanVienForm.resx">
       <DependentUpon>NhanVienForm.cs</DependentUpon>

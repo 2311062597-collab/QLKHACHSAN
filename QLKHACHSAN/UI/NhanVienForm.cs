@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using QLKHACHSAN.BLL;
 
@@ -18,20 +21,28 @@ namespace QLKHACHSAN.UI
             this.Load += new System.EventHandler(this.NhanVienForm_Load);
             this.dgvBangNV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBangNV_CellDoubleClick);
 
+            txtCCCDNV.KeyPress += txtCCCDNV_KeyPress;
+            txtSDTNV.KeyPress += txtSDTNV_KeyPress;
+
+            txtCCCDNV.MaxLength = 12;
+            txtSDTNV.MaxLength = 10;
         }
 
         private void NhanVienForm_Load(object sender, EventArgs e)
         {
+            this.ForeColor = Color.Black;
             LoadChucVu();
             LoadTrangThai();
             LoadDanhSachNhanVien();
             LamMoi();
-            
         }
 
         private void LoadDanhSachNhanVien()
         {
+            dgvBangNV.AutoGenerateColumns = true;
+            dgvBangNV.DataSource = null;
             dgvBangNV.DataSource = bll.GetDanhSachNhanVien();
+            dgvBangNV.Refresh();
 
             if (dgvBangNV.Columns.Contains("MaNhanVien"))
                 dgvBangNV.Columns["MaNhanVien"].Visible = false;
@@ -89,7 +100,35 @@ namespace QLKHACHSAN.UI
             return "";
         }
 
-        private void btnThemNV_Click(object sender, EventArgs e)
+        private bool KiemTraTenDangNhapHopLe(string tenDangNhap)
+        {
+            if (string.IsNullOrWhiteSpace(tenDangNhap))
+                return false;
+
+            if (tenDangNhap.Length < 4)
+                return false;
+
+            if (tenDangNhap.Contains(" "))
+                return false;
+
+            return Regex.IsMatch(tenDangNhap, @"^[a-zA-Z0-9_]+$");
+        }
+
+        private bool KiemTraMatKhauHopLe(string matKhau)
+        {
+            if (string.IsNullOrWhiteSpace(matKhau))
+                return false;
+
+            if (matKhau.Length < 6)
+                return false;
+
+            bool coChuInHoa = matKhau.Any(char.IsUpper);
+            bool coKyTuDacBiet = Regex.IsMatch(matKhau, @"[^a-zA-Z0-9]");
+
+            return coChuInHoa && coKyTuDacBiet;
+        }
+
+        private bool KiemTraDuLieuNhanVienHopLe()
         {
             if (txtTKNV.Text.Trim() == "" ||
                 txtMKNV.Text.Trim() == "" ||
@@ -97,8 +136,74 @@ namespace QLKHACHSAN.UI
                 cbCVNV.SelectedIndex == -1)
             {
                 MessageBox.Show("Vui lòng nhập đủ thông tin bắt buộc.");
-                return;
+                return false;
             }
+
+            if (!KiemTraTenDangNhapHopLe(txtTKNV.Text.Trim()))
+            {
+                MessageBox.Show("Tên tài khoản tối thiểu 4 ký tự, không có khoảng trắng, chỉ gồm chữ, số hoặc dấu _");
+                txtTKNV.Focus();
+                return false;
+            }
+
+            if (!KiemTraMatKhauHopLe(txtMKNV.Text.Trim()))
+            {
+                MessageBox.Show("Mật khẩu phải có ít nhất 6 ký tự, gồm ít nhất 1 chữ in hoa và 1 ký tự đặc biệt.");
+                txtMKNV.Focus();
+                return false;
+            }
+
+            if (txtCCCDNV.Text.Trim() != "" && !txtCCCDNV.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("CCCD chỉ được nhập số.");
+                txtCCCDNV.Focus();
+                return false;
+            }
+
+            if (txtSDTNV.Text.Trim() != "" && !txtSDTNV.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("SĐT chỉ được nhập số.");
+                txtSDTNV.Focus();
+                return false;
+            }
+
+            if (txtCCCDNV.Text.Trim() != "" && txtCCCDNV.Text.Length != 12)
+            {
+                MessageBox.Show("CCCD phải đủ 12 số.");
+                txtCCCDNV.Focus();
+                return false;
+            }
+
+            if (txtSDTNV.Text.Trim() != "" && txtSDTNV.Text.Length != 10)
+            {
+                MessageBox.Show("SĐT phải đủ 10 số.");
+                txtSDTNV.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void txtCCCDNV_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtSDTNV_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void btnThemNV_Click(object sender, EventArgs e)
+        {
+            if (!KiemTraDuLieuNhanVienHopLe())
+                return;
 
             string gioiTinh = LayGioiTinh();
 
@@ -134,11 +239,8 @@ namespace QLKHACHSAN.UI
                 return;
             }
 
-            if (cbCVNV.SelectedIndex == -1)
-            {
-                MessageBox.Show("Vui lòng chọn chức vụ.");
+            if (!KiemTraDuLieuNhanVienHopLe())
                 return;
-            }
 
             string gioiTinh = LayGioiTinh();
 

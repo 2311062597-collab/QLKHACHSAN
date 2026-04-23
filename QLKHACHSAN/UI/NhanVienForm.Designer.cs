@@ -73,7 +73,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtTimNV);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(47, 105);
+            this.groupBox1.Location = new System.Drawing.Point(47, 45);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(304, 171);
             this.groupBox1.TabIndex = 0;
@@ -125,7 +125,7 @@
             this.groupBox2.Controls.Add(this.radNamNV);
             this.groupBox2.Controls.Add(this.txtTenNV);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(398, 105);
+            this.groupBox2.Location = new System.Drawing.Point(398, 45);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(311, 595);
             this.groupBox2.TabIndex = 1;
@@ -263,7 +263,7 @@
             this.groupBox3.Controls.Add(this.txtMKNV);
             this.groupBox3.Controls.Add(this.txtTKNV);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(47, 303);
+            this.groupBox3.Location = new System.Drawing.Point(47, 243);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(304, 397);
             this.groupBox3.TabIndex = 2;
@@ -346,7 +346,7 @@
             this.groupBox4.Controls.Add(this.btnThemNV);
             this.groupBox4.Controls.Add(this.btnSuaNV);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(47, 723);
+            this.groupBox4.Location = new System.Drawing.Point(47, 663);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(662, 80);
             this.groupBox4.TabIndex = 3;
@@ -392,11 +392,11 @@
             // dgvBangNV
             // 
             this.dgvBangNV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBangNV.Location = new System.Drawing.Point(760, 117);
+            this.dgvBangNV.Location = new System.Drawing.Point(739, 57);
             this.dgvBangNV.Name = "dgvBangNV";
             this.dgvBangNV.RowHeadersWidth = 51;
             this.dgvBangNV.RowTemplate.Height = 24;
-            this.dgvBangNV.Size = new System.Drawing.Size(1093, 686);
+            this.dgvBangNV.Size = new System.Drawing.Size(764, 686);
             this.dgvBangNV.TabIndex = 4;
             this.dgvBangNV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBangNV_CellContentClick);
             // 
@@ -404,7 +404,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 892);
+            this.ClientSize = new System.Drawing.Size(1528, 771);
             this.Controls.Add(this.dgvBangNV);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
