@@ -69,6 +69,7 @@
             this.picBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBanner.TabIndex = 0;
             this.picBanner.TabStop = false;
+            this.picBanner.Click += new System.EventHandler(this.picBanner_Click);
             // 
             // panelRight
             // 
@@ -118,7 +119,7 @@
             this.lnkQuenMatKhau.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lnkQuenMatKhau.Location = new System.Drawing.Point(283, 161);
             this.lnkQuenMatKhau.Name = "lnkQuenMatKhau";
-            this.lnkQuenMatKhau.Size = new System.Drawing.Size(139, 23);
+            this.lnkQuenMatKhau.Size = new System.Drawing.Size(105, 17);
             this.lnkQuenMatKhau.TabIndex = 4;
             this.lnkQuenMatKhau.TabStop = true;
             this.lnkQuenMatKhau.Text = "Quên Mật Khẩu?";
@@ -141,7 +142,7 @@
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPassword.Location = new System.Drawing.Point(107, 118);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(174, 34);
+            this.txtPassword.Size = new System.Drawing.Size(174, 29);
             this.txtPassword.TabIndex = 2;
             this.txtPassword.Text = "Mật khẩu";
             this.txtPassword.Enter += new System.EventHandler(this.txtPassword_Enter);
@@ -162,7 +163,7 @@
             this.txtUsername.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUsername.Location = new System.Drawing.Point(107, 57);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(174, 34);
+            this.txtUsername.Size = new System.Drawing.Size(174, 29);
             this.txtUsername.TabIndex = 0;
             this.txtUsername.Text = "Tên người dùng";
             this.txtUsername.Enter += new System.EventHandler(this.txtUsername_Enter);
@@ -181,7 +182,7 @@
             // 
             // DangNhapForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1148, 734);

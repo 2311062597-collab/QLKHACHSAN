@@ -119,5 +119,10 @@ namespace QLKHACHSAN.UI
                 e.Cancel = true;
             }
         }
+
+        private void picBanner_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

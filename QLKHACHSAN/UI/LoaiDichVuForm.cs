@@ -185,5 +185,10 @@ namespace QLKHACHSAN.UI
         private void txtTenLoaiDV_TextChanged(object sender, EventArgs e) { }
         private void txtDVtinh_TextChanged(object sender, EventArgs e) { }
         private void dgvLoaiDV_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+
+        private void LoaiDichVuForm_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

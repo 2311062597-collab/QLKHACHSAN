@@ -231,5 +231,10 @@ namespace QLKHACHSAN.UI
         private void cbTrangThaiPhong_SelectedIndexChanged(object sender, EventArgs e) { }
         private void lblmotaLoaiPhong_Click(object sender, EventArgs e) { }
         private void dgvBangPhong_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+
+        private void PhongForm_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

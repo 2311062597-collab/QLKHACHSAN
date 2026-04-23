@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using QLKHACHSAN.DAL;
 
@@ -34,11 +34,11 @@ namespace QLKHACHSAN.BLL
         /// <summary>
         /// Add new service purchase with validation
         /// </summary>
-        public bool Them(string ma, string makh, string manv, string madv,
+        public bool Them(string makh, string manv, string madv,
                          int soluong, decimal thanhtien, string mapt, DateTime ngay)
         {
             // Validate required fields
-            if (string.IsNullOrWhiteSpace(ma) || string.IsNullOrWhiteSpace(makh) || 
+            if (string.IsNullOrWhiteSpace(makh) || 
                 string.IsNullOrWhiteSpace(manv) || string.IsNullOrWhiteSpace(madv))
             {
                 System.Windows.Forms.MessageBox.Show("Vui lòng nhập đầy đủ thông tin bắt buộc!", "Cảnh báo",
@@ -70,7 +70,7 @@ namespace QLKHACHSAN.BLL
                 return false;
             }
 
-            return dal.Insert(ma, makh, manv, madv, soluong, thanhtien, mapt, ngay);
+            return dal.Insert(makh, manv, madv, soluong, thanhtien, mapt, ngay);
         }
 
         /// <summary>

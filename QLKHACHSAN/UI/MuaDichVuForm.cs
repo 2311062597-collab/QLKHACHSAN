@@ -142,6 +142,7 @@ namespace QLKHACHSAN.UI
             btnTaiLai.Click += BtnTaiLai_Click;
             dgvDatDichVu.CellClick += DgvDatDichVu_CellClick;
             cbMaDichVu.SelectedIndexChanged += CbMaDichVu_SelectedIndexChanged;
+            nudSoLuong.ValueChanged += NudSoLuong_ValueChanged;
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace QLKHACHSAN.UI
         /// <summary>
         /// Handle quantity change - recalculate total amount
         /// </summary>
-        private void cbMaNhanVien23_ValueChanged(object sender, EventArgs e)
+        private void NudSoLuong_ValueChanged(object sender, EventArgs e)
         {
             CalculateThanhTien();
         }
@@ -231,9 +232,12 @@ namespace QLKHACHSAN.UI
                     SetComboBoxValue(cbMaDichVu, row.Cells["MaDichVu"].Value);
 
                     nudSoLuong.Value = Convert.ToInt32(row.Cells["SoLuong"].Value ?? 1);
-                    txtThanhTien.Text = row.Cells["ThanhTien"].Value?.ToString() ?? "0";
+                    txtThanhTien.Text = row.Cells["ThanhTien"].Value?.ToString("N2") ?? "0";
 
-                    cbMaPhuongThuc.SelectedItem = row.Cells["MaPhuongThuc"].Value?.ToString();
+                    // Set payment method based on payment method ID
+                    int maPhuongThuc = row.Cells["MaPhuongThuc"].Value != null ? Convert.ToInt32(row.Cells["MaPhuongThuc"].Value) : 1;
+                    SetPaymentMethod(maPhuongThuc);
+
                     dtpNgayThanhToan.Text = Convert.ToDateTime(row.Cells["NgayThanhToan"].Value).ToString("dd/MM/yyyy");
                 }
             }
@@ -252,6 +256,31 @@ namespace QLKHACHSAN.UI
             if (value != null)
             {
                 comboBox.SelectedValue = value;
+            }
+        }
+
+        /// <summary>
+        /// Helper method to set payment method based on ID
+        /// </summary>
+        private void SetPaymentMethod(int maPhuongThuc)
+        {
+            switch (maPhuongThuc)
+            {
+                case 1:
+                    cbMaPhuongThuc.SelectedItem = "Tiền mặt";
+                    break;
+                case 2:
+                    cbMaPhuongThuc.SelectedItem = "Chuyển khoản";
+                    break;
+                case 3:
+                    cbMaPhuongThuc.SelectedItem = "Thẻ tín dụng";
+                    break;
+                case 4:
+                    cbMaPhuongThuc.SelectedItem = "Ví điện tử";
+                    break;
+                default:
+                    cbMaPhuongThuc.SelectedItem = "Tiền mặt";
+                    break;
             }
         }
 
@@ -370,7 +399,7 @@ namespace QLKHACHSAN.UI
                 }
                 else
                 {
-                    result = bll.Them(maDatDichVu, maKhachHang, maNhanVien, maDichVu,
+                    result = bll.Them(maKhachHang, maNhanVien, maDichVu,
                         soLuong, thanhTien, maPhuongThuc, ngayThanhToan);
 
                     if (result)

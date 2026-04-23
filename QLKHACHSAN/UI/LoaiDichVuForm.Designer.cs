@@ -30,10 +30,11 @@
         {
             this.dgvLoaiDV = new System.Windows.Forms.DataGridView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnXoaLoaiDV = new System.Windows.Forms.Button();
+            this.btnThemLoaiDV = new System.Windows.Forms.Button();
             this.btnRefreshLoaiDV = new System.Windows.Forms.Button();
             this.btnSuaLoaiDV = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnThemLoaiDV = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtDVtinh = new System.Windows.Forms.TextBox();
@@ -42,7 +43,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnTimLoaiDV = new System.Windows.Forms.Button();
             this.txtTimLoaiDV = new System.Windows.Forms.TextBox();
-            this.btnXoaLoaiDV = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoaiDV)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -59,6 +59,7 @@
             this.dgvLoaiDV.Size = new System.Drawing.Size(1143, 686);
             this.dgvLoaiDV.TabIndex = 13;
             this.dgvLoaiDV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLoaiDV_CellContentClick);
+            this.dgvLoaiDV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLoaiDV_CellDoubleClick);
             // 
             // groupBox4
             // 
@@ -73,6 +74,30 @@
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Chức Năng";
+            // 
+            // btnXoaLoaiDV
+            // 
+            this.btnXoaLoaiDV.BackColor = System.Drawing.Color.Navy;
+            this.btnXoaLoaiDV.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnXoaLoaiDV.Location = new System.Drawing.Point(163, 87);
+            this.btnXoaLoaiDV.Name = "btnXoaLoaiDV";
+            this.btnXoaLoaiDV.Size = new System.Drawing.Size(118, 35);
+            this.btnXoaLoaiDV.TabIndex = 15;
+            this.btnXoaLoaiDV.Text = "Xóa";
+            this.btnXoaLoaiDV.UseVisualStyleBackColor = false;
+            this.btnXoaLoaiDV.Click += new System.EventHandler(this.btnXoaLoaiDV_Click);
+            // 
+            // btnThemLoaiDV
+            // 
+            this.btnThemLoaiDV.BackColor = System.Drawing.Color.Navy;
+            this.btnThemLoaiDV.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnThemLoaiDV.Location = new System.Drawing.Point(24, 31);
+            this.btnThemLoaiDV.Name = "btnThemLoaiDV";
+            this.btnThemLoaiDV.Size = new System.Drawing.Size(118, 35);
+            this.btnThemLoaiDV.TabIndex = 14;
+            this.btnThemLoaiDV.Text = "Thêm";
+            this.btnThemLoaiDV.UseVisualStyleBackColor = false;
+            this.btnThemLoaiDV.Click += new System.EventHandler(this.btnThemLoaiDV_Click);
             // 
             // btnRefreshLoaiDV
             // 
@@ -112,24 +137,12 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Loại Dịch Vụ";
             // 
-            // btnThemLoaiDV
-            // 
-            this.btnThemLoaiDV.BackColor = System.Drawing.Color.Navy;
-            this.btnThemLoaiDV.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnThemLoaiDV.Location = new System.Drawing.Point(24, 31);
-            this.btnThemLoaiDV.Name = "btnThemLoaiDV";
-            this.btnThemLoaiDV.Size = new System.Drawing.Size(118, 35);
-            this.btnThemLoaiDV.TabIndex = 14;
-            this.btnThemLoaiDV.Text = "Thêm";
-            this.btnThemLoaiDV.UseVisualStyleBackColor = false;
-            this.btnThemLoaiDV.Click += new System.EventHandler(this.btnThemLoaiDV_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(19, 209);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(131, 25);
+            this.label3.Size = new System.Drawing.Size(103, 20);
             this.label3.TabIndex = 12;
             this.label3.Text = "Đơn Vị Tính : ";
             // 
@@ -138,7 +151,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(19, 78);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(174, 25);
+            this.label2.Size = new System.Drawing.Size(138, 20);
             this.label2.TabIndex = 11;
             this.label2.Text = "Tên Loại Dịch Vụ :";
             // 
@@ -146,7 +159,7 @@
             // 
             this.txtDVtinh.Location = new System.Drawing.Point(22, 260);
             this.txtDVtinh.Name = "txtDVtinh";
-            this.txtDVtinh.Size = new System.Drawing.Size(259, 30);
+            this.txtDVtinh.Size = new System.Drawing.Size(259, 26);
             this.txtDVtinh.TabIndex = 2;
             this.txtDVtinh.TextChanged += new System.EventHandler(this.txtDVtinh_TextChanged);
             // 
@@ -154,7 +167,7 @@
             // 
             this.txtTenLoaiDV.Location = new System.Drawing.Point(22, 122);
             this.txtTenLoaiDV.Name = "txtTenLoaiDV";
-            this.txtTenLoaiDV.Size = new System.Drawing.Size(259, 30);
+            this.txtTenLoaiDV.Size = new System.Drawing.Size(259, 26);
             this.txtTenLoaiDV.TabIndex = 1;
             this.txtTenLoaiDV.TextChanged += new System.EventHandler(this.txtTenLoaiDV_TextChanged);
             // 
@@ -176,7 +189,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(19, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 25);
+            this.label1.Size = new System.Drawing.Size(117, 20);
             this.label1.TabIndex = 10;
             this.label1.Text = "Tìm Theo Tên : ";
             // 
@@ -196,21 +209,9 @@
             // 
             this.txtTimLoaiDV.Location = new System.Drawing.Point(22, 80);
             this.txtTimLoaiDV.Name = "txtTimLoaiDV";
-            this.txtTimLoaiDV.Size = new System.Drawing.Size(259, 30);
+            this.txtTimLoaiDV.Size = new System.Drawing.Size(259, 26);
             this.txtTimLoaiDV.TabIndex = 0;
             this.txtTimLoaiDV.TextChanged += new System.EventHandler(this.txtTimLoaiDV_TextChanged);
-            // 
-            // btnXoaLoaiDV
-            // 
-            this.btnXoaLoaiDV.BackColor = System.Drawing.Color.Navy;
-            this.btnXoaLoaiDV.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnXoaLoaiDV.Location = new System.Drawing.Point(163, 87);
-            this.btnXoaLoaiDV.Name = "btnXoaLoaiDV";
-            this.btnXoaLoaiDV.Size = new System.Drawing.Size(118, 35);
-            this.btnXoaLoaiDV.TabIndex = 15;
-            this.btnXoaLoaiDV.Text = "Xóa";
-            this.btnXoaLoaiDV.UseVisualStyleBackColor = false;
-            this.btnXoaLoaiDV.Click += new System.EventHandler(this.btnXoaLoaiDV_Click);
             // 
             // LoaiDichVuForm
             // 
@@ -223,6 +224,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "LoaiDichVuForm";
             this.Text = "LoaiDichVuForm";
+            this.Load += new System.EventHandler(this.LoaiDichVuForm_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoaiDV)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -230,7 +232,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.dgvLoaiDV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLoaiDV_CellDoubleClick);
+
         }
 
         #endregion
