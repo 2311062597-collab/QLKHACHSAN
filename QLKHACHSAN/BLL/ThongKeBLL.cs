@@ -13,31 +13,54 @@ namespace QLKHACHSAN.BLL
         private ThongKeDAL dal = new ThongKeDAL();
 
         /// <summary>
+        /// Validate date range
+        /// </summary>
+        private bool ValidateDateRange(DateTime fromDate, DateTime toDate, bool showMessage = true)
+        {
+            if (fromDate > toDate)
+            {
+                if (showMessage)
+                    System.Windows.Forms.MessageBox.Show(
+                        "Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Cảnh báo",
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (toDate > DateTime.Now.Date)
+            {
+                if (showMessage)
+                    System.Windows.Forms.MessageBox.Show(
+                        "Ngày kết thúc không được lớn hơn ngày hôm nay!", "Cảnh báo",
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Get revenue statistics by date range with validation
         /// </summary>
         public DataTable GetRevenueByDateRange(DateTime fromDate, DateTime toDate)
         {
             // Validate date range
-            if (fromDate > toDate)
+            if (!ValidateDateRange(fromDate, toDate))
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
                 return new DataTable();
             }
 
-            // Validate date not in future
-            if (toDate > DateTime.Now.Date)
+            try
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày kết thúc không được lớn hơn ngày hôm nay!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return dal.GetRevenueByDateRange(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo ngày: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
             }
-
-            return dal.GetRevenueByDateRange(fromDate, toDate);
         }
 
         /// <summary>
@@ -46,25 +69,21 @@ namespace QLKHACHSAN.BLL
         public DataTable GetRevenueByService(DateTime fromDate, DateTime toDate)
         {
             // Validate date range
-            if (fromDate > toDate)
+            if (!ValidateDateRange(fromDate, toDate))
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
                 return new DataTable();
             }
 
-            if (toDate > DateTime.Now.Date)
+            try
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày kết thúc không được lớn hơn ngày hôm nay!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return dal.GetRevenueByService(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo dịch vụ: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
             }
-
-            return dal.GetRevenueByService(fromDate, toDate);
         }
 
         /// <summary>
@@ -72,18 +91,22 @@ namespace QLKHACHSAN.BLL
         /// </summary>
         public decimal GetTotalRevenue(DateTime fromDate, DateTime toDate)
         {
-            // Validate date range
-            if (fromDate > toDate)
+            // Validate date range (no message for this one)
+            if (!ValidateDateRange(fromDate, toDate, false))
             {
                 return 0;
             }
 
-            if (toDate > DateTime.Now.Date)
+            try
             {
+                return dal.GetTotalRevenue(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy tổng doanh thu: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return 0;
             }
-
-            return dal.GetTotalRevenue(fromDate, toDate);
         }
 
         /// <summary>
@@ -92,25 +115,21 @@ namespace QLKHACHSAN.BLL
         public DataTable GetBookingStatistics(DateTime fromDate, DateTime toDate)
         {
             // Validate date range
-            if (fromDate > toDate)
+            if (!ValidateDateRange(fromDate, toDate))
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
                 return new DataTable();
             }
 
-            if (toDate > DateTime.Now.Date)
+            try
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày kết thúc không được lớn hơn ngày hôm nay!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return dal.GetBookingStatistics(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy thống kê đặt phòng: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
             }
-
-            return dal.GetBookingStatistics(fromDate, toDate);
         }
 
         /// <summary>
@@ -122,13 +141,22 @@ namespace QLKHACHSAN.BLL
             if (year < 2000 || year > DateTime.Now.Year)
             {
                 System.Windows.Forms.MessageBox.Show(
-                    "Năm không hợp lệ! Vui lòng chọn năm từ 2000 đến hiện tại.", "Cảnh báo",
+                    "Năm không hợp lệ! Vui lòng chọn năm từ 2000 đến " + DateTime.Now.Year + ".", "Cảnh báo",
                     System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Warning);
                 return new DataTable();
             }
 
-            return dal.GetMonthlyRevenue(year);
+            try
+            {
+                return dal.GetMonthlyRevenue(year);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo tháng: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
         }
 
         /// <summary>
@@ -137,25 +165,21 @@ namespace QLKHACHSAN.BLL
         public DataTable GetServiceUsageByCustomer(DateTime fromDate, DateTime toDate)
         {
             // Validate date range
-            if (fromDate > toDate)
+            if (!ValidateDateRange(fromDate, toDate))
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
                 return new DataTable();
             }
 
-            if (toDate > DateTime.Now.Date)
+            try
             {
-                System.Windows.Forms.MessageBox.Show(
-                    "Ngày kết thúc không được lớn hơn ngày hôm nay!", "Cảnh báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return dal.GetServiceUsageByCustomer(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy thống kê khách hàng: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
             }
-
-            return dal.GetServiceUsageByCustomer(fromDate, toDate);
         }
 
         /// <summary>

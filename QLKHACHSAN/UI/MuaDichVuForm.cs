@@ -232,7 +232,7 @@ namespace QLKHACHSAN.UI
                     SetComboBoxValue(cbMaDichVu, row.Cells["MaDichVu"].Value);
 
                     nudSoLuong.Value = Convert.ToInt32(row.Cells["SoLuong"].Value ?? 1);
-                    txtThanhTien.Text = row.Cells["ThanhTien"].Value?.ToString("N2") ?? "0";
+                    txtThanhTien.Text = Convert.ToDecimal(row.Cells["ThanhTien"].Value ?? 0).ToString("N2");
 
                     // Set payment method based on payment method ID
                     int maPhuongThuc = row.Cells["MaPhuongThuc"].Value != null ? Convert.ToInt32(row.Cells["MaPhuongThuc"].Value) : 1;
@@ -309,17 +309,20 @@ namespace QLKHACHSAN.UI
                     string maDatDichVu = row["MaDatDichVu"].ToString();
                     if (maDatDichVu.StartsWith("DDV"))
                     {
-                        int id = Convert.ToInt32(maDatDichVu.Substring(3));
-                        if (id > maxId)
-                            maxId = id;
+                        string numPart = maDatDichVu.Substring(3);
+                        if (int.TryParse(numPart, out int id))
+                        {
+                            if (id > maxId)
+                                maxId = id;
+                        }
                     }
                 }
 
-                txtMaDatDichVu.Text = "DDV" + (maxId + 1).ToString("D3");
+                txtMaDatDichVu.Text = "DDV" + (maxId + 1).ToString("D4");
             }
             catch
             {
-                txtMaDatDichVu.Text = "DDV" + DateTime.Now.Ticks.ToString().Substring(DateTime.Now.Ticks.ToString().Length - 4);
+                txtMaDatDichVu.Text = "DDV" + DateTime.Now.ToString("MMddHHmmss").Substring(0, 4);
             }
         }
 
@@ -378,12 +381,14 @@ namespace QLKHACHSAN.UI
                 }
 
                 string maDatDichVu = txtMaDatDichVu.Text.Trim();
-                string maKhachHang = cbMaKhachHang.SelectedValue.ToString();
-                string maNhanVien = cbMaNhanVien.SelectedValue.ToString();
-                string maDichVu = cbMaDichVu.SelectedValue.ToString();
+                string maKhachHang = cbMaKhachHang.SelectedValue?.ToString() ?? "";
+                string maNhanVien = cbMaNhanVien.SelectedValue?.ToString() ?? "";
+                string maDichVu = cbMaDichVu.SelectedValue?.ToString() ?? "";
                 int soLuong = (int)nudSoLuong.Value;
                 decimal thanhTien = Convert.ToDecimal(txtThanhTien.Text);
-                string maPhuongThuc = cbMaPhuongThuc.SelectedItem.ToString();
+
+                // Convert payment method name to ID
+                int maPhuongThuc = GetPaymentMethodId(cbMaPhuongThuc.SelectedItem.ToString());
                 DateTime ngayThanhToan = DateTime.ParseExact(dtpNgayThanhToan.Text, "dd/MM/yyyy", null);
 
                 bool result = false;
@@ -391,7 +396,7 @@ namespace QLKHACHSAN.UI
                 if (isEditing)
                 {
                     result = bll.Sua(maDatDichVu, maKhachHang, maNhanVien, maDichVu,
-                        soLuong, thanhTien, maPhuongThuc, ngayThanhToan);
+                        soLuong, thanhTien, maPhuongThuc.ToString(), ngayThanhToan);
 
                     if (result)
                         MessageBox.Show("Cập nhật dịch vụ thành công!", "Thông báo",
@@ -400,7 +405,7 @@ namespace QLKHACHSAN.UI
                 else
                 {
                     result = bll.Them(maKhachHang, maNhanVien, maDichVu,
-                        soLuong, thanhTien, maPhuongThuc, ngayThanhToan);
+                        soLuong, thanhTien, maPhuongThuc.ToString(), ngayThanhToan);
 
                     if (result)
                         MessageBox.Show("Thêm dịch vụ thành công!", "Thông báo",
@@ -417,6 +422,26 @@ namespace QLKHACHSAN.UI
             {
                 MessageBox.Show("Lỗi khi lưu: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Helper method to convert payment method name to ID
+        /// </summary>
+        private int GetPaymentMethodId(string paymentMethodName)
+        {
+            switch (paymentMethodName)
+            {
+                case "Tiền mặt":
+                    return 1;
+                case "Chuyển khoản":
+                    return 2;
+                case "Thẻ tín dụng":
+                    return 3;
+                case "Ví điện tử":
+                    return 4;
+                default:
+                    return 1;
             }
         }
 

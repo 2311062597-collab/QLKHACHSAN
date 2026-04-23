@@ -237,7 +237,7 @@
             0,
             0,
             0});
-            this.nudSoLuong.ValueChanged += new System.EventHandler(this.cbMaNhanVien23_ValueChanged);
+            this.nudSoLuong.ValueChanged += new System.EventHandler(this.NudSoLuong_ValueChanged);
             // 
             // txtThanhTien
             // 

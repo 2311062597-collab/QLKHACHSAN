@@ -12,6 +12,9 @@ using QLKHACHSAN.BLL;
 
 namespace QLKHACHSAN.UI
 {
+    /// <summary>
+    /// Statistics Form - Displays various statistical reports and charts
+    /// </summary>
     public partial class ThongKeForm : Form
     {
         private ThongKeBLL bll = new ThongKeBLL();
@@ -41,16 +44,28 @@ namespace QLKHACHSAN.UI
                 LoadChartTypeOptions();
 
                 // Wire up event handlers
-                btnThongKe.Click += BtnThongKe_Click;
+                WireUpEventHandlers();
 
-                // Load initial statistics
-                LoadStatistics();
+                // Load initial statistics (without showing validation messages)
+                if (ValidateDateRange(dateTimePicker1.Value.Date, dtTo.Value.Date, false))
+                {
+                    LoadStatistics();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi khởi tạo form: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// Wire up event handlers
+        /// </summary>
+        private void WireUpEventHandlers()
+        {
+            btnThongKe.Click += BtnThongKe_Click;
+            cbLoaiBieuDo.SelectedIndexChanged += CbLoaiBieuDo_SelectedIndexChanged;
         }
 
         /// <summary>
@@ -67,9 +82,45 @@ namespace QLKHACHSAN.UI
         }
 
         /// <summary>
+        /// Validate date range before processing
+        /// </summary>
+        private bool ValidateDateRange(DateTime fromDate, DateTime toDate, bool showMessage = true)
+        {
+            if (fromDate > toDate)
+            {
+                if (showMessage)
+                {
+                    MessageBox.Show("Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return false;
+            }
+
+            if (toDate > DateTime.Now.Date)
+            {
+                if (showMessage)
+                {
+                    MessageBox.Show("Ngày kết thúc không được lớn hơn ngày hôm nay!", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Handle Statistics button click
         /// </summary>
         private void BtnThongKe_Click(object sender, EventArgs e)
+        {
+            LoadStatistics();
+        }
+
+        /// <summary>
+        /// Handle chart type selection change
+        /// </summary>
+        private void CbLoaiBieuDo_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadStatistics();
         }
@@ -83,6 +134,13 @@ namespace QLKHACHSAN.UI
             {
                 DateTime fromDate = dateTimePicker1.Value.Date;
                 DateTime toDate = dtTo.Value.Date;
+
+                // Validate date range
+                if (!ValidateDateRange(fromDate, toDate))
+                {
+                    ClearVisualization();
+                    return;
+                }
 
                 // Load data based on selected chart type
                 string chartType = cbLoaiBieuDo.SelectedItem?.ToString() ?? "";
@@ -113,6 +171,7 @@ namespace QLKHACHSAN.UI
             {
                 MessageBox.Show("Lỗi khi tải thống kê: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClearVisualization();
             }
         }
 
@@ -121,23 +180,31 @@ namespace QLKHACHSAN.UI
         /// </summary>
         private void LoadRevenueByDate(DateTime fromDate, DateTime toDate)
         {
-            DataTable dt = bll.GetRevenueByDateRange(fromDate, toDate);
-
-            if (dt != null && dt.Rows.Count > 0)
+            try
             {
-                // Bind to DataGridView
-                dgvThongKe.DataSource = dt;
-                dgvThongKe.AutoResizeColumns();
+                DataTable dt = bll.GetRevenueByDateRange(fromDate, toDate);
 
-                // Bind to Chart
-                PopulateChart(dt, "NgayThanhToan", "DoanhThu", "Doanh thu theo ngày", SeriesChartType.Column);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    // Bind to DataGridView
+                    dgvThongKe.DataSource = dt;
+                    dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+
+                    // Bind to Chart
+                    PopulateChart(dt, "NgayThanhToan", "DoanhThu", "Doanh thu theo ngày", SeriesChartType.Column);
+                }
+                else
+                {
+                    MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearVisualization();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dgvThongKe.DataSource = null;
-                chartThongKe.Series.Clear();
+                MessageBox.Show("Lỗi khi tải doanh thu theo ngày: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClearVisualization();
             }
         }
 
@@ -146,23 +213,31 @@ namespace QLKHACHSAN.UI
         /// </summary>
         private void LoadRevenueByService(DateTime fromDate, DateTime toDate)
         {
-            DataTable dt = bll.GetRevenueByService(fromDate, toDate);
-
-            if (dt != null && dt.Rows.Count > 0)
+            try
             {
-                // Bind to DataGridView
-                dgvThongKe.DataSource = dt;
-                dgvThongKe.AutoResizeColumns();
+                DataTable dt = bll.GetRevenueByService(fromDate, toDate);
 
-                // Bind to Chart
-                PopulateChart(dt, "TenDichVu", "DoanhThu", "Doanh thu theo dịch vụ", SeriesChartType.Pie);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    // Bind to DataGridView
+                    dgvThongKe.DataSource = dt;
+                    dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+
+                    // Bind to Chart
+                    PopulateChart(dt, "TenDichVu", "DoanhThu", "Doanh thu theo dịch vụ", SeriesChartType.Pie);
+                }
+                else
+                {
+                    MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearVisualization();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dgvThongKe.DataSource = null;
-                chartThongKe.Series.Clear();
+                MessageBox.Show("Lỗi khi tải doanh thu theo dịch vụ: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClearVisualization();
             }
         }
 
@@ -171,23 +246,31 @@ namespace QLKHACHSAN.UI
         /// </summary>
         private void LoadCustomerStatistics(DateTime fromDate, DateTime toDate)
         {
-            DataTable dt = bll.GetServiceUsageByCustomer(fromDate, toDate);
-
-            if (dt != null && dt.Rows.Count > 0)
+            try
             {
-                // Bind to DataGridView
-                dgvThongKe.DataSource = dt;
-                dgvThongKe.AutoResizeColumns();
+                DataTable dt = bll.GetServiceUsageByCustomer(fromDate, toDate);
 
-                // Bind to Chart
-                PopulateChart(dt, "KhachHang", "TongChiTieu", "Khách hàng chi tiêu nhiều nhất", SeriesChartType.Column);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    // Bind to DataGridView
+                    dgvThongKe.DataSource = dt;
+                    dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+
+                    // Bind to Chart
+                    PopulateChart(dt, "KhachHang", "TongChiTieu", "Khách hàng chi tiêu nhiều nhất", SeriesChartType.Column);
+                }
+                else
+                {
+                    MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearVisualization();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dgvThongKe.DataSource = null;
-                chartThongKe.Series.Clear();
+                MessageBox.Show("Lỗi khi tải thống kê khách hàng: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClearVisualization();
             }
         }
 
@@ -196,40 +279,57 @@ namespace QLKHACHSAN.UI
         /// </summary>
         private void LoadMonthlyRevenue()
         {
-            int currentYear = DateTime.Now.Year;
-            DataTable dt = bll.GetMonthlyRevenue(currentYear);
-
-            if (dt != null && dt.Rows.Count > 0)
+            try
             {
-                // Add month names
-                DataTable displayTable = dt.Clone();
-                displayTable.Columns.Add("ThangTen");
-                displayTable.Columns["ThangTen"].SetOrdinal(0);
+                int currentYear = DateTime.Now.Year;
+                DataTable dt = bll.GetMonthlyRevenue(currentYear);
 
-                foreach (DataRow row in dt.Rows)
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    DataRow newRow = displayTable.NewRow();
-                    int month = Convert.ToInt32(row["Thang"]);
-                    newRow["ThangTen"] = bll.GetMonthName(month);
-                    newRow["Thang"] = row["Thang"];
-                    newRow["DoanhThu"] = row["DoanhThu"];
-                    displayTable.Rows.Add(newRow);
+                    // Add month names for display
+                    DataTable displayTable = dt.Clone();
+                    displayTable.Columns.Add("ThangTen");
+                    displayTable.Columns["ThangTen"].SetOrdinal(0);
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        DataRow newRow = displayTable.NewRow();
+                        int month = Convert.ToInt32(row["Thang"]);
+                        newRow["ThangTen"] = bll.GetMonthName(month);
+                        newRow["Thang"] = row["Thang"];
+                        newRow["DoanhThu"] = row["DoanhThu"];
+                        displayTable.Rows.Add(newRow);
+                    }
+
+                    // Bind to DataGridView
+                    dgvThongKe.DataSource = displayTable;
+                    dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+
+                    // Bind to Chart
+                    PopulateChart(dt, "Thang", "DoanhThu", "Doanh thu năm " + currentYear, SeriesChartType.Line);
                 }
-
-                // Bind to DataGridView
-                dgvThongKe.DataSource = displayTable;
-                dgvThongKe.AutoResizeColumns();
-
-                // Bind to Chart
-                PopulateChart(dt, "Thang", "DoanhThu", "Doanh thu năm " + currentYear, SeriesChartType.Line);
+                else
+                {
+                    MessageBox.Show("Không có dữ liệu thống kê cho năm này!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearVisualization();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Không có dữ liệu thống kê cho năm này!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dgvThongKe.DataSource = null;
-                chartThongKe.Series.Clear();
+                MessageBox.Show("Lỗi khi tải thống kê hàng tháng: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClearVisualization();
             }
+        }
+
+        /// <summary>
+        /// Clear visualization (grid and chart)
+        /// </summary>
+        private void ClearVisualization()
+        {
+            dgvThongKe.DataSource = null;
+            chartThongKe.Series.Clear();
         }
 
         /// <summary>
@@ -239,22 +339,72 @@ namespace QLKHACHSAN.UI
         {
             try
             {
-                chartThongKe.Series.Clear();
-                chartThongKe.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để vẽ biểu đồ!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
+                // Clear existing series and titles
+                chartThongKe.Series.Clear();
+                chartThongKe.Titles.Clear();
+
+                // Configure chart area
+                if (chartThongKe.ChartAreas.Count > 0)
+                {
+                    chartThongKe.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
+                    chartThongKe.ChartAreas[0].AxisX.LabelStyle.IsEndLabelVisible = true;
+                }
+
+                // Create new series
                 Series series = new Series("Series1");
                 series.ChartType = chartType;
 
-                foreach (DataRow row in dt.Rows)
+                // Set series styling for better appearance
+                if (chartType == SeriesChartType.Pie)
                 {
-                    string xValue = row[xAxisColumn].ToString();
-                    double yValue = Convert.ToDouble(row[yAxisColumn]);
-                    series.Points.AddXY(xValue, yValue);
+                    series.Label = "#PERCENT";
+                    series.ToolTip = "#VALX: #VALY";
+                }
+                else
+                {
+                    series.ToolTip = "#VALX: #VALY";
                 }
 
+                // Add data points to series
+                foreach (DataRow row in dt.Rows)
+                {
+                    try
+                    {
+                        string xValue = row[xAxisColumn]?.ToString() ?? "N/A";
+                        object yObj = row[yAxisColumn];
+                        double yValue = 0;
+
+                        if (yObj != null && yObj != DBNull.Value)
+                        {
+                            yValue = Convert.ToDouble(yObj);
+                        }
+
+                        series.Points.AddXY(xValue, yValue);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Lỗi xử lý dữ liệu: " + ex.Message);
+                    }
+                }
+
+                // Add series to chart
                 chartThongKe.Series.Add(series);
-                chartThongKe.Titles.Clear();
-                chartThongKe.Titles.Add(title);
+
+                // Add title
+                Title chartTitle = new Title();
+                chartTitle.Text = title;
+                chartTitle.Font = new Font("Arial", 12, FontStyle.Bold);
+                chartThongKe.Titles.Add(chartTitle);
+
+                // Refresh chart
+                chartThongKe.Refresh();
             }
             catch (Exception ex)
             {
@@ -272,21 +422,14 @@ namespace QLKHACHSAN.UI
             {
                 decimal totalRevenue = bll.GetTotalRevenue(fromDate, toDate);
                 string formattedRevenue = bll.FormatCurrency(totalRevenue);
-                lblTongDoanhThu.Text = "Tổng doanh thu: " + formattedRevenue;
+                txtTongDoanhThu.Text = formattedRevenue;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi tính tổng doanh thu: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtTongDoanhThu.Text = "0 đ";
             }
-        }
-
-        /// <summary>
-        /// Handle chart type selection change
-        /// </summary>
-        private void CbLoaiBieuDo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadStatistics();
         }
 
         /// <summary>
@@ -295,7 +438,11 @@ namespace QLKHACHSAN.UI
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cbLoaiBieuDo.SelectedIndexChanged += CbLoaiBieuDo_SelectedIndexChanged;
+            if (cbLoaiBieuDo != null)
+            {
+                cbLoaiBieuDo.SelectedIndexChanged += CbLoaiBieuDo_SelectedIndexChanged;
+            }
         }
     }
 }
+
