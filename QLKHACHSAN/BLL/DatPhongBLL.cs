@@ -288,5 +288,185 @@ namespace QLKHACHSAN.BLL
             }
             return true;
         }
+
+        /// <summary>
+        /// Create invoice details DataTable
+        /// </summary>
+        public DataTable CreateInvoice(int roomId, DateTime checkIn, DateTime checkOut, DataTable dtSelectedServices)
+        {
+            try
+            {
+                DataTable dtInvoice = new DataTable();
+                dtInvoice.Columns.Add("HạngMục", typeof(string));
+                dtInvoice.Columns.Add("SoLuong", typeof(int));
+                dtInvoice.Columns.Add("DonGia", typeof(decimal));
+                dtInvoice.Columns.Add("ThanhTien", typeof(decimal));
+
+                // Get room details and price
+                decimal roomPrice = dal.GetRoomPrice(roomId);
+                int nights = (checkOut.Date - checkIn.Date).Days;
+                if (nights == 0) nights = 1;
+
+                decimal roomTotal = roomPrice * nights;
+
+                // Add room row
+                DataRow drRoom = dtInvoice.NewRow();
+                drRoom["HạngMục"] = "Tiền phòng";
+                drRoom["SoLuong"] = nights;
+                drRoom["DonGia"] = roomPrice;
+                drRoom["ThanhTien"] = roomTotal;
+                dtInvoice.Rows.Add(drRoom);
+
+                // Add service rows if any
+                if (dtSelectedServices != null && dtSelectedServices.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtSelectedServices.Rows)
+                    {
+                        try
+                        {
+                            string serviceName = row["TenDichVu"]?.ToString() ?? "Dịch vụ";
+                            decimal servicePrice = Convert.ToDecimal(row["Gia"] ?? 0);
+
+                            DataRow drService = dtInvoice.NewRow();
+                            drService["HạngMục"] = serviceName;
+                            drService["SoLuong"] = 1;
+                            drService["DonGia"] = servicePrice;
+                            drService["ThanhTien"] = servicePrice;
+                            dtInvoice.Rows.Add(drService);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Error adding service row: {ex.Message}");
+                        }
+                    }
+                }
+
+                return dtInvoice;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi tạo hóa đơn: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// Get selected services from DataGridView
+        /// </summary>
+        public DataTable GetSelectedServices(System.Windows.Forms.DataGridView dgv)
+        {
+            DataTable dtSelected = new DataTable();
+            dtSelected.Columns.Add("MaDichVu", typeof(int));
+            dtSelected.Columns.Add("TenDichVu", typeof(string));
+            dtSelected.Columns.Add("Gia", typeof(decimal));
+
+            if (dgv != null && dgv.SelectedRows.Count > 0)
+            {
+                foreach (System.Windows.Forms.DataGridViewRow row in dgv.SelectedRows)
+                {
+                    try
+                    {
+                        DataRow dr = dtSelected.NewRow();
+                        dr["MaDichVu"] = Convert.ToInt32(row.Cells["MaDichVu"].Value);
+                        dr["TenDichVu"] = row.Cells["TenDichVu"].Value?.ToString() ?? "";
+                        dr["Gia"] = Convert.ToDecimal(row.Cells["Gia"].Value ?? 0);
+                        dtSelected.Rows.Add(dr);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error getting selected service: {ex.Message}");
+                    }
+                }
+            }
+
+            return dtSelected;
+        }
+
+        /// <summary>
+        /// Process payment for booking
+        /// </summary>
+        public int ProcessPayment(int bookingId, decimal totalAmount, string paymentMethod = "Tiền mặt")
+        {
+            if (bookingId <= 0 || totalAmount < 0)
+            {
+                System.Windows.Forms.MessageBox.Show("Dữ liệu thanh toán không hợp lệ!", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return 0;
+            }
+
+            return dal.RecordPayment(bookingId, totalAmount, paymentMethod);
+        }
+
+        /// <summary>
+        /// Get payment methods list
+        /// </summary>
+        public string[] GetPaymentMethods()
+        {
+            return new string[] { "Tiền mặt", "Thẻ tín dụng", "Chuyển khoản ngân hàng", "E-wallet" };
+        }
+
+        /// <summary>
+        /// Validate payment amount
+        /// </summary>
+        public bool ValidatePaymentAmount(decimal paymentAmount, decimal totalAmount)
+        {
+            if (paymentAmount < totalAmount)
+            {
+                System.Windows.Forms.MessageBox.Show($"Số tiền thanh toán ({FormatCurrency(paymentAmount)}) không đủ! Tổng tiền: {FormatCurrency(totalAmount)}", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Calculate change amount
+        /// </summary>
+        public decimal CalculateChange(decimal paymentAmount, decimal totalAmount)
+        {
+            if (paymentAmount < totalAmount)
+                return 0;
+            return paymentAmount - totalAmount;
+        }
+
+        /// <summary>
+        /// Get payment status for booking
+        /// </summary>
+        public string GetPaymentStatus(int bookingId)
+        {
+            if (bookingId <= 0)
+                return "Chưa thanh toán";
+
+            return dal.GetPaymentStatus(bookingId);
+        }
+
+        /// <summary>
+        /// Get booking info by room ID (for booked rooms)
+        /// </summary>
+        public DataTable GetBookingByRoomId(int roomId)
+        {
+            if (roomId <= 0)
+                return new DataTable();
+
+            return dal.GetBookingByRoomId(roomId);
+        }
+
+        /// <summary>
+        /// Check if room has active booking
+        /// </summary>
+        public bool HasActiveBooking(int roomId)
+        {
+            try
+            {
+                DataTable dt = GetBookingByRoomId(roomId);
+                return dt != null && dt.Rows.Count > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
+

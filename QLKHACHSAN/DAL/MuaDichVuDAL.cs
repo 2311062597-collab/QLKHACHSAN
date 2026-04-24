@@ -208,24 +208,84 @@ namespace QLKHACHSAN.DAL
             return result != null ? Convert.ToDecimal(result) : 0;
         }
 
-        /// <summary>
-        /// Get total revenue from service purchases by date range
-        /// </summary>
-        public decimal GetTotalRevenueByDateRange(DateTime startDate, DateTime endDate)
-        {
-            string query = @"
-                SELECT ISNULL(SUM(ThanhTien), 0) 
-                FROM DatDichVu
-                WHERE NgayThanhToan BETWEEN @StartDate AND @EndDate";
+                /// <summary>
+                /// Get total revenue from service purchases by date range
+                /// </summary>
+                public decimal GetTotalRevenueByDateRange(DateTime startDate, DateTime endDate)
+                {
+                    string query = @"
+                        SELECT ISNULL(SUM(ThanhTien), 0) 
+                        FROM DatDichVu
+                        WHERE NgayThanhToan BETWEEN @StartDate AND @EndDate";
 
-            SqlParameter[] param =
-            {
-                new SqlParameter("@StartDate", startDate),
-                new SqlParameter("@EndDate", endDate)
-            };
+                    SqlParameter[] param =
+                    {
+                        new SqlParameter("@StartDate", startDate),
+                        new SqlParameter("@EndDate", endDate)
+                    };
 
-            object result = db.ExecuteScalar(query, param);
-            return result != null ? Convert.ToDecimal(result) : 0;
+                    object result = db.ExecuteScalar(query, param);
+                    return result != null ? Convert.ToDecimal(result) : 0;
+                }
+
+                /// <summary>
+                /// Check if customer exists
+                /// </summary>
+                public bool CheckCustomerExists(string maKhachHang)
+                {
+                    if (string.IsNullOrWhiteSpace(maKhachHang))
+                        return false;
+
+                    string query = "SELECT COUNT(*) FROM KhachHang WHERE MaKhachHang = @MaKhachHang";
+                    SqlParameter[] param = { new SqlParameter("@MaKhachHang", maKhachHang) };
+
+                    int count = Convert.ToInt32(db.ExecuteScalar(query, param));
+                    return count > 0;
+                }
+
+                /// <summary>
+                /// Check if employee exists
+                /// </summary>
+                public bool CheckEmployeeExists(string maNhanVien)
+                {
+                    if (string.IsNullOrWhiteSpace(maNhanVien))
+                        return false;
+
+                    string query = "SELECT COUNT(*) FROM NhanVien WHERE MaNhanVien = @MaNhanVien";
+                    SqlParameter[] param = { new SqlParameter("@MaNhanVien", maNhanVien) };
+
+                    int count = Convert.ToInt32(db.ExecuteScalar(query, param));
+                    return count > 0;
+                }
+
+                /// <summary>
+                /// Check if service exists
+                /// </summary>
+                public bool CheckServiceExists(string maDichVu)
+                {
+                    if (string.IsNullOrWhiteSpace(maDichVu))
+                        return false;
+
+                    string query = "SELECT COUNT(*) FROM DichVu WHERE MaDichVu = @MaDichVu";
+                    SqlParameter[] param = { new SqlParameter("@MaDichVu", maDichVu) };
+
+                    int count = Convert.ToInt32(db.ExecuteScalar(query, param));
+                    return count > 0;
+                }
+
+                /// <summary>
+                /// Get service price by service ID
+                /// </summary>
+                public decimal GetServicePrice(string maDichVu)
+                {
+                    if (string.IsNullOrWhiteSpace(maDichVu))
+                        return 0;
+
+                    string query = "SELECT DonGia FROM DichVu WHERE MaDichVu = @MaDichVu";
+                    SqlParameter[] param = { new SqlParameter("@MaDichVu", maDichVu) };
+
+                    object result = db.ExecuteScalar(query, param);
+                    return result != null ? Convert.ToDecimal(result) : 0;
+                }
+            }
         }
-    }
-}

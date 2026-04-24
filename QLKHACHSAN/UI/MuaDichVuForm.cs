@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using QLKHACHSAN.BLL;
+using QLKHACHSAN.DAL;
 
 namespace QLKHACHSAN.UI
 {
@@ -170,29 +171,47 @@ namespace QLKHACHSAN.UI
             {
                 if (cbMaDichVu.SelectedIndex == -1)
                 {
-                    txtThanhTien.Text = "0";
+                    txtThanhTien.Text = "0.00";
                     return;
                 }
 
                 // Get service price from selected service
-                DataTable dt = dichVuBLL.GetDanhSachDichVu();
-                if (dt != null && dt.Rows.Count > 0)
+                string maDichVu = cbMaDichVu.SelectedValue?.ToString() ?? "";
+                if (string.IsNullOrWhiteSpace(maDichVu))
                 {
-                    int maDichVu = Convert.ToInt32(cbMaDichVu.SelectedValue);
-                    DataRow[] rows = dt.Select("MaDichVu = " + maDichVu);
-                    if (rows.Length > 0)
+                    txtThanhTien.Text = "0.00";
+                    return;
+                }
+
+                // Get price from DAL (more efficient than loading all services)
+                MuaDichVuDAL dal = new MuaDichVuDAL();
+                decimal donGia = dal.GetServicePrice(maDichVu);
+
+                if (donGia <= 0)
+                {
+                    // Fallback: try to get from existing data
+                    DataTable dt = dichVuBLL.GetDanhSachDichVu();
+                    if (dt != null && dt.Rows.Count > 0)
                     {
-                        decimal donGia = Convert.ToDecimal(rows[0]["DonGia"]);
-                        int soLuong = (int)nudSoLuong.Value;
-                        decimal thanhTien = donGia * soLuong;
-                        txtThanhTien.Text = thanhTien.ToString("N2");
+                        DataRow[] rows = dt.Select("MaDichVu = " + maDichVu);
+                        if (rows.Length > 0)
+                        {
+                            donGia = Convert.ToDecimal(rows[0]["DonGia"]);
+                        }
                     }
                 }
+
+                int soLuong = (int)nudSoLuong.Value;
+                decimal thanhTien = donGia * soLuong;
+                // Round to 2 decimal places for currency
+                thanhTien = Math.Round(thanhTien, 2);
+                txtThanhTien.Text = thanhTien.ToString("N2");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi tính toán thành tiền: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtThanhTien.Text = "0.00";
             }
         }
 

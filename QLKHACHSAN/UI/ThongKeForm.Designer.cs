@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.grbBoLoc = new System.Windows.Forms.GroupBox();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.lblTuNgay = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.lblDenNgay = new System.Windows.Forms.Label();
-            this.dtTo = new System.Windows.Forms.DateTimePicker();
-            this.lblLoaiBieuDo = new System.Windows.Forms.Label();
             this.cbLoaiBieuDo = new System.Windows.Forms.ComboBox();
+            this.lblLoaiBieuDo = new System.Windows.Forms.Label();
+            this.dtTo = new System.Windows.Forms.DateTimePicker();
+            this.lblDenNgay = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.lblTuNgay = new System.Windows.Forms.Label();
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.btnThongKe = new System.Windows.Forms.Button();
             this.grbBieuDo = new System.Windows.Forms.GroupBox();
             this.chartThongKe = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.grbBangThongKe = new System.Windows.Forms.GroupBox();
             this.dgvThongKe = new System.Windows.Forms.DataGridView();
             this.grbTongQuan = new System.Windows.Forms.GroupBox();
-            this.lblTongDoanhThu = new System.Windows.Forms.Label();
             this.txtTongDoanhThu = new System.Windows.Forms.TextBox();
+            this.lblTongDoanhThu = new System.Windows.Forms.Label();
             this.grbBoLoc.SuspendLayout();
             this.grbBieuDo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartThongKe)).BeginInit();
@@ -73,24 +73,32 @@
             this.grbBoLoc.TabStop = false;
             this.grbBoLoc.Text = "Bộ lọc thống kê";
             // 
-            // lblTuNgay
+            // cbLoaiBieuDo
             // 
-            this.lblTuNgay.AutoSize = true;
-            this.lblTuNgay.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTuNgay.Location = new System.Drawing.Point(30, 40);
-            this.lblTuNgay.Name = "lblTuNgay";
-            this.lblTuNgay.Size = new System.Drawing.Size(59, 17);
-            this.lblTuNgay.TabIndex = 0;
-            this.lblTuNgay.Text = "Từ ngày :";
+            this.cbLoaiBieuDo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLoaiBieuDo.FormattingEnabled = true;
+            this.cbLoaiBieuDo.Location = new System.Drawing.Point(693, 35);
+            this.cbLoaiBieuDo.Name = "cbLoaiBieuDo";
+            this.cbLoaiBieuDo.Size = new System.Drawing.Size(180, 33);
+            this.cbLoaiBieuDo.TabIndex = 1;
             // 
-            // dateTimePicker1
+            // lblLoaiBieuDo
             // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(100, 35);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(180, 25);
-            this.dateTimePicker1.TabIndex = 1;
+            this.lblLoaiBieuDo.AutoSize = true;
+            this.lblLoaiBieuDo.Location = new System.Drawing.Point(610, 40);
+            this.lblLoaiBieuDo.Name = "lblLoaiBieuDo";
+            this.lblLoaiBieuDo.Size = new System.Drawing.Size(77, 25);
+            this.lblLoaiBieuDo.TabIndex = 1;
+            this.lblLoaiBieuDo.Text = "Biểu đồ:";
+            // 
+            // dtTo
+            // 
+            this.dtTo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtTo.Location = new System.Drawing.Point(414, 35);
+            this.dtTo.Name = "dtTo";
+            this.dtTo.Size = new System.Drawing.Size(180, 29);
+            this.dtTo.TabIndex = 3;
             // 
             // lblDenNgay
             // 
@@ -98,36 +106,28 @@
             this.lblDenNgay.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDenNgay.Location = new System.Drawing.Point(320, 40);
             this.lblDenNgay.Name = "lblDenNgay";
-            this.lblDenNgay.Size = new System.Drawing.Size(68, 17);
+            this.lblDenNgay.Size = new System.Drawing.Size(88, 23);
             this.lblDenNgay.TabIndex = 2;
             this.lblDenNgay.Text = "Đến ngày :";
             // 
-            // dtTo
+            // dateTimePicker1
             // 
-            this.dtTo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtTo.Location = new System.Drawing.Point(390, 35);
-            this.dtTo.Name = "dtTo";
-            this.dtTo.Size = new System.Drawing.Size(180, 25);
-            this.dtTo.TabIndex = 3;
+            this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker1.Location = new System.Drawing.Point(113, 36);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(180, 29);
+            this.dateTimePicker1.TabIndex = 1;
             // 
-            // lblLoaiBieuDo
+            // lblTuNgay
             // 
-            this.lblLoaiBieuDo.AutoSize = true;
-            this.lblLoaiBieuDo.Location = new System.Drawing.Point(610, 40);
-            this.lblLoaiBieuDo.Name = "lblLoaiBieuDo";
-            this.lblLoaiBieuDo.Size = new System.Drawing.Size(59, 20);
-            this.lblLoaiBieuDo.TabIndex = 1;
-            this.lblLoaiBieuDo.Text = "Biểu đồ:";
-            // 
-            // cbLoaiBieuDo
-            // 
-            this.cbLoaiBieuDo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbLoaiBieuDo.FormattingEnabled = true;
-            this.cbLoaiBieuDo.Location = new System.Drawing.Point(680, 35);
-            this.cbLoaiBieuDo.Name = "cbLoaiBieuDo";
-            this.cbLoaiBieuDo.Size = new System.Drawing.Size(180, 28);
-            this.cbLoaiBieuDo.TabIndex = 1;
+            this.lblTuNgay.AutoSize = true;
+            this.lblTuNgay.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTuNgay.Location = new System.Drawing.Point(30, 40);
+            this.lblTuNgay.Name = "lblTuNgay";
+            this.lblTuNgay.Size = new System.Drawing.Size(77, 23);
+            this.lblTuNgay.TabIndex = 0;
+            this.lblTuNgay.Text = "Từ ngày :";
             // 
             // btnThongKe
             // 
@@ -152,16 +152,17 @@
             // 
             // chartThongKe
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartThongKe.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartThongKe.Legends.Add(legend1);
-            this.chartThongKe.Location = new System.Drawing.Point(20, 30);
+            chartArea2.Name = "ChartArea1";
+            this.chartThongKe.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartThongKe.Legends.Add(legend2);
+            this.chartThongKe.Location = new System.Drawing.Point(19, 30);
             this.chartThongKe.Name = "chartThongKe";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartThongKe.Series.Add(series1);
+            this.chartThongKe.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.EarthTones;
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartThongKe.Series.Add(series2);
             this.chartThongKe.Size = new System.Drawing.Size(610, 380);
             this.chartThongKe.TabIndex = 0;
             this.chartThongKe.Text = "chart1";
@@ -187,6 +188,7 @@
             this.dgvThongKe.Name = "dgvThongKe";
             this.dgvThongKe.ReadOnly = true;
             this.dgvThongKe.RowHeadersVisible = false;
+            this.dgvThongKe.RowHeadersWidth = 51;
             this.dgvThongKe.RowTemplate.Height = 24;
             this.dgvThongKe.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvThongKe.Size = new System.Drawing.Size(440, 380);
@@ -206,23 +208,23 @@
             this.grbTongQuan.Tag = "";
             this.grbTongQuan.Text = "Tổng quan";
             // 
+            // txtTongDoanhThu
+            // 
+            this.txtTongDoanhThu.Location = new System.Drawing.Point(226, 35);
+            this.txtTongDoanhThu.Name = "txtTongDoanhThu";
+            this.txtTongDoanhThu.ReadOnly = true;
+            this.txtTongDoanhThu.Size = new System.Drawing.Size(220, 32);
+            this.txtTongDoanhThu.TabIndex = 10;
+            this.txtTongDoanhThu.Text = "0";
+            // 
             // lblTongDoanhThu
             // 
             this.lblTongDoanhThu.AutoSize = true;
             this.lblTongDoanhThu.Location = new System.Drawing.Point(66, 38);
             this.lblTongDoanhThu.Name = "lblTongDoanhThu";
-            this.lblTongDoanhThu.Size = new System.Drawing.Size(111, 20);
+            this.lblTongDoanhThu.Size = new System.Drawing.Size(145, 25);
             this.lblTongDoanhThu.TabIndex = 9;
             this.lblTongDoanhThu.Text = "Tổng doanh thu:";
-            // 
-            // txtTongDoanhThu
-            // 
-            this.txtTongDoanhThu.Location = new System.Drawing.Point(183, 35);
-            this.txtTongDoanhThu.Name = "txtTongDoanhThu";
-            this.txtTongDoanhThu.ReadOnly = true;
-            this.txtTongDoanhThu.Size = new System.Drawing.Size(220, 27);
-            this.txtTongDoanhThu.TabIndex = 10;
-            this.txtTongDoanhThu.Text = "0";
             // 
             // ThongKeForm
             // 
@@ -238,6 +240,7 @@
             this.Name = "ThongKeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ThongKeForm";
+            this.Load += new System.EventHandler(this.ThongKeForm_Load);
             this.grbBoLoc.ResumeLayout(false);
             this.grbBoLoc.PerformLayout();
             this.grbBieuDo.ResumeLayout(false);

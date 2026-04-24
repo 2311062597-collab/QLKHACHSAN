@@ -35,10 +35,14 @@ namespace QLKHACHSAN.DAL
                     new SqlParameter("@toDate", toDate)
                 };
 
-                return db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetRevenueByDateRange from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
+                DataTable result = db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
+                return result;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"SQL Error in GetRevenueByDateRange: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo ngày: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
@@ -69,10 +73,14 @@ namespace QLKHACHSAN.DAL
                     new SqlParameter("@toDate", toDate)
                 };
 
-                return db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetRevenueByService from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
+                DataTable result = db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
+                return result;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"SQL Error in GetRevenueByService: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo dịch vụ: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
@@ -97,15 +105,20 @@ namespace QLKHACHSAN.DAL
                     new SqlParameter("@toDate", toDate)
                 };
 
+                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetTotalRevenue from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
                 DataTable dt = db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Query returned {dt?.Rows.Count ?? 0} rows");
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    return Convert.ToDecimal(dt.Rows[0]["TotalRevenue"]);
+                    decimal result = Convert.ToDecimal(dt.Rows[0]["TotalRevenue"]);
+                    System.Diagnostics.Debug.WriteLine($"Total revenue: {result}");
+                    return result;
                 }
                 return 0;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"SQL Error in GetTotalRevenue: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy tổng doanh thu: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return 0;
@@ -135,16 +148,20 @@ namespace QLKHACHSAN.DAL
                     new SqlParameter("@toDate", toDate)
                 };
 
-                return db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetBookingStatistics from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
+                DataTable result = db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
+                return result;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"SQL Error in GetBookingStatistics: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy thống kê đặt phòng: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
             }
         }
-
+       
         /// <summary>
         /// Get monthly revenue statistics
         /// </summary>
@@ -165,10 +182,14 @@ namespace QLKHACHSAN.DAL
                     new SqlParameter("@year", year)
                 };
 
-                return db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetMonthlyRevenue for year {year}");
+                DataTable result = db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
+                return result;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"SQL Error in GetMonthlyRevenue: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo tháng: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
@@ -199,10 +220,14 @@ namespace QLKHACHSAN.DAL
                     new SqlParameter("@toDate", toDate)
                 };
 
-                return db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetServiceUsageByCustomer from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
+                DataTable result = db.ExecuteQuery(sql, parameters);
+                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
+                return result;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"SQL Error in GetServiceUsageByCustomer: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy thống kê khách hàng: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();

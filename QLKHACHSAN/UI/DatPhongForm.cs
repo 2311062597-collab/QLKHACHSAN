@@ -56,12 +56,15 @@ namespace QLKHACHSAN.UI
             LoadAddOnServices();
 
             // Setup event handlers
-            btnThanhToan.Click += BtnThanhToan_Click;
+            btnDatPhong.Click += BtnThanhToan_Click;
             btnDong.Click += BtnDong_Click;
             cbLoaiPhong.SelectedIndexChanged += CbLoaiPhong_SelectedIndexChanged;
             dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
             dateTimePicker2.ValueChanged += DateTimePicker2_ValueChanged;
             numericUpDown1.ValueChanged += NumericUpDown1_ValueChanged;
+
+            // Add event handler for service selection changes
+            dgvPhuThu.SelectionChanged += DgvPhuThu_SelectionChanged;
         }
 
         /// <summary>
@@ -160,12 +163,95 @@ namespace QLKHACHSAN.UI
         /// </summary>
         private void BtnRoom_Click(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
-            if (btn != null)
+            try
             {
+                Button btn = sender as Button;
+                if (btn == null)
+                    return;
+
                 selectedRoomId = Convert.ToInt32(btn.Tag);
-                ShowRoomDetails();
-                CalculatePrice();
+
+                // Check if room is already booked
+                DataTable dtBooking = bll.GetBookingByRoomId(selectedRoomId);
+                if (dtBooking != null && dtBooking.Rows.Count > 0)
+                {
+                    // Room has active booking - load customer info and ask about payment
+                    LoadBookedRoomInfo(dtBooking);
+                }
+                else
+                {
+                    // Room is available - show normal room details
+                    ShowRoomDetails();
+                    CalculatePrice();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi chọn phòng: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Load booked room information and auto-fill customer info
+        /// </summary>
+        private void LoadBookedRoomInfo(DataTable dtBooking)
+        {
+            try
+            {
+                if (dtBooking.Rows.Count == 0)
+                    return;
+
+                DataRow row = dtBooking.Rows[0];
+                int bookingId = Convert.ToInt32(row["MaDatPhong"]);
+
+                // Auto-fill customer information
+                selectedCustomerId = Convert.ToInt32(row["MaKhachHang"]);
+                txtTenKH.Text = row["HoTen"].ToString();
+                txtSDT.Text = row["SoDienThoai"].ToString();
+                txtCCCD.Text = row["CCCD"].ToString();
+
+                // Show room details
+                DataTable dtRoomDetails = bll.GetRoomDetails(selectedRoomId);
+                if (dtRoomDetails != null && dtRoomDetails.Rows.Count > 0)
+                {
+                    txtTenPhong.Text = dtRoomDetails.Rows[0]["TenPhong"].ToString();
+                    cbLoaiPhong.SelectedValue = Convert.ToInt32(dtRoomDetails.Rows[0]["MaLoaiPhong"]);
+                }
+
+                // Load booking dates
+                DateTime checkIn = Convert.ToDateTime(row["NgayNhan"]);
+                DateTime checkOut = Convert.ToDateTime(row["NgayTra"]);
+                dateTimePicker1.Value = checkIn;
+                dateTimePicker2.Value = checkOut;
+
+                // Ask user if they want to process payment
+                DialogResult result = MessageBox.Show(
+                    $"Phòng này đã có đặt phòng:\n\n" +
+                    $"Khách hàng: {row["HoTen"]}\n" +
+                    $"Ngày nhận: {checkIn:dd/MM/yyyy}\n" +
+                    $"Ngày trả: {checkOut:dd/MM/yyyy}\n\n" +
+                    $"Bạn có muốn thanh toán cho booking này không?",
+                    "Phòng Đã Đặt",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    // Open payment form
+                    ThanhToanForm paymentForm = new ThanhToanForm(bookingId);
+                    if (paymentForm.ShowDialog() == DialogResult.OK)
+                    {
+                        // Reload rooms to update status
+                        LoadRooms();
+                        ClearForm();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải thông tin phòng đã đặt: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -257,7 +343,7 @@ namespace QLKHACHSAN.UI
             CalculatePrice();
         }
 
-        
+
         private void CalculatePrice()
         {
             try
@@ -265,31 +351,77 @@ namespace QLKHACHSAN.UI
                 if (selectedRoomId == 0)
                 {
                     txtTongTien.Text = "0 đ";
+                    dgvHoaDonPhong.DataSource = null;
                     return;
                 }
 
                 DateTime checkIn = dateTimePicker1.Value;
                 DateTime checkOut = dateTimePicker2.Value;
 
-                decimal serviceAmount = bll.GetTotalServiceAmount(dgvHoaDonPhong.DataSource as DataTable);
-                decimal totalPrice = bll.CalculateTotalPrice(selectedRoomId, checkIn, checkOut, serviceAmount);
+                // Get selected services from dgvPhuThu
+                DataTable dtServices = bll.GetSelectedServices(dgvPhuThu);
+
+                // Create invoice
+                DataTable dtInvoice = bll.CreateInvoice(selectedRoomId, checkIn, checkOut, dtServices);
+
+                // Display invoice
+                dgvHoaDonPhong.DataSource = dtInvoice;
+                dgvHoaDonPhong.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+
+                // Calculate total
+                decimal totalPrice = 0;
+                if (dtInvoice != null && dtInvoice.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtInvoice.Rows)
+                    {
+                        totalPrice += Convert.ToDecimal(row["ThanhTien"] ?? 0);
+                    }
+                }
+
+                // Apply discount
                 int discountPercent = (int)numericUpDown1.Value;
                 decimal finalPrice = bll.ApplyDiscount(totalPrice, discountPercent);
 
                 txtTongTien.Text = bll.FormatCurrency(finalPrice);
+
+                System.Diagnostics.Debug.WriteLine($"Invoice calculated: Total={totalPrice}, Discount={discountPercent}%, Final={finalPrice}");
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error calculating price: {ex.Message}");
                 MessageBox.Show("Lỗi khi tính giá: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-    
+
+        /// <summary>
+        /// Extract amount from currency formatted text
+        /// </summary>
+        private decimal ExtractAmountFromTextBox(string text)
+        {
+            try
+            {
+                // Remove currency symbols and spaces
+                string cleanText = text.Replace("₫", "").Replace("đ", "").Replace(",", "").Trim();
+                if (decimal.TryParse(cleanText, out decimal amount))
+                {
+                    return amount;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error extracting amount: {ex.Message}");
+            }
+            return 0;
+        }
+
         private void BtnThanhToan_Click(object sender, EventArgs e)
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("=== Booking Process Started ===");
+
                 // Validate customer name is entered
                 if (string.IsNullOrWhiteSpace(txtTenKH.Text))
                 {
@@ -315,41 +447,62 @@ namespace QLKHACHSAN.UI
                     return;
                 }
 
+                System.Diagnostics.Debug.WriteLine($"Creating booking for Customer={selectedCustomerId}, Room={selectedRoomId}, CheckIn={checkIn:yyyy-MM-dd}, CheckOut={checkOut:yyyy-MM-dd}");
+
                 // Create booking
                 int bookingId = bll.CreateBooking(selectedRoomId, selectedCustomerId, checkIn, checkOut);
                 if (bookingId > 0)
                 {
-                  
+                    System.Diagnostics.Debug.WriteLine($"Booking created successfully. BookingId={bookingId}");
+
+                    // Add selected services to booking
                     if (dgvPhuThu.SelectedRows.Count > 0)
                     {
+                        System.Diagnostics.Debug.WriteLine($"Adding {dgvPhuThu.SelectedRows.Count} services to booking");
                         foreach (DataGridViewRow row in dgvPhuThu.SelectedRows)
                         {
                             int serviceId = Convert.ToInt32(row.Cells["MaDichVu"].Value);
                             decimal price = Convert.ToDecimal(row.Cells["Gia"].Value);
-                            bll.AddServiceToBooking(bookingId, serviceId, price);
+                            bool success = bll.AddServiceToBooking(bookingId, serviceId, price);
+                            System.Diagnostics.Debug.WriteLine($"Service added: ServiceId={serviceId}, Price={price}, Success={success}");
                         }
                     }
 
-                    MessageBox.Show("Đặt phòng thành công! Mã đặt phòng: " + bookingId, "Thành công",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    System.Diagnostics.Debug.WriteLine("Booking created successfully. Opening payment form...");
 
-                    ClearForm();
-                    LoadRooms();
+                    // Open payment form
+                    ThanhToanForm paymentForm = new ThanhToanForm(bookingId);
+                    if (paymentForm.ShowDialog() == DialogResult.OK)
+                    {
+                        System.Diagnostics.Debug.WriteLine("=== Booking Process Completed Successfully ===");
+                        ClearForm();
+                        LoadRooms();
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Payment cancelled by user");
+                        MessageBox.Show("Đặt phòng thành công nhưng chưa thanh toán!\nMã đặt phòng: " + bookingId, "Thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ClearForm();
+                        LoadRooms();
+                    }
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("Failed to create booking");
                     MessageBox.Show("Lỗi khi tạo đặt phòng!", "Lỗi",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Exception in BtnThanhToan_Click: {ex.Message}\n{ex.StackTrace}");
                 MessageBox.Show("Lỗi khi thanh toán: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-       
+
         private void ClearForm()
         {
             selectedRoomId = 0;
@@ -363,6 +516,7 @@ namespace QLKHACHSAN.UI
             dateTimePicker1.Value = DateTime.Now;
             dateTimePicker2.Value = DateTime.Now.AddDays(1);
             dgvHoaDonPhong.DataSource = null;
+            dgvPhuThu.ClearSelection();
         }
 
       
@@ -429,6 +583,19 @@ namespace QLKHACHSAN.UI
                 MessageBox.Show("Lỗi khi tìm khách hàng: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void grbChinhSachPhuThu_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Handle service selection change
+        /// </summary>
+        private void DgvPhuThu_SelectionChanged(object sender, EventArgs e)
+        {
+            CalculatePrice();
         }
     }
 }

@@ -455,5 +455,219 @@ namespace QLKHACHSAN.DAL
             }
             return total;
         }
+
+        /// <summary>
+        /// Record payment for booking
+        /// </summary>
+        public int RecordPayment(int bookingId, decimal totalAmount, string paymentMethod)
+        {
+            try
+            {
+                string query = @"
+                    INSERT INTO ThanhToan (MaDatPhong, SoTien, PhuongThucThanhToan, NgayThanhToan, TrangThaiThanhToan)
+                    VALUES (@bookingId, @amount, @method, GETDATE(), N'Đã thanh toán')
+                    SELECT SCOPE_IDENTITY();";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@bookingId", bookingId),
+                    new SqlParameter("@amount", totalAmount),
+                    new SqlParameter("@method", paymentMethod)
+                };
+
+                using (SqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                        object result = cmd.ExecuteScalar();
+                        int paymentId = result != null ? Convert.ToInt32(result) : 0;
+
+                        if (paymentId > 0)
+                        {
+                            // Update booking status to "Đã thanh toán"
+                            string updateQuery = @"
+                                UPDATE DatPhong
+                                SET TrangThaiDatPhong = N'Đã thanh toán'
+                                WHERE MaDatPhong = @bookingId";
+
+                            using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
+                            {
+                                updateCmd.Parameters.AddWithValue("@bookingId", bookingId);
+                                updateCmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        return paymentId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi ghi nhận thanh toán: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Get payment status for booking
+        /// </summary>
+        public string GetPaymentStatus(int bookingId)
+        {
+            try
+            {
+                string query = @"
+                    SELECT ISNULL(TrangThaiThanhToan, N'Chưa thanh toán') as PaymentStatus
+                    FROM ThanhToan
+                    WHERE MaDatPhong = @bookingId
+                    ORDER BY MaThanhToan DESC";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@bookingId", bookingId)
+                };
+
+                DataTable dt = db.ExecuteQuery(query, parameters);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return dt.Rows[0]["PaymentStatus"].ToString();
+                }
+
+                return "Chưa thanh toán";
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy trạng thái thanh toán: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return "Lỗi";
+            }
+        }
+
+        /// <summary>
+        /// Get payment details for booking
+        /// </summary>
+        public DataTable GetPaymentDetails(int bookingId)
+        {
+            try
+            {
+                string query = @"
+                    SELECT 
+                        MaThanhToan,
+                        MaDatPhong,
+                        SoTien,
+                        PhuongThucThanhToan,
+                        NgayThanhToan,
+                        TrangThaiThanhToan
+                    FROM ThanhToan
+                    WHERE MaDatPhong = @bookingId
+                    ORDER BY NgayThanhToan DESC";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@bookingId", bookingId)
+                };
+
+                return db.ExecuteQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết thanh toán: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// Get booking by room ID (for booked rooms)
+        /// </summary>
+        public DataTable GetBookingByRoomId(int roomId)
+        {
+            try
+            {
+                string query = @"
+                    SELECT TOP 1
+                        dp.MaDatPhong,
+                        dp.MaKhachHang,
+                        dp.MaPhong,
+                        dp.NgayNhan,
+                        dp.NgayTra,
+                        dp.TrangThai,
+                        kh.HoTen,
+                        kh.SoDienThoai,
+                        kh.CCCD,
+                        kh.DiaChi
+                    FROM DatPhong dp
+                    INNER JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang
+                    WHERE dp.MaPhong = @roomId 
+                        AND dp.TrangThai IN (N'Chờ xử lý', N'Đã thanh toán', N'Đang sử dụng')
+                    ORDER BY dp.NgayNhan DESC";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@roomId", roomId)
+                };
+
+                return db.ExecuteQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy thông tin booking: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// Record payment for booking (enhanced version with notes)
+        /// </summary>
+        public int RecordPayment(int bookingId, decimal totalAmount, string paymentMethod, string notes = "")
+        {
+            try
+            {
+                string query = @"
+                    INSERT INTO ThanhToan (MaDatPhong, SoTien, PhuongThucThanhToan, NgayThanhToan, TrangThaiThanhToan, GhiChu)
+                    VALUES (@bookingId, @amount, @method, GETDATE(), N'Đã thanh toán', @notes)
+                    SELECT SCOPE_IDENTITY();";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@bookingId", bookingId),
+                    new SqlParameter("@amount", totalAmount),
+                    new SqlParameter("@method", paymentMethod),
+                    new SqlParameter("@notes", notes ?? "")
+                };
+
+                using (SqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                        object result = cmd.ExecuteScalar();
+                        int paymentId = result != null ? Convert.ToInt32(result) : 0;
+
+                        if (paymentId > 0)
+                        {
+                            // Update booking status to "Đã thanh toán"
+                            string updateQuery = @"
+                                UPDATE DatPhong
+                                SET TrangThai = N'Đã thanh toán'
+                                WHERE MaDatPhong = @bookingId";
+
+                            using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
+                            {
+                                updateCmd.Parameters.AddWithValue("@bookingId", bookingId);
+                                updateCmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        return paymentId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi ghi nhận thanh toán: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

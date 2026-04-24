@@ -142,8 +142,11 @@ namespace QLKHACHSAN.UI
                     return;
                 }
 
+                System.Diagnostics.Debug.WriteLine($"Loading statistics from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
+
                 // Load data based on selected chart type
                 string chartType = cbLoaiBieuDo.SelectedItem?.ToString() ?? "";
+                System.Diagnostics.Debug.WriteLine($"Selected chart type: {chartType}");
 
                 switch (chartType)
                 {
@@ -169,6 +172,7 @@ namespace QLKHACHSAN.UI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error loading statistics: {ex.Message}\n{ex.StackTrace}");
                 MessageBox.Show("Lỗi khi tải thống kê: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ClearVisualization();
@@ -182,19 +186,24 @@ namespace QLKHACHSAN.UI
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("Loading revenue by date...");
                 DataTable dt = bll.GetRevenueByDateRange(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Revenue data rows: {dt?.Rows.Count ?? 0}");
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     // Bind to DataGridView
                     dgvThongKe.DataSource = dt;
                     dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                    System.Diagnostics.Debug.WriteLine("DataGridView populated successfully");
 
                     // Bind to Chart
                     PopulateChart(dt, "NgayThanhToan", "DoanhThu", "Doanh thu theo ngày", SeriesChartType.Column);
+                    System.Diagnostics.Debug.WriteLine("Chart populated successfully");
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("No data returned for revenue by date");
                     MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearVisualization();
@@ -202,6 +211,7 @@ namespace QLKHACHSAN.UI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error loading revenue by date: {ex.Message}\n{ex.StackTrace}");
                 MessageBox.Show("Lỗi khi tải doanh thu theo ngày: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ClearVisualization();
@@ -215,7 +225,9 @@ namespace QLKHACHSAN.UI
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("Loading revenue by service...");
                 DataTable dt = bll.GetRevenueByService(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Service data rows: {dt?.Rows.Count ?? 0}");
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -228,6 +240,7 @@ namespace QLKHACHSAN.UI
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("No data returned for revenue by service");
                     MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearVisualization();
@@ -235,6 +248,7 @@ namespace QLKHACHSAN.UI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error loading revenue by service: {ex.Message}\n{ex.StackTrace}");
                 MessageBox.Show("Lỗi khi tải doanh thu theo dịch vụ: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ClearVisualization();
@@ -248,7 +262,9 @@ namespace QLKHACHSAN.UI
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("Loading customer statistics...");
                 DataTable dt = bll.GetServiceUsageByCustomer(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Customer data rows: {dt?.Rows.Count ?? 0}");
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -261,6 +277,7 @@ namespace QLKHACHSAN.UI
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("No data returned for customer statistics");
                     MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearVisualization();
@@ -268,6 +285,7 @@ namespace QLKHACHSAN.UI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error loading customer statistics: {ex.Message}\n{ex.StackTrace}");
                 MessageBox.Show("Lỗi khi tải thống kê khách hàng: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ClearVisualization();
@@ -281,8 +299,10 @@ namespace QLKHACHSAN.UI
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("Loading monthly revenue...");
                 int currentYear = DateTime.Now.Year;
                 DataTable dt = bll.GetMonthlyRevenue(currentYear);
+                System.Diagnostics.Debug.WriteLine($"Monthly data rows: {dt?.Rows.Count ?? 0}");
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -310,6 +330,7 @@ namespace QLKHACHSAN.UI
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("No data returned for monthly revenue");
                     MessageBox.Show("Không có dữ liệu thống kê cho năm này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearVisualization();
@@ -317,6 +338,7 @@ namespace QLKHACHSAN.UI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error loading monthly revenue: {ex.Message}\n{ex.StackTrace}");
                 MessageBox.Show("Lỗi khi tải thống kê hàng tháng: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ClearVisualization();
@@ -339,8 +361,11 @@ namespace QLKHACHSAN.UI
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine($"PopulateChart called with title={title}, chartType={chartType}");
+
                 if (dt == null || dt.Rows.Count == 0)
                 {
+                    System.Diagnostics.Debug.WriteLine("No data to populate chart");
                     MessageBox.Show("Không có dữ liệu để vẽ biểu đồ!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
@@ -373,6 +398,7 @@ namespace QLKHACHSAN.UI
                 }
 
                 // Add data points to series
+                int pointCount = 0;
                 foreach (DataRow row in dt.Rows)
                 {
                     try
@@ -387,12 +413,15 @@ namespace QLKHACHSAN.UI
                         }
 
                         series.Points.AddXY(xValue, yValue);
+                        pointCount++;
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine("Lỗi xử lý dữ liệu: " + ex.Message);
+                        System.Diagnostics.Debug.WriteLine($"Error processing data row: {ex.Message}");
                     }
                 }
+
+                System.Diagnostics.Debug.WriteLine($"Added {pointCount} data points to chart");
 
                 // Add series to chart
                 chartThongKe.Series.Add(series);
@@ -405,9 +434,11 @@ namespace QLKHACHSAN.UI
 
                 // Refresh chart
                 chartThongKe.Refresh();
+                System.Diagnostics.Debug.WriteLine("Chart refreshed successfully");
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error populating chart: {ex.Message}\n{ex.StackTrace}");
                 MessageBox.Show("Lỗi khi vẽ biểu đồ: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

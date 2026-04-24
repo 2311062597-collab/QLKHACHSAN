@@ -46,6 +46,30 @@ namespace QLKHACHSAN.BLL
                 return false;
             }
 
+            // Check if customer exists
+            if (!dal.CheckCustomerExists(makh))
+            {
+                System.Windows.Forms.MessageBox.Show("Khách hàng không tồn tại!", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Check if employee exists
+            if (!dal.CheckEmployeeExists(manv))
+            {
+                System.Windows.Forms.MessageBox.Show("Nhân viên không tồn tại!", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Check if service exists
+            if (!dal.CheckServiceExists(madv))
+            {
+                System.Windows.Forms.MessageBox.Show("Dịch vụ không tồn tại!", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
             // Validate quantity
             if (soluong <= 0)
             {
@@ -84,6 +108,30 @@ namespace QLKHACHSAN.BLL
                 string.IsNullOrWhiteSpace(manv) || string.IsNullOrWhiteSpace(madv))
             {
                 System.Windows.Forms.MessageBox.Show("Vui lòng nhập đầy đủ thông tin bắt buộc!", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Check if customer exists
+            if (!dal.CheckCustomerExists(makh))
+            {
+                System.Windows.Forms.MessageBox.Show("Khách hàng không tồn tại!", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Check if employee exists
+            if (!dal.CheckEmployeeExists(manv))
+            {
+                System.Windows.Forms.MessageBox.Show("Nhân viên không tồn tại!", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Check if service exists
+            if (!dal.CheckServiceExists(madv))
+            {
+                System.Windows.Forms.MessageBox.Show("Dịch vụ không tồn tại!", "Cảnh báo",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
                 return false;
             }
