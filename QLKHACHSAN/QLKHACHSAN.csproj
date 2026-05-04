@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\CheckoutBLL.cs" />
     <Compile Include="BLL\DangNhapBLL.cs" />
     <Compile Include="BLL\DatPhongBLL.cs" />
     <Compile Include="BLL\DichVuBLL.cs" />
@@ -56,7 +58,9 @@
     <Compile Include="BLL\NhanVienBLL.cs" />
     <Compile Include="BLL\PhongBLL.cs" />
     <Compile Include="BLL\TaiKhoanBLL.cs" />
+    <Compile Include="BLL\ThanhToanBLL.cs" />
     <Compile Include="BLL\ThongKeBLL.cs" />
+    <Compile Include="DAL\CheckoutDAL.cs" />
     <Compile Include="DAL\DangNhapDAL.cs" />
     <Compile Include="DAL\DatPhongDAL.cs" />
     <Compile Include="DAL\DBConnection.cs" />
@@ -68,6 +72,7 @@
     <Compile Include="DAL\NhanVienDAL.cs" />
     <Compile Include="DAL\PhongDAL.cs" />
     <Compile Include="DAL\TaiKhoanDAL.cs" />
+    <Compile Include="DAL\ThanhToanDAL.cs" />
     <Compile Include="DAL\ThongKeDAL.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -77,6 +82,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\CheckoutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CheckoutForm.Designer.cs">
+      <DependentUpon>CheckoutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DangNhapForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +154,9 @@
     <Compile Include="UI\ThongKeForm.Designer.cs">
       <DependentUpon>ThongKeForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DAL\LoaiDichVuDAL.resx">
+      <DependentUpon>LoaiDichVuDAL.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -156,8 +170,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\CheckoutForm.resx">
+      <DependentUpon>CheckoutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\DangNhapForm.resx">
       <DependentUpon>DangNhapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DatPhongForm.resx">
+      <DependentUpon>DatPhongForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DichVuForm.resx">
       <DependentUpon>DichVuForm.cs</DependentUpon>
@@ -182,6 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TaiKhoanForm.resx">
       <DependentUpon>TaiKhoanForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ThongKeForm.resx">
+      <DependentUpon>ThongKeForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -213,6 +236,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Gemini_Generated_Image_rjlogrjlogrjlogr1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -403,7 +403,7 @@ namespace QLKHACHSAN.BLL
         /// </summary>
         public string[] GetPaymentMethods()
         {
-            return new string[] { "Tiền mặt", "Thẻ tín dụng", "Chuyển khoản ngân hàng", "E-wallet" };
+            return new string[] { "Tiền mặt", "Chuyển khoản ngân hàng" };
         }
 
         /// <summary>
@@ -466,6 +466,21 @@ namespace QLKHACHSAN.BLL
             {
                 return false;
             }
+        }
+
+        internal DataTable CreateInvoice(int selectedRoomId, DateTime checkIn, DateTime checkOut, object dtServices)
+        {
+            throw new NotImplementedException();
+        }
+        public DataTable CreateRoomInvoice(int roomId, DateTime checkIn, DateTime checkOut)
+        {
+            if (roomId <= 0)
+                return new DataTable();
+
+            if (checkIn >= checkOut)
+                return new DataTable();
+
+            return dal.GetRoomInvoiceInfo(roomId, checkIn, checkOut);
         }
     }
 }

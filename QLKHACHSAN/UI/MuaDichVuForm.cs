@@ -102,8 +102,6 @@ namespace QLKHACHSAN.UI
             cbMaPhuongThuc.Items.Clear();
             cbMaPhuongThuc.Items.Add("Tiền mặt");
             cbMaPhuongThuc.Items.Add("Chuyển khoản");
-            cbMaPhuongThuc.Items.Add("Thẻ tín dụng");
-            cbMaPhuongThuc.Items.Add("Ví điện tử");
             cbMaPhuongThuc.SelectedIndex = -1;
         }
 
@@ -290,12 +288,6 @@ namespace QLKHACHSAN.UI
                     break;
                 case 2:
                     cbMaPhuongThuc.SelectedItem = "Chuyển khoản";
-                    break;
-                case 3:
-                    cbMaPhuongThuc.SelectedItem = "Thẻ tín dụng";
-                    break;
-                case 4:
-                    cbMaPhuongThuc.SelectedItem = "Ví điện tử";
                     break;
                 default:
                     cbMaPhuongThuc.SelectedItem = "Tiền mặt";
@@ -518,6 +510,11 @@ namespace QLKHACHSAN.UI
             LoadComboBoxData();
             LoadDanhSachDichVu();
             LamMoi();
+        }
+
+        private void dgvDatDichVu_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

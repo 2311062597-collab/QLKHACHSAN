@@ -212,5 +212,101 @@ namespace QLKHACHSAN.BLL
                 default: return "Không xác định";
             }
         }
+
+        /// <summary>
+        /// Get detailed transaction data by date range
+        /// </summary>
+        public DataTable GetDetailedRevenueByDateRange(DateTime fromDate, DateTime toDate)
+        {
+            // Validate date range
+            if (!ValidateDateRange(fromDate, toDate))
+            {
+                return new DataTable();
+            }
+
+            try
+            {
+                return dal.GetDetailedRevenueByDateRange(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết doanh thu: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// Get all detailed transactions by date range
+        /// </summary>
+        public DataTable GetAllDetailedTransactions(DateTime fromDate, DateTime toDate)
+        {
+            // Validate date range
+            if (!ValidateDateRange(fromDate, toDate))
+            {
+                return new DataTable();
+            }
+
+            try
+            {
+                return dal.GetAllDetailedTransactions(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết giao dịch: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// Get detailed customer transactions
+        /// </summary>
+        public DataTable GetDetailedCustomerTransactions(DateTime fromDate, DateTime toDate)
+        {
+            // Validate date range
+            if (!ValidateDateRange(fromDate, toDate))
+            {
+                return new DataTable();
+            }
+
+            try
+            {
+                return dal.GetDetailedCustomerTransactions(fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết giao dịch khách hàng: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// Get detailed yearly transactions
+        /// </summary>
+        public DataTable GetDetailedYearlyTransactions(int year)
+        {
+            // Validate year
+            if (year < 2000 || year > DateTime.Now.Year)
+            {
+                System.Windows.Forms.MessageBox.Show(
+                    "Năm không hợp lệ! Vui lòng chọn năm từ 2000 đến " + DateTime.Now.Year + ".", "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return new DataTable();
+            }
+
+            try
+            {
+                return dal.GetDetailedYearlyTransactions(year);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết giao dịch hàng năm: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
     }
 }

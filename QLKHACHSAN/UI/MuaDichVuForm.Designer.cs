@@ -253,7 +253,7 @@
             this.grbDanhSachDatDichVu.ForeColor = System.Drawing.Color.Blue;
             this.grbDanhSachDatDichVu.Location = new System.Drawing.Point(460, 20);
             this.grbDanhSachDatDichVu.Name = "grbDanhSachDatDichVu";
-            this.grbDanhSachDatDichVu.Size = new System.Drawing.Size(900, 500);
+            this.grbDanhSachDatDichVu.Size = new System.Drawing.Size(1049, 500);
             this.grbDanhSachDatDichVu.TabIndex = 1;
             this.grbDanhSachDatDichVu.TabStop = false;
             this.grbDanhSachDatDichVu.Text = "Danh sách dịch vụ ";
@@ -264,15 +264,16 @@
             this.dgvDatDichVu.AllowUserToDeleteRows = false;
             this.dgvDatDichVu.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDatDichVu.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDatDichVu.Location = new System.Drawing.Point(10, 30);
+            this.dgvDatDichVu.Location = new System.Drawing.Point(6, 29);
             this.dgvDatDichVu.Name = "dgvDatDichVu";
             this.dgvDatDichVu.ReadOnly = true;
             this.dgvDatDichVu.RowHeadersVisible = false;
             this.dgvDatDichVu.RowHeadersWidth = 51;
             this.dgvDatDichVu.RowTemplate.Height = 24;
             this.dgvDatDichVu.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDatDichVu.Size = new System.Drawing.Size(880, 450);
+            this.dgvDatDichVu.Size = new System.Drawing.Size(1037, 465);
             this.dgvDatDichVu.TabIndex = 0;
+            this.dgvDatDichVu.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDatDichVu_CellContentClick);
             // 
             // grbChucNang
             // 
@@ -358,7 +359,7 @@
             this.grbTimKiem.ForeColor = System.Drawing.Color.Blue;
             this.grbTimKiem.Location = new System.Drawing.Point(460, 540);
             this.grbTimKiem.Name = "grbTimKiem";
-            this.grbTimKiem.Size = new System.Drawing.Size(900, 180);
+            this.grbTimKiem.Size = new System.Drawing.Size(977, 180);
             this.grbTimKiem.TabIndex = 2;
             this.grbTimKiem.TabStop = false;
             this.grbTimKiem.Text = "Tìm kiếm ";
@@ -417,7 +418,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1382, 753);
+            this.ClientSize = new System.Drawing.Size(1521, 753);
             this.Controls.Add(this.grbTimKiem);
             this.Controls.Add(this.grbChucNang);
             this.Controls.Add(this.grbDanhSachDatDichVu);

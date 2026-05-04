@@ -187,26 +187,45 @@ namespace QLKHACHSAN.UI
             try
             {
                 System.Diagnostics.Debug.WriteLine("Loading revenue by date...");
-                DataTable dt = bll.GetRevenueByDateRange(fromDate, toDate);
-                System.Diagnostics.Debug.WriteLine($"Revenue data rows: {dt?.Rows.Count ?? 0}");
 
-                if (dt != null && dt.Rows.Count > 0)
+                // Get aggregated data for chart
+                DataTable dtChart = bll.GetRevenueByDateRange(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Aggregated revenue data rows: {dtChart?.Rows.Count ?? 0}");
+
+                // Get detailed data for grid
+                DataTable dtGrid = bll.GetAllDetailedTransactions(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Detailed transaction data rows: {dtGrid?.Rows.Count ?? 0}");
+
+                if (dtGrid != null && dtGrid.Rows.Count > 0)
                 {
-                    // Bind to DataGridView
-                    dgvThongKe.DataSource = dt;
+                    // Bind detailed data to DataGridView
+                    dgvThongKe.DataSource = dtGrid;
                     dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-                    System.Diagnostics.Debug.WriteLine("DataGridView populated successfully");
+                    System.Diagnostics.Debug.WriteLine("DataGridView populated successfully with detailed data");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("No detailed data returned");
+                    dgvThongKe.DataSource = null;
+                }
 
-                    // Bind to Chart
-                    PopulateChart(dt, "NgayThanhToan", "DoanhThu", "Doanh thu theo ngày", SeriesChartType.Column);
+                // Use aggregated data for chart if available
+                if (dtChart != null && dtChart.Rows.Count > 0)
+                {
+                    PopulateChart(dtChart, "NgayThanhToan", "DoanhThu", "Doanh thu theo ngày", SeriesChartType.Column);
                     System.Diagnostics.Debug.WriteLine("Chart populated successfully");
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("No data returned for revenue by date");
+                    System.Diagnostics.Debug.WriteLine("No aggregated data for chart");
+                    chartThongKe.Series.Clear();
+                    chartThongKe.Titles.Clear();
+                }
+
+                if (dtGrid == null || dtGrid.Rows.Count == 0)
+                {
                     MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClearVisualization();
                 }
             }
             catch (Exception ex)
@@ -226,24 +245,41 @@ namespace QLKHACHSAN.UI
             try
             {
                 System.Diagnostics.Debug.WriteLine("Loading revenue by service...");
-                DataTable dt = bll.GetRevenueByService(fromDate, toDate);
-                System.Diagnostics.Debug.WriteLine($"Service data rows: {dt?.Rows.Count ?? 0}");
 
-                if (dt != null && dt.Rows.Count > 0)
+                // Get aggregated data for chart
+                DataTable dtChart = bll.GetRevenueByService(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Service data rows: {dtChart?.Rows.Count ?? 0}");
+
+                // Get detailed data for grid
+                DataTable dtGrid = bll.GetAllDetailedTransactions(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Detailed transaction data rows: {dtGrid?.Rows.Count ?? 0}");
+
+                if (dtGrid != null && dtGrid.Rows.Count > 0)
                 {
-                    // Bind to DataGridView
-                    dgvThongKe.DataSource = dt;
+                    // Bind detailed data to DataGridView
+                    dgvThongKe.DataSource = dtGrid;
                     dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-
-                    // Bind to Chart
-                    PopulateChart(dt, "TenDichVu", "DoanhThu", "Doanh thu theo dịch vụ", SeriesChartType.Pie);
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("No data returned for revenue by service");
+                    dgvThongKe.DataSource = null;
+                }
+
+                // Use aggregated data for chart if available
+                if (dtChart != null && dtChart.Rows.Count > 0)
+                {
+                    PopulateChart(dtChart, "TenDichVu", "DoanhThu", "Doanh thu theo dịch vụ", SeriesChartType.Pie);
+                }
+                else
+                {
+                    chartThongKe.Series.Clear();
+                    chartThongKe.Titles.Clear();
+                }
+
+                if (dtGrid == null || dtGrid.Rows.Count == 0)
+                {
                     MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClearVisualization();
                 }
             }
             catch (Exception ex)
@@ -263,24 +299,41 @@ namespace QLKHACHSAN.UI
             try
             {
                 System.Diagnostics.Debug.WriteLine("Loading customer statistics...");
-                DataTable dt = bll.GetServiceUsageByCustomer(fromDate, toDate);
-                System.Diagnostics.Debug.WriteLine($"Customer data rows: {dt?.Rows.Count ?? 0}");
 
-                if (dt != null && dt.Rows.Count > 0)
+                // Get aggregated data for chart
+                DataTable dtChart = bll.GetServiceUsageByCustomer(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Customer data rows: {dtChart?.Rows.Count ?? 0}");
+
+                // Get detailed data for grid
+                DataTable dtGrid = bll.GetDetailedCustomerTransactions(fromDate, toDate);
+                System.Diagnostics.Debug.WriteLine($"Detailed customer transaction data rows: {dtGrid?.Rows.Count ?? 0}");
+
+                if (dtGrid != null && dtGrid.Rows.Count > 0)
                 {
-                    // Bind to DataGridView
-                    dgvThongKe.DataSource = dt;
+                    // Bind detailed data to DataGridView
+                    dgvThongKe.DataSource = dtGrid;
                     dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-
-                    // Bind to Chart
-                    PopulateChart(dt, "KhachHang", "TongChiTieu", "Khách hàng chi tiêu nhiều nhất", SeriesChartType.Column);
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("No data returned for customer statistics");
+                    dgvThongKe.DataSource = null;
+                }
+
+                // Use aggregated data for chart if available
+                if (dtChart != null && dtChart.Rows.Count > 0)
+                {
+                    PopulateChart(dtChart, "KhachHang", "TongChiTieu", "Khách hàng chi tiêu nhiều nhất", SeriesChartType.Column);
+                }
+                else
+                {
+                    chartThongKe.Series.Clear();
+                    chartThongKe.Titles.Clear();
+                }
+
+                if (dtGrid == null || dtGrid.Rows.Count == 0)
+                {
                     MessageBox.Show("Không có dữ liệu trong khoảng thời gian này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClearVisualization();
                 }
             }
             catch (Exception ex)
@@ -301,39 +354,41 @@ namespace QLKHACHSAN.UI
             {
                 System.Diagnostics.Debug.WriteLine("Loading monthly revenue...");
                 int currentYear = DateTime.Now.Year;
-                DataTable dt = bll.GetMonthlyRevenue(currentYear);
-                System.Diagnostics.Debug.WriteLine($"Monthly data rows: {dt?.Rows.Count ?? 0}");
 
-                if (dt != null && dt.Rows.Count > 0)
+                // Get aggregated data for chart
+                DataTable dtChart = bll.GetMonthlyRevenue(currentYear);
+                System.Diagnostics.Debug.WriteLine($"Monthly data rows: {dtChart?.Rows.Count ?? 0}");
+
+                // Get detailed data for grid
+                DataTable dtGrid = bll.GetDetailedYearlyTransactions(currentYear);
+                System.Diagnostics.Debug.WriteLine($"Detailed yearly transaction data rows: {dtGrid?.Rows.Count ?? 0}");
+
+                if (dtGrid != null && dtGrid.Rows.Count > 0)
                 {
-                    // Add month names for display
-                    DataTable displayTable = dt.Clone();
-                    displayTable.Columns.Add("ThangTen");
-                    displayTable.Columns["ThangTen"].SetOrdinal(0);
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        DataRow newRow = displayTable.NewRow();
-                        int month = Convert.ToInt32(row["Thang"]);
-                        newRow["ThangTen"] = bll.GetMonthName(month);
-                        newRow["Thang"] = row["Thang"];
-                        newRow["DoanhThu"] = row["DoanhThu"];
-                        displayTable.Rows.Add(newRow);
-                    }
-
-                    // Bind to DataGridView
-                    dgvThongKe.DataSource = displayTable;
+                    // Bind detailed data to DataGridView
+                    dgvThongKe.DataSource = dtGrid;
                     dgvThongKe.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-
-                    // Bind to Chart
-                    PopulateChart(dt, "Thang", "DoanhThu", "Doanh thu năm " + currentYear, SeriesChartType.Line);
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("No data returned for monthly revenue");
+                    dgvThongKe.DataSource = null;
+                }
+
+                // Use aggregated data for chart if available
+                if (dtChart != null && dtChart.Rows.Count > 0)
+                {
+                    PopulateChart(dtChart, "Thang", "DoanhThu", "Doanh thu năm " + currentYear, SeriesChartType.Line);
+                }
+                else
+                {
+                    chartThongKe.Series.Clear();
+                    chartThongKe.Titles.Clear();
+                }
+
+                if (dtGrid == null || dtGrid.Rows.Count == 0)
+                {
                     MessageBox.Show("Không có dữ liệu thống kê cho năm này!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClearVisualization();
                 }
             }
             catch (Exception ex)
@@ -473,6 +528,11 @@ namespace QLKHACHSAN.UI
             {
                 cbLoaiBieuDo.SelectedIndexChanged += CbLoaiBieuDo_SelectedIndexChanged;
             }
+        }
+
+        private void chartThongKe_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

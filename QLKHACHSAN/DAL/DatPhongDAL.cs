@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace QLKHACHSAN.DAL
 {
-    /// <summary>
-    /// Data Access Layer for Đặt Phòng (Room Booking)
-    /// Handles all database operations for room bookings
-    /// </summary>
     public class DatPhongDAL
     {
         private DBConnection db = new DBConnection();
 
-        /// <summary>
-        /// Get all rooms with their current status
-        /// </summary>
+        // =========================
+        // 1. PHÒNG / LOẠI PHÒNG
+        // =========================
+
         public DataTable GetAllRooms()
         {
             try
@@ -22,7 +20,7 @@ namespace QLKHACHSAN.DAL
                 string query = @"
                     SELECT 
                         p.MaPhong,
-                        p.SoPhong as TenPhong,
+                        p.SoPhong AS TenPhong,
                         lp.TenLoaiPhong,
                         p.TrangThai
                     FROM Phong p
@@ -33,15 +31,11 @@ namespace QLKHACHSAN.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy danh sách phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi lấy danh sách phòng", ex);
                 return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Get rooms by type
-        /// </summary>
         public DataTable GetRoomsByType(int roomTypeId)
         {
             try
@@ -49,7 +43,7 @@ namespace QLKHACHSAN.DAL
                 string query = @"
                     SELECT 
                         p.MaPhong,
-                        p.SoPhong as TenPhong,
+                        p.SoPhong AS TenPhong,
                         lp.TenLoaiPhong,
                         p.TrangThai
                     FROM Phong p
@@ -57,7 +51,8 @@ namespace QLKHACHSAN.DAL
                     WHERE p.MaLoaiPhong = @roomTypeId
                     ORDER BY p.SoPhong";
 
-                SqlParameter[] parameters = {
+                SqlParameter[] parameters =
+                {
                     new SqlParameter("@roomTypeId", roomTypeId)
                 };
 
@@ -65,74 +60,136 @@ namespace QLKHACHSAN.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy phòng theo loại: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi lấy phòng theo loại", ex);
                 return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Check if room is available for booking
-        /// </summary>
+        public DataTable GetAllRoomTypes()
+        {
+            try
+            {
+                string query = @"
+                    SELECT MaLoaiPhong, TenLoaiPhong
+                    FROM LoaiPhong
+                    ORDER BY TenLoaiPhong";
+
+                return db.ExecuteQuery(query);
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi khi lấy loại phòng", ex);
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetRoomDetails(int roomId)
+        {
+            try
+            {
+                string query = @"
+                    SELECT 
+                        p.MaPhong,
+                        p.SoPhong AS TenPhong,
+                        p.TrangThai,
+                        lp.MaLoaiPhong,
+                        lp.TenLoaiPhong,
+                        lp.Gia
+                    FROM Phong p
+                    INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
+                    WHERE p.MaPhong = @roomId";
+
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@roomId", roomId)
+                };
+
+                return db.ExecuteQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi khi lấy chi tiết phòng", ex);
+                return new DataTable();
+            }
+        }
+
+        public decimal GetRoomPrice(int roomId)
+        {
+            try
+            {
+                string query = @"
+                    SELECT lp.Gia
+                    FROM Phong p
+                    INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
+                    WHERE p.MaPhong = @roomId";
+
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@roomId", roomId)
+                };
+
+                DataTable dt = db.ExecuteQuery(query, parameters);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return Convert.ToDecimal(dt.Rows[0]["Gia"]);
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi khi lấy giá phòng", ex);
+                return 0;
+            }
+        }
+
         public bool IsRoomAvailable(int roomId, DateTime checkIn, DateTime checkOut)
         {
             try
             {
-                // First check if room status is "Trống" (available)
-                string statusQuery = @"
-                    SELECT TrangThai
-                    FROM Phong
-                    WHERE MaPhong = @roomId";
-
-                SqlParameter[] statusParams = {
-                    new SqlParameter("@roomId", roomId)
-                };
-
-                DataTable dtStatus = db.ExecuteQuery(statusQuery, statusParams);
-                if (dtStatus.Rows.Count == 0)
-                {
-                    return false;
-                }
-
-                // Check if there are any overlapping bookings in the requested date range
-                // Only check non-completed bookings
-                string bookingQuery = @"
-                    SELECT COUNT(*) as BookingCount
+                string query = @"
+                    SELECT COUNT(*) AS BookingCount
                     FROM DatPhong
                     WHERE MaPhong = @roomId
-                    AND NgayNhan < @checkOut
-                    AND NgayTra > @checkIn
-                    AND (TrangThai = N'Chờ xử lý' OR TrangThai = N'Đã xác nhận' OR TrangThai = N'Đang sử dụng')";
+                        AND NgayNhan < @checkOut
+                        AND NgayTra > @checkIn
+                        AND TrangThai IN 
+                        (
+                            N'Chờ xử lý',
+                            N'Đã xác nhận',
+                            N'Đang sử dụng',
+                            N'Đã thanh toán'
+                        )";
 
-                SqlParameter[] bookingParams = {
+                SqlParameter[] parameters =
+                {
                     new SqlParameter("@roomId", roomId),
                     new SqlParameter("@checkIn", checkIn.Date),
                     new SqlParameter("@checkOut", checkOut.Date)
                 };
 
-                DataTable dtBooking = db.ExecuteQuery(bookingQuery, bookingParams);
-                if (dtBooking.Rows.Count > 0)
+                DataTable dt = db.ExecuteQuery(query, parameters);
+
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    int bookingCount = Convert.ToInt32(dtBooking.Rows[0]["BookingCount"]);
-                    if (bookingCount > 0)
-                    {
-                        return false; // Room has overlapping bookings
-                    }
+                    int count = Convert.ToInt32(dt.Rows[0]["BookingCount"]);
+                    return count == 0;
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi kiểm tra trạng thái phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi kiểm tra phòng trống", ex);
                 return false;
             }
         }
 
-        /// <summary>
-        /// Get customer by phone number
-        /// </summary>
+        // =========================
+        // 2. KHÁCH HÀNG
+        // =========================
+
         public DataTable GetCustomerByPhone(string phoneNumber)
         {
             try
@@ -146,7 +203,8 @@ namespace QLKHACHSAN.DAL
                     FROM KhachHang
                     WHERE SoDienThoai = @phone";
 
-                SqlParameter[] parameters = {
+                SqlParameter[] parameters =
+                {
                     new SqlParameter("@phone", phoneNumber)
                 };
 
@@ -154,15 +212,11 @@ namespace QLKHACHSAN.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi tìm khách hàng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi tìm khách hàng theo số điện thoại", ex);
                 return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Get customer by identity number
-        /// </summary>
         public DataTable GetCustomerByIdentity(string identityNumber)
         {
             try
@@ -176,7 +230,8 @@ namespace QLKHACHSAN.DAL
                     FROM KhachHang
                     WHERE CCCD = @cccd";
 
-                SqlParameter[] parameters = {
+                SqlParameter[] parameters =
+                {
                     new SqlParameter("@cccd", identityNumber)
                 };
 
@@ -184,249 +239,173 @@ namespace QLKHACHSAN.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi tìm khách hàng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi tìm khách hàng theo CCCD", ex);
                 return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Get all room types
-        /// </summary>
-        public DataTable GetAllRoomTypes()
-        {
-            try
-            {
-                string query = "SELECT MaLoaiPhong, TenLoaiPhong FROM LoaiPhong ORDER BY TenLoaiPhong";
-                return db.ExecuteQuery(query);
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy loại phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return new DataTable();
-            }
-        }
+        // =========================
+        // 3. ĐẶT PHÒNG
+        // =========================
 
-        /// <summary>
-        /// Get service add-ons and their prices
-        /// </summary>
-        public DataTable GetAddOnServices()
-        {
-            try
-            {
-                string query = @"
-                    SELECT 
-                        MaDichVu,
-                        TenDichVu,
-                        DonGia as Gia
-                    FROM DichVu
-                    ORDER BY TenDichVu";
-
-                return db.ExecuteQuery(query);
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy dịch vụ: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return new DataTable();
-            }
-        }
-
-        /// <summary>
-        /// Get room pricing
-        /// </summary>
-        public decimal GetRoomPrice(int roomId)
-        {
-            try
-            {
-                string query = @"
-                    SELECT lp.Gia
-                    FROM Phong p
-                    INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
-                    WHERE p.MaPhong = @roomId";
-
-                SqlParameter[] parameters = {
-                    new SqlParameter("@roomId", roomId)
-                };
-
-                DataTable dt = db.ExecuteQuery(query, parameters);
-                if (dt.Rows.Count > 0)
-                {
-                    return Convert.ToDecimal(dt.Rows[0]["Gia"]);
-                }
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy giá phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Create new booking by inserting into DatPhong and updating room status
-        /// </summary>
         public int CreateBooking(int roomId, int customerId, DateTime checkIn, DateTime checkOut)
         {
+            SqlConnection conn = null;
+            SqlTransaction tran = null;
+
             try
             {
-                // Insert booking record into DatPhong table
-                // Using default employee (Admin) with MaNhanVien = 1
-                string query = @"
-                    INSERT INTO DatPhong (MaKhachHang, MaPhong, MaNhanVien, NgayNhan, NgayTra, TrangThai)
-                    VALUES (@customerId, @roomId, 1, @checkIn, @checkOut, N'Chờ xử lý');
-                    SELECT SCOPE_IDENTITY();";
+                conn = db.GetConnection();
+                conn.Open();
+                tran = conn.BeginTransaction();
 
-                SqlParameter[] parameters = {
-                    new SqlParameter("@customerId", customerId),
-                    new SqlParameter("@roomId", roomId),
-                    new SqlParameter("@checkIn", checkIn.Date),
-                    new SqlParameter("@checkOut", checkOut.Date)
-                };
+                string insertQuery = @"
+                    INSERT INTO DatPhong 
+                    (
+                        MaKhachHang, 
+                        MaPhong, 
+                        MaNhanVien, 
+                        NgayNhan, 
+                        NgayTra, 
+                        TrangThai
+                    )
+                    VALUES 
+                    (
+                        @customerId, 
+                        @roomId, 
+                        1, 
+                        @checkIn, 
+                        @checkOut, 
+                        N'Chờ xử lý'
+                    );
 
-                using (SqlConnection conn = db.GetConnection())
+                    SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                int bookingId = 0;
+
+                using (SqlCommand cmd = new SqlCommand(insertQuery, conn, tran))
                 {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    cmd.Parameters.AddWithValue("@customerId", customerId);
+                    cmd.Parameters.AddWithValue("@roomId", roomId);
+                    cmd.Parameters.AddWithValue("@checkIn", checkIn.Date);
+                    cmd.Parameters.AddWithValue("@checkOut", checkOut.Date);
+
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
                     {
-                        if (parameters != null)
-                            cmd.Parameters.AddRange(parameters);
-
-                        object result = cmd.ExecuteScalar();
-                        int bookingId = result != null ? Convert.ToInt32(result) : 0;
-
-                        if (bookingId > 0)
-                        {
-                            // Update room status to "Đã đặt" (Booked)
-                            string updateQuery = @"
-                                UPDATE Phong
-                                SET TrangThai = N'Đã đặt'
-                                WHERE MaPhong = @roomId";
-
-                            using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
-                            {
-                                updateCmd.Parameters.AddWithValue("@roomId", roomId);
-                                updateCmd.ExecuteNonQuery();
-                            }
-                        }
-
-                        return bookingId;
+                        bookingId = Convert.ToInt32(result);
                     }
                 }
+
+                if (bookingId > 0)
+                {
+                    string updateRoomQuery = @"
+                        UPDATE Phong
+                        SET TrangThai = N'Đã đặt'
+                        WHERE MaPhong = @roomId";
+
+                    using (SqlCommand cmd = new SqlCommand(updateRoomQuery, conn, tran))
+                    {
+                        cmd.Parameters.AddWithValue("@roomId", roomId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                tran.Commit();
+                return bookingId;
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi tạo đặt phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                if (tran != null)
+                {
+                    tran.Rollback();
+                }
+
+                ShowError("Lỗi khi tạo đặt phòng", ex);
                 return 0;
             }
-        }
-
-        /// <summary>
-        /// Add service to booking
-        /// </summary>
-        public bool AddServiceToBooking(int bookingId, int serviceId, decimal price)
-        {
-            try
+            finally
             {
-                string query = @"
-                    INSERT INTO DatDichVu (MaDatPhong, MaDichVu, ThanhTien, NgayThanhToan)
-                    VALUES (@bookingId, @serviceId, @price, GETDATE())";
-
-                SqlParameter[] parameters = {
-                    new SqlParameter("@bookingId", bookingId),
-                    new SqlParameter("@serviceId", serviceId),
-                    new SqlParameter("@price", price)
-                };
-
-                return db.ExecuteNonQuery(query, parameters) > 0;
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi thêm dịch vụ: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return false;
+                if (conn != null)
+                {
+                    conn.Close();
+                }
             }
         }
 
-        /// <summary>
-        /// Get booking details
-        /// </summary>
         public DataTable GetBookingDetails(int bookingId)
         {
             try
             {
                 string query = @"
                     SELECT 
-                        p.MaPhong,
-                        p.SoPhong as TenPhong,
+                        dp.MaDatPhong,
+                        dp.MaKhachHang,
+                        dp.MaPhong,
+                        dp.NgayNhan,
+                        dp.NgayTra,
+                        dp.TrangThai AS TrangThaiDatPhong,
+                        kh.HoTen,
+                        kh.SoDienThoai,
+                        kh.CCCD,
+                        p.SoPhong AS TenPhong,
+                        p.TrangThai AS TrangThaiPhong,
                         lp.TenLoaiPhong,
-                        p.TrangThai
-                    FROM Phong p
+                        lp.Gia
+                    FROM DatPhong dp
+                    INNER JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang
+                    INNER JOIN Phong p ON dp.MaPhong = p.MaPhong
                     INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
-                    WHERE p.MaPhong = @roomId";
+                    WHERE dp.MaDatPhong = @bookingId";
 
-                SqlParameter[] parameters = {
-                    new SqlParameter("@roomId", bookingId)
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@bookingId", bookingId)
                 };
 
                 return db.ExecuteQuery(query, parameters);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết đặt phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi lấy chi tiết đặt phòng", ex);
                 return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Update booking checkout date and mark as completed
-        /// </summary>
-        public bool CompleteBooking(int bookingId, DateTime checkOutDate)
-        {
-            try
-            {
-                // Update room status back to "Trống" (Available)
-                string query = @"
-                    UPDATE Phong
-                    SET TrangThai = N'Trống'
-                    WHERE MaPhong = @roomId";
-
-                SqlParameter[] parameters = {
-                    new SqlParameter("@roomId", bookingId)
-                };
-
-                return db.ExecuteNonQuery(query, parameters) > 0;
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi hoàn tất đặt phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Get room details
-        /// </summary>
-        public DataTable GetRoomDetails(int roomId)
+        public DataTable GetBookingByRoomId(int roomId)
         {
             try
             {
                 string query = @"
-                    SELECT 
-                        p.MaPhong,
-                        p.SoPhong as TenPhong,
-                        lp.MaLoaiPhong,
-                        lp.TenLoaiPhong
-                    FROM Phong p
-                    INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
-                    WHERE p.MaPhong = @roomId";
+            SELECT TOP 1
+                dp.MaDatPhong,
+                dp.MaKhachHang,
+                dp.MaPhong,
+                dp.NgayNhan,
+                dp.NgayTra,
+                dp.TrangThai,
+                kh.HoTen,
+                kh.SoDienThoai,
+                kh.CCCD,
+                p.SoPhong AS TenPhong,
+                p.TrangThai AS TrangThaiPhong
+            FROM DatPhong dp
+            INNER JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang
+            INNER JOIN Phong p ON dp.MaPhong = p.MaPhong
+            WHERE dp.MaPhong = @roomId
+                AND p.TrangThai <> N'Còn trống'
+                AND dp.TrangThai IN 
+                (
+                    N'Chờ xử lý',
+                    N'Đã đặt',
+                    N'Đã xác nhận',
+                    N'Đang sử dụng'
+                )
+            ORDER BY dp.MaDatPhong DESC";
 
-                SqlParameter[] parameters = {
+                SqlParameter[] parameters =
+                                {
                     new SqlParameter("@roomId", roomId)
                 };
 
@@ -434,100 +413,403 @@ namespace QLKHACHSAN.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết phòng: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            
+                ShowError("Lỗi khi lấy thông tin booking: ", ex);
                 return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Get total service amount for an invoice
-        /// </summary>
-        public decimal GetTotalServiceAmount(DataTable dtServices)
+        public bool CompleteBooking(int bookingId, DateTime checkOutDate)
         {
-            decimal total = 0;
-            if (dtServices != null)
+            SqlConnection conn = null;
+            SqlTransaction tran = null;
+
+            try
             {
-                foreach (DataRow row in dtServices.Rows)
+                conn = db.GetConnection();
+                conn.Open();
+                tran = conn.BeginTransaction();
+
+                int roomId = 0;
+
+                string getRoomQuery = @"
+                    SELECT MaPhong
+                    FROM DatPhong
+                    WHERE MaDatPhong = @bookingId";
+
+                using (SqlCommand cmd = new SqlCommand(getRoomQuery, conn, tran))
                 {
-                    total += Convert.ToDecimal(row["ThanhTien"] ?? 0);
+                    cmd.Parameters.AddWithValue("@bookingId", bookingId);
+
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        roomId = Convert.ToInt32(result);
+                    }
+                }
+
+                if (roomId <= 0)
+                {
+                    tran.Rollback();
+                    return false;
+                }
+
+                string updateBookingQuery = @"
+                    UPDATE DatPhong
+                    SET TrangThai = N'Đã trả phòng',
+                        NgayTra = @checkOutDate
+                    WHERE MaDatPhong = @bookingId";
+
+                using (SqlCommand cmd = new SqlCommand(updateBookingQuery, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@bookingId", bookingId);
+                    cmd.Parameters.AddWithValue("@checkOutDate", checkOutDate.Date);
+                    cmd.ExecuteNonQuery();
+                }
+
+                string updateRoomQuery = @"
+                    UPDATE Phong
+                    SET TrangThai = N'Còn trống'
+                    WHERE MaPhong = @roomId";
+
+                using (SqlCommand cmd = new SqlCommand(updateRoomQuery, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@roomId", roomId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                tran.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (tran != null)
+                {
+                    tran.Rollback();
+                }
+
+                ShowError("Lỗi khi hoàn tất checkout", ex);
+                return false;
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
                 }
             }
-            return total;
         }
 
-        /// <summary>
-        /// Record payment for booking
-        /// </summary>
-        public int RecordPayment(int bookingId, decimal totalAmount, string paymentMethod)
+        // =========================
+        // 4. HÓA ĐƠN TIỀN PHÒNG
+        // =========================
+
+        public DataTable GetRoomInvoiceInfo(int roomId, DateTime checkIn, DateTime checkOut)
         {
             try
             {
                 string query = @"
-                    INSERT INTO ThanhToan (MaDatPhong, SoTien, PhuongThucThanhToan, NgayThanhToan, TrangThaiThanhToan)
-                    VALUES (@bookingId, @amount, @method, GETDATE(), N'Đã thanh toán')
-                    SELECT SCOPE_IDENTITY();";
+                    SELECT 
+                        p.MaPhong,
+                        p.SoPhong AS TenPhong,
+                        lp.TenLoaiPhong,
+                        lp.Gia AS DonGia,
+                        @checkIn AS NgayNhan,
+                        @checkOut AS NgayTra,
+                        CASE
+                            WHEN DATEDIFF(DAY, @checkIn, @checkOut) <= 0 THEN 1
+                            ELSE DATEDIFF(DAY, @checkIn, @checkOut)
+                        END AS SoDem,
+                        lp.Gia *
+                        CASE
+                            WHEN DATEDIFF(DAY, @checkIn, @checkOut) <= 0 THEN 1
+                            ELSE DATEDIFF(DAY, @checkIn, @checkOut)
+                        END AS ThanhTien
+                    FROM Phong p
+                    INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
+                    WHERE p.MaPhong = @roomId";
 
-                SqlParameter[] parameters = {
-                    new SqlParameter("@bookingId", bookingId),
-                    new SqlParameter("@amount", totalAmount),
-                    new SqlParameter("@method", paymentMethod)
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@roomId", roomId),
+                    new SqlParameter("@checkIn", checkIn.Date),
+                    new SqlParameter("@checkOut", checkOut.Date)
                 };
 
-                using (SqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddRange(parameters);
-                        object result = cmd.ExecuteScalar();
-                        int paymentId = result != null ? Convert.ToInt32(result) : 0;
-
-                        if (paymentId > 0)
-                        {
-                            // Update booking status to "Đã thanh toán"
-                            string updateQuery = @"
-                                UPDATE DatPhong
-                                SET TrangThaiDatPhong = N'Đã thanh toán'
-                                WHERE MaDatPhong = @bookingId";
-
-                            using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
-                            {
-                                updateCmd.Parameters.AddWithValue("@bookingId", bookingId);
-                                updateCmd.ExecuteNonQuery();
-                            }
-                        }
-
-                        return paymentId;
-                    }
-                }
+                return db.ExecuteQuery(query, parameters);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi ghi nhận thanh toán: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return 0;
+                ShowError("Lỗi khi lấy hóa đơn tiền phòng", ex);
+                return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Get payment status for booking
-        /// </summary>
+        public DataTable GetCheckoutInvoice(int bookingId)
+        {
+            try
+            {
+                string query = @"
+                    SELECT 
+                        dp.MaDatPhong,
+                        dp.MaPhong,
+                        p.SoPhong AS TenPhong,
+                        lp.TenLoaiPhong,
+                        kh.HoTen,
+                        kh.SoDienThoai,
+                        kh.CCCD,
+                        dp.NgayNhan,
+                        dp.NgayTra,
+                        lp.Gia AS DonGia,
+                        CASE
+                            WHEN DATEDIFF(DAY, dp.NgayNhan, dp.NgayTra) <= 0 THEN 1
+                            ELSE DATEDIFF(DAY, dp.NgayNhan, dp.NgayTra)
+                        END AS SoDem,
+                        lp.Gia *
+                        CASE
+                            WHEN DATEDIFF(DAY, dp.NgayNhan, dp.NgayTra) <= 0 THEN 1
+                            ELSE DATEDIFF(DAY, dp.NgayNhan, dp.NgayTra)
+                        END AS ThanhTien,
+                        dp.TrangThai
+                    FROM DatPhong dp
+                    INNER JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang
+                    INNER JOIN Phong p ON dp.MaPhong = p.MaPhong
+                    INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
+                    WHERE dp.MaDatPhong = @bookingId";
+
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@bookingId", bookingId)
+                };
+
+                return db.ExecuteQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi khi lấy hóa đơn checkout", ex);
+                return new DataTable();
+            }
+        }
+
+        // =========================
+        // 5. THANH TOÁN
+        // =========================
+
+        public int RecordPayment(int bookingId, decimal totalAmount, string paymentMethod)
+        {
+            return RecordPayment(bookingId, totalAmount, paymentMethod, "");
+        }
+
+        public int RecordPayment(int bookingId, decimal totalAmount, string paymentMethod, string notes)
+        {
+            SqlConnection conn = null;
+            SqlTransaction tran = null;
+
+            try
+            {
+                conn = db.GetConnection();
+                conn.Open();
+                tran = conn.BeginTransaction();
+
+                string insertPaymentQuery = @"
+                    INSERT INTO ThanhToan 
+                    (
+                        MaDatPhong, 
+                        SoTien, 
+                        PhuongThucThanhToan, 
+                        NgayThanhToan, 
+                        TrangThaiThanhToan
+                    )
+                    VALUES 
+                    (
+                        @bookingId, 
+                        @amount, 
+                        @method, 
+                        GETDATE(), 
+                        N'Đã thanh toán'
+                    );
+
+                    SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                int paymentId = 0;
+
+                using (SqlCommand cmd = new SqlCommand(insertPaymentQuery, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@bookingId", bookingId);
+                    cmd.Parameters.AddWithValue("@amount", totalAmount);
+                    cmd.Parameters.AddWithValue("@method", paymentMethod);
+
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        paymentId = Convert.ToInt32(result);
+                    }
+                }
+
+                if (paymentId > 0)
+                {
+                    string updateBookingQuery = @"
+                        UPDATE DatPhong
+                        SET TrangThai = N'Đã thanh toán'
+                        WHERE MaDatPhong = @bookingId";
+
+                    using (SqlCommand cmd = new SqlCommand(updateBookingQuery, conn, tran))
+                    {
+                        cmd.Parameters.AddWithValue("@bookingId", bookingId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                tran.Commit();
+                return paymentId;
+            }
+            catch (Exception ex)
+            {
+                if (tran != null)
+                {
+                    tran.Rollback();
+                }
+
+                ShowError("Lỗi khi ghi nhận thanh toán", ex);
+                return 0;
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        public bool CheckoutAndPayment(int bookingId, decimal totalAmount, string paymentMethod, DateTime checkOutDate, string notes = "")
+        {
+            SqlConnection conn = null;
+            SqlTransaction tran = null;
+
+            try
+            {
+                conn = db.GetConnection();
+                conn.Open();
+                tran = conn.BeginTransaction();
+
+                int roomId = 0;
+
+                string getRoomQuery = @"
+                    SELECT MaPhong
+                    FROM DatPhong
+                    WHERE MaDatPhong = @bookingId";
+
+                using (SqlCommand cmd = new SqlCommand(getRoomQuery, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@bookingId", bookingId);
+
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        roomId = Convert.ToInt32(result);
+                    }
+                }
+
+                if (roomId <= 0)
+                {
+                    tran.Rollback();
+                    return false;
+                }
+
+                string insertPaymentQuery = @"
+                    INSERT INTO ThanhToan 
+                    (
+                        MaDatPhong, 
+                        SoTien, 
+                        PhuongThucThanhToan, 
+                        NgayThanhToan, 
+                        TrangThaiThanhToan
+                    )
+                    VALUES 
+                    (
+                        @bookingId, 
+                        @amount, 
+                        @method, 
+                        GETDATE(), 
+                        N'Đã thanh toán'
+                    )";
+
+                using (SqlCommand cmd = new SqlCommand(insertPaymentQuery, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@bookingId", bookingId);
+                    cmd.Parameters.AddWithValue("@amount", totalAmount);
+                    cmd.Parameters.AddWithValue("@method", paymentMethod);
+                    cmd.ExecuteNonQuery();
+                }
+
+                string updateBookingQuery = @"
+                    UPDATE DatPhong
+                    SET TrangThai = N'Đã trả phòng',
+                        NgayTra = @checkOutDate
+                    WHERE MaDatPhong = @bookingId";
+
+                using (SqlCommand cmd = new SqlCommand(updateBookingQuery, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@bookingId", bookingId);
+                    cmd.Parameters.AddWithValue("@checkOutDate", checkOutDate.Date);
+                    cmd.ExecuteNonQuery();
+                }
+
+                string updateRoomQuery = @"
+                    UPDATE Phong
+                    SET TrangThai = N'Trống'
+                    WHERE MaPhong = @roomId";
+
+                using (SqlCommand cmd = new SqlCommand(updateRoomQuery, conn, tran))
+                {
+                    cmd.Parameters.AddWithValue("@roomId", roomId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                tran.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (tran != null)
+                {
+                    tran.Rollback();
+                }
+
+                ShowError("Lỗi khi thanh toán và checkout", ex);
+                return false;
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         public string GetPaymentStatus(int bookingId)
         {
             try
             {
                 string query = @"
-                    SELECT ISNULL(TrangThaiThanhToan, N'Chưa thanh toán') as PaymentStatus
+                    SELECT TOP 1
+                        ISNULL(TrangThaiThanhToan, N'Chưa thanh toán') AS PaymentStatus
                     FROM ThanhToan
                     WHERE MaDatPhong = @bookingId
                     ORDER BY MaThanhToan DESC";
 
-                SqlParameter[] parameters = {
+                SqlParameter[] parameters =
+                {
                     new SqlParameter("@bookingId", bookingId)
                 };
 
                 DataTable dt = db.ExecuteQuery(query, parameters);
+
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     return dt.Rows[0]["PaymentStatus"].ToString();
@@ -537,15 +819,11 @@ namespace QLKHACHSAN.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy trạng thái thanh toán: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi lấy trạng thái thanh toán", ex);
                 return "Lỗi";
             }
         }
 
-        /// <summary>
-        /// Get payment details for booking
-        /// </summary>
         public DataTable GetPaymentDetails(int bookingId)
         {
             try
@@ -562,7 +840,8 @@ namespace QLKHACHSAN.DAL
                     WHERE MaDatPhong = @bookingId
                     ORDER BY NgayThanhToan DESC";
 
-                SqlParameter[] parameters = {
+                SqlParameter[] parameters =
+                {
                     new SqlParameter("@bookingId", bookingId)
                 };
 
@@ -570,104 +849,48 @@ namespace QLKHACHSAN.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết thanh toán: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                ShowError("Lỗi khi lấy chi tiết thanh toán", ex);
                 return new DataTable();
             }
         }
 
-        /// <summary>
-        /// Get booking by room ID (for booked rooms)
-        /// </summary>
-        public DataTable GetBookingByRoomId(int roomId)
+        // =========================
+        // 6. GIỮ LẠI ĐỂ BLL CŨ KHÔNG BỊ LỖI BUILD
+        // Sau khi sửa BLL/Form xong có thể xóa các hàm này.
+        // =========================
+
+        public DataTable GetAddOnServices()
         {
-            try
-            {
-                string query = @"
-                    SELECT TOP 1
-                        dp.MaDatPhong,
-                        dp.MaKhachHang,
-                        dp.MaPhong,
-                        dp.NgayNhan,
-                        dp.NgayTra,
-                        dp.TrangThai,
-                        kh.HoTen,
-                        kh.SoDienThoai,
-                        kh.CCCD,
-                        kh.DiaChi
-                    FROM DatPhong dp
-                    INNER JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang
-                    WHERE dp.MaPhong = @roomId 
-                        AND dp.TrangThai IN (N'Chờ xử lý', N'Đã thanh toán', N'Đang sử dụng')
-                    ORDER BY dp.NgayNhan DESC";
-
-                SqlParameter[] parameters = {
-                    new SqlParameter("@roomId", roomId)
-                };
-
-                return db.ExecuteQuery(query, parameters);
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy thông tin booking: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return new DataTable();
-            }
+            return new DataTable();
         }
 
-        /// <summary>
-        /// Record payment for booking (enhanced version with notes)
-        /// </summary>
-        public int RecordPayment(int bookingId, decimal totalAmount, string paymentMethod, string notes = "")
+        public bool AddServiceToBooking(int bookingId, int serviceId, decimal price)
         {
-            try
-            {
-                string query = @"
-                    INSERT INTO ThanhToan (MaDatPhong, SoTien, PhuongThucThanhToan, NgayThanhToan, TrangThaiThanhToan, GhiChu)
-                    VALUES (@bookingId, @amount, @method, GETDATE(), N'Đã thanh toán', @notes)
-                    SELECT SCOPE_IDENTITY();";
+            return true;
+        }
 
-                SqlParameter[] parameters = {
-                    new SqlParameter("@bookingId", bookingId),
-                    new SqlParameter("@amount", totalAmount),
-                    new SqlParameter("@method", paymentMethod),
-                    new SqlParameter("@notes", notes ?? "")
-                };
+        public decimal GetTotalServiceAmount(DataTable dtServices)
+        {
+            return 0;
+        }
 
-                using (SqlConnection conn = db.GetConnection())
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddRange(parameters);
-                        object result = cmd.ExecuteScalar();
-                        int paymentId = result != null ? Convert.ToInt32(result) : 0;
+        // =========================
+        // 7. HELPER
+        // =========================
 
-                        if (paymentId > 0)
-                        {
-                            // Update booking status to "Đã thanh toán"
-                            string updateQuery = @"
-                                UPDATE DatPhong
-                                SET TrangThai = N'Đã thanh toán'
-                                WHERE MaDatPhong = @bookingId";
+        private void ShowError(string message, Exception ex)
+        {
+            MessageBox.Show(
+                message + ": " + ex.Message,
+                "Lỗi",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+            );
+        }
 
-                            using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
-                            {
-                                updateCmd.Parameters.AddWithValue("@bookingId", bookingId);
-                                updateCmd.ExecuteNonQuery();
-                            }
-                        }
-
-                        return paymentId;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi khi ghi nhận thanh toán: " + ex.Message, "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return 0;
-            }
+        internal DataTable GetRoomInvoiceInfo(object roomId, DateTime checkIn, DateTime checkOut)
+        {
+            throw new NotImplementedException();
         }
     }
 }
