@@ -53,7 +53,6 @@
             this.btnLuu = new System.Windows.Forms.Button();
             this.btnXoa = new System.Windows.Forms.Button();
             this.btnSua = new System.Windows.Forms.Button();
-            this.btnThem = new System.Windows.Forms.Button();
             this.grbTimKiem = new System.Windows.Forms.GroupBox();
             this.btnTaiLai = new System.Windows.Forms.Button();
             this.btnTim = new System.Windows.Forms.Button();
@@ -282,7 +281,6 @@
             this.grbChucNang.Controls.Add(this.btnLuu);
             this.grbChucNang.Controls.Add(this.btnXoa);
             this.grbChucNang.Controls.Add(this.btnSua);
-            this.grbChucNang.Controls.Add(this.btnThem);
             this.grbChucNang.Font = new System.Drawing.Font("Segoe UI Light", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbChucNang.ForeColor = System.Drawing.Color.Blue;
             this.grbChucNang.Location = new System.Drawing.Point(20, 540);
@@ -294,7 +292,7 @@
             // 
             // btnDong
             // 
-            this.btnDong.Location = new System.Drawing.Point(290, 100);
+            this.btnDong.Location = new System.Drawing.Point(160, 100);
             this.btnDong.Name = "btnDong";
             this.btnDong.Size = new System.Drawing.Size(100, 35);
             this.btnDong.TabIndex = 6;
@@ -303,7 +301,7 @@
             // 
             // btnLamMoi
             // 
-            this.btnLamMoi.Location = new System.Drawing.Point(160, 100);
+            this.btnLamMoi.Location = new System.Drawing.Point(24, 100);
             this.btnLamMoi.Name = "btnLamMoi";
             this.btnLamMoi.Size = new System.Drawing.Size(100, 35);
             this.btnLamMoi.TabIndex = 5;
@@ -313,11 +311,11 @@
             // 
             // btnLuu
             // 
-            this.btnLuu.Location = new System.Drawing.Point(30, 100);
+            this.btnLuu.Location = new System.Drawing.Point(24, 40);
             this.btnLuu.Name = "btnLuu";
             this.btnLuu.Size = new System.Drawing.Size(100, 35);
             this.btnLuu.TabIndex = 4;
-            this.btnLuu.Text = "Lưu";
+            this.btnLuu.Text = "Thanh toán ";
             this.btnLuu.UseVisualStyleBackColor = true;
             // 
             // btnXoa
@@ -337,15 +335,6 @@
             this.btnSua.TabIndex = 2;
             this.btnSua.Text = "Sửa";
             this.btnSua.UseVisualStyleBackColor = true;
-            // 
-            // btnThem
-            // 
-            this.btnThem.Location = new System.Drawing.Point(30, 40);
-            this.btnThem.Name = "btnThem";
-            this.btnThem.Size = new System.Drawing.Size(100, 35);
-            this.btnThem.TabIndex = 1;
-            this.btnThem.Text = "Thêm";
-            this.btnThem.UseVisualStyleBackColor = true;
             // 
             // grbTimKiem
             // 
@@ -467,7 +456,6 @@
         private System.Windows.Forms.Button btnLuu;
         private System.Windows.Forms.Button btnXoa;
         private System.Windows.Forms.Button btnSua;
-        private System.Windows.Forms.Button btnThem;
         private System.Windows.Forms.Button btnTaiLai;
         private System.Windows.Forms.Button btnTim;
         private System.Windows.Forms.TextBox txtTimMaKH;

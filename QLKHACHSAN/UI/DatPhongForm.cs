@@ -10,6 +10,7 @@ namespace QLKHACHSAN.UI
     public partial class DatPhongForm : Form
     {
         private DatPhongBLL bll = new DatPhongBLL();
+        private ThongKeBLL thongKeBLL = new ThongKeBLL();
         private int selectedRoomId = 0;
         private int selectedCustomerId = 0;
         private DataTable roomsDataTable;
@@ -329,7 +330,7 @@ namespace QLKHACHSAN.UI
                 if (selectedRoomId == 0)
                 {
                     txtTongTien.Text = "0 đ";
-                    dgvHoaDonPhong.DataSource = null;
+                    LoadPaymentHistory();
                     return;
                 }
 
@@ -337,9 +338,6 @@ namespace QLKHACHSAN.UI
                 DateTime checkOut = dateTimePicker2.Value;
 
                 DataTable dtInvoice = bll.CreateRoomInvoice(selectedRoomId, checkIn, checkOut);
-
-                dgvHoaDonPhong.DataSource = dtInvoice;
-                dgvHoaDonPhong.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
                 decimal totalPrice = 0;
 
@@ -356,6 +354,9 @@ namespace QLKHACHSAN.UI
                 decimal finalPrice = bll.ApplyDiscount(totalPrice, discountPercent);
 
                 txtTongTien.Text = bll.FormatCurrency(finalPrice);
+
+                // Load payment history instead of invoice
+                LoadPaymentHistory();
             }
             catch (Exception ex)
             {
@@ -363,6 +364,39 @@ namespace QLKHACHSAN.UI
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
                 MessageBox.Show("Lỗi khi tính giá: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Load payment history from current month to today
+        /// </summary>
+        private void LoadPaymentHistory()
+        {
+            try
+            {
+                // Get payment history for current month
+                DateTime fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                DateTime toDate = DateTime.Now.Date;
+
+                DataTable dtPaymentHistory = thongKeBLL.GetAllDetailedTransactions(fromDate, toDate);
+
+                if (dtPaymentHistory != null && dtPaymentHistory.Rows.Count > 0)
+                {
+                    dgvHoaDonPhong.DataSource = dtPaymentHistory;
+                    dgvHoaDonPhong.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                }
+                else
+                {
+                    dgvHoaDonPhong.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("===== LOAD PAYMENT HISTORY ERROR =====");
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show("Lỗi khi tải lịch sử thanh toán: " + ex.Message,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

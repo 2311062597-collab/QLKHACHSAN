@@ -129,8 +129,8 @@
             this.grbHoaDonTienPhong.Size = new System.Drawing.Size(932, 849);
             this.grbHoaDonTienPhong.TabIndex = 0;
             this.grbHoaDonTienPhong.TabStop = false;
-            this.grbHoaDonTienPhong.Text = "Hóa đơn tiền phòng ";
-            // 
+            this.grbHoaDonTienPhong.Text = "Lịch sử thanh toán";
+            //
             // dgvHoaDonPhong
             // 
             this.dgvHoaDonPhong.AllowUserToAddRows = false;

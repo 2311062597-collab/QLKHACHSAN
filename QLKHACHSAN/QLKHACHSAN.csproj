@@ -142,6 +142,12 @@
     <Compile Include="UI\PhongForm.Designer.cs">
       <DependentUpon>PhongForm.cs</DependentUpon>
     </Compile>
+
+
+    <Compile Include="UI\ServicePaymentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ServicePaymentForm.Designer.cs" />
     <Compile Include="UI\TaiKhoanForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,6 +206,7 @@
     <EmbeddedResource Include="UI\PhongForm.resx">
       <DependentUpon>PhongForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ServicePaymentForm.resx" />
     <EmbeddedResource Include="UI\TaiKhoanForm.resx">
       <DependentUpon>TaiKhoanForm.cs</DependentUpon>
     </EmbeddedResource>

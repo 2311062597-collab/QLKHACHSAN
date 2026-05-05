@@ -15,6 +15,7 @@ namespace QLKHACHSAN.UI
         private DichVuBLL dichVuBLL = new DichVuBLL();
         private string selectedId = string.Empty;
         private bool isEditing = false;
+        private object btnThem;
 
         public MuaDichVuForm()
         {
