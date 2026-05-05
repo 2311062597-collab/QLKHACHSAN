@@ -91,7 +91,7 @@ namespace QLKHACHSAN.UI
             this.txtTenKhachHang.Location = new System.Drawing.Point(156, 25);
             this.txtTenKhachHang.Name = "txtTenKhachHang";
             this.txtTenKhachHang.ReadOnly = true;
-            this.txtTenKhachHang.Size = new System.Drawing.Size(250, 26);
+            this.txtTenKhachHang.Size = new System.Drawing.Size(250, 22);
             this.txtTenKhachHang.TabIndex = 1;
             // 
             // lblTenKhachHang
@@ -100,7 +100,7 @@ namespace QLKHACHSAN.UI
             this.lblTenKhachHang.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenKhachHang.Location = new System.Drawing.Point(12, 28);
             this.lblTenKhachHang.Name = "lblTenKhachHang";
-            this.lblTenKhachHang.Size = new System.Drawing.Size(132, 20);
+            this.lblTenKhachHang.Size = new System.Drawing.Size(106, 16);
             this.lblTenKhachHang.TabIndex = 0;
             this.lblTenKhachHang.Text = "Tên khách hàng:";
             // 
@@ -112,7 +112,7 @@ namespace QLKHACHSAN.UI
             this.txtMaPhong.Location = new System.Drawing.Point(518, 25);
             this.txtMaPhong.Name = "txtMaPhong";
             this.txtMaPhong.ReadOnly = true;
-            this.txtMaPhong.Size = new System.Drawing.Size(232, 26);
+            this.txtMaPhong.Size = new System.Drawing.Size(232, 22);
             this.txtMaPhong.TabIndex = 3;
             // 
             // lblMaPhong
@@ -121,7 +121,7 @@ namespace QLKHACHSAN.UI
             this.lblMaPhong.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMaPhong.Location = new System.Drawing.Point(430, 28);
             this.lblMaPhong.Name = "lblMaPhong";
-            this.lblMaPhong.Size = new System.Drawing.Size(87, 20);
+            this.lblMaPhong.Size = new System.Drawing.Size(70, 16);
             this.lblMaPhong.TabIndex = 2;
             this.lblMaPhong.Text = "Mã phòng:";
             // 
@@ -131,7 +131,7 @@ namespace QLKHACHSAN.UI
             this.dateNgayTra.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateNgayTra.Location = new System.Drawing.Point(518, 73);
             this.dateNgayTra.Name = "dateNgayTra";
-            this.dateNgayTra.Size = new System.Drawing.Size(232, 26);
+            this.dateNgayTra.Size = new System.Drawing.Size(232, 22);
             this.dateNgayTra.TabIndex = 7;
             // 
             // lblNgayTra
@@ -140,7 +140,7 @@ namespace QLKHACHSAN.UI
             this.lblNgayTra.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNgayTra.Location = new System.Drawing.Point(430, 76);
             this.lblNgayTra.Name = "lblNgayTra";
-            this.lblNgayTra.Size = new System.Drawing.Size(77, 20);
+            this.lblNgayTra.Size = new System.Drawing.Size(61, 16);
             this.lblNgayTra.TabIndex = 6;
             this.lblNgayTra.Text = "Ngày trả:";
             // 
@@ -150,7 +150,7 @@ namespace QLKHACHSAN.UI
             this.dateNgayNhan.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateNgayNhan.Location = new System.Drawing.Point(156, 73);
             this.dateNgayNhan.Name = "dateNgayNhan";
-            this.dateNgayNhan.Size = new System.Drawing.Size(250, 26);
+            this.dateNgayNhan.Size = new System.Drawing.Size(250, 22);
             this.dateNgayNhan.TabIndex = 5;
             // 
             // lblNgayNhan
@@ -159,7 +159,7 @@ namespace QLKHACHSAN.UI
             this.lblNgayNhan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNgayNhan.Location = new System.Drawing.Point(12, 76);
             this.lblNgayNhan.Name = "lblNgayNhan";
-            this.lblNgayNhan.Size = new System.Drawing.Size(93, 20);
+            this.lblNgayNhan.Size = new System.Drawing.Size(75, 16);
             this.lblNgayNhan.TabIndex = 4;
             this.lblNgayNhan.Text = "Ngày nhận:";
             // 
@@ -187,7 +187,7 @@ namespace QLKHACHSAN.UI
             this.lblChiTietGhiChu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChiTietGhiChu.Location = new System.Drawing.Point(12, 120);
             this.lblChiTietGhiChu.Name = "lblChiTietGhiChu";
-            this.lblChiTietGhiChu.Size = new System.Drawing.Size(72, 20);
+            this.lblChiTietGhiChu.Size = new System.Drawing.Size(54, 16);
             this.lblChiTietGhiChu.TabIndex = 6;
             this.lblChiTietGhiChu.Text = "Ghi chú:";
             // 
@@ -207,7 +207,7 @@ namespace QLKHACHSAN.UI
             this.txtGiamGia.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtGiamGia.Location = new System.Drawing.Point(518, 75);
             this.txtGiamGia.Name = "txtGiamGia";
-            this.txtGiamGia.Size = new System.Drawing.Size(232, 26);
+            this.txtGiamGia.Size = new System.Drawing.Size(232, 22);
             this.txtGiamGia.TabIndex = 5;
             this.txtGiamGia.Text = "0";
             this.txtGiamGia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -219,7 +219,7 @@ namespace QLKHACHSAN.UI
             this.lblGiamGia.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGiamGia.Location = new System.Drawing.Point(430, 78);
             this.lblGiamGia.Name = "lblGiamGia";
-            this.lblGiamGia.Size = new System.Drawing.Size(81, 20);
+            this.lblGiamGia.Size = new System.Drawing.Size(64, 16);
             this.lblGiamGia.TabIndex = 4;
             this.lblGiamGia.Text = "Giảm giá:";
             // 
@@ -231,7 +231,7 @@ namespace QLKHACHSAN.UI
             this.txtTienDichVu.Location = new System.Drawing.Point(518, 45);
             this.txtTienDichVu.Name = "txtTienDichVu";
             this.txtTienDichVu.ReadOnly = true;
-            this.txtTienDichVu.Size = new System.Drawing.Size(232, 26);
+            this.txtTienDichVu.Size = new System.Drawing.Size(232, 22);
             this.txtTienDichVu.TabIndex = 3;
             this.txtTienDichVu.Text = "0";
             this.txtTienDichVu.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -242,7 +242,7 @@ namespace QLKHACHSAN.UI
             this.lblTienDichVu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTienDichVu.Location = new System.Drawing.Point(417, 48);
             this.lblTienDichVu.Name = "lblTienDichVu";
-            this.lblTienDichVu.Size = new System.Drawing.Size(104, 20);
+            this.lblTienDichVu.Size = new System.Drawing.Size(82, 16);
             this.lblTienDichVu.TabIndex = 2;
             this.lblTienDichVu.Text = "Tiền dịch vụ:";
             // 
@@ -254,7 +254,7 @@ namespace QLKHACHSAN.UI
             this.txtTienPhong.Location = new System.Drawing.Point(156, 45);
             this.txtTienPhong.Name = "txtTienPhong";
             this.txtTienPhong.ReadOnly = true;
-            this.txtTienPhong.Size = new System.Drawing.Size(250, 26);
+            this.txtTienPhong.Size = new System.Drawing.Size(250, 22);
             this.txtTienPhong.TabIndex = 1;
             this.txtTienPhong.Text = "0";
             this.txtTienPhong.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -265,7 +265,7 @@ namespace QLKHACHSAN.UI
             this.lblTienPhong.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTienPhong.Location = new System.Drawing.Point(12, 48);
             this.lblTienPhong.Name = "lblTienPhong";
-            this.lblTienPhong.Size = new System.Drawing.Size(96, 20);
+            this.lblTienPhong.Size = new System.Drawing.Size(78, 16);
             this.lblTienPhong.TabIndex = 0;
             this.lblTienPhong.Text = "Tiền phòng:";
             // 
@@ -288,7 +288,7 @@ namespace QLKHACHSAN.UI
             this.cbPhuongThuc.FormattingEnabled = true;
             this.cbPhuongThuc.Location = new System.Drawing.Point(156, 28);
             this.cbPhuongThuc.Name = "cbPhuongThuc";
-            this.cbPhuongThuc.Size = new System.Drawing.Size(594, 28);
+            this.cbPhuongThuc.Size = new System.Drawing.Size(594, 24);
             this.cbPhuongThuc.TabIndex = 1;
             // 
             // lblPhuongThuc
@@ -297,7 +297,7 @@ namespace QLKHACHSAN.UI
             this.lblPhuongThuc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPhuongThuc.Location = new System.Drawing.Point(12, 31);
             this.lblPhuongThuc.Name = "lblPhuongThuc";
-            this.lblPhuongThuc.Size = new System.Drawing.Size(149, 20);
+            this.lblPhuongThuc.Size = new System.Drawing.Size(116, 16);
             this.lblPhuongThuc.TabIndex = 0;
             this.lblPhuongThuc.Text = "Chọn phương thức:";
             // 
@@ -323,7 +323,7 @@ namespace QLKHACHSAN.UI
             this.label1TongConglbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1TongConglbl.Location = new System.Drawing.Point(12, 30);
             this.label1TongConglbl.Name = "label1TongConglbl";
-            this.label1TongConglbl.Size = new System.Drawing.Size(92, 20);
+            this.label1TongConglbl.Size = new System.Drawing.Size(75, 16);
             this.label1TongConglbl.TabIndex = 0;
             this.label1TongConglbl.Text = "Tổng cộng:";
             // 
@@ -335,7 +335,7 @@ namespace QLKHACHSAN.UI
             this.txtTongCong.Location = new System.Drawing.Point(156, 25);
             this.txtTongCong.Name = "txtTongCong";
             this.txtTongCong.ReadOnly = true;
-            this.txtTongCong.Size = new System.Drawing.Size(250, 30);
+            this.txtTongCong.Size = new System.Drawing.Size(250, 26);
             this.txtTongCong.TabIndex = 1;
             this.txtTongCong.Text = "0";
             this.txtTongCong.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -346,7 +346,7 @@ namespace QLKHACHSAN.UI
             this.lblSoTienThanhToan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSoTienThanhToan.Location = new System.Drawing.Point(430, 30);
             this.lblSoTienThanhToan.Name = "lblSoTienThanhToan";
-            this.lblSoTienThanhToan.Size = new System.Drawing.Size(91, 20);
+            this.lblSoTienThanhToan.Size = new System.Drawing.Size(72, 16);
             this.lblSoTienThanhToan.TabIndex = 2;
             this.lblSoTienThanhToan.Text = "Số tiền TT:";
             // 
@@ -361,7 +361,7 @@ namespace QLKHACHSAN.UI
             0,
             0});
             this.numSoTienThanhToan.Name = "numSoTienThanhToan";
-            this.numSoTienThanhToan.Size = new System.Drawing.Size(232, 30);
+            this.numSoTienThanhToan.Size = new System.Drawing.Size(232, 26);
             this.numSoTienThanhToan.TabIndex = 3;
             this.numSoTienThanhToan.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numSoTienThanhToan.ValueChanged += new System.EventHandler(this.numSoTienThanhToan_ValueChanged);
@@ -372,7 +372,7 @@ namespace QLKHACHSAN.UI
             this.lblSoTienThua.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSoTienThua.Location = new System.Drawing.Point(12, 75);
             this.lblSoTienThua.Name = "lblSoTienThua";
-            this.lblSoTienThua.Size = new System.Drawing.Size(83, 20);
+            this.lblSoTienThua.Size = new System.Drawing.Size(65, 16);
             this.lblSoTienThua.TabIndex = 4;
             this.lblSoTienThua.Text = "Tiền thừa:";
             // 
@@ -384,7 +384,7 @@ namespace QLKHACHSAN.UI
             this.txtSoTienThua.Location = new System.Drawing.Point(156, 70);
             this.txtSoTienThua.Name = "txtSoTienThua";
             this.txtSoTienThua.ReadOnly = true;
-            this.txtSoTienThua.Size = new System.Drawing.Size(250, 30);
+            this.txtSoTienThua.Size = new System.Drawing.Size(250, 26);
             this.txtSoTienThua.TabIndex = 5;
             this.txtSoTienThua.Text = "0";
             this.txtSoTienThua.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -417,7 +417,7 @@ namespace QLKHACHSAN.UI
             // 
             // CheckoutForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 601);
             this.Controls.Add(this.btnDong);

@@ -36,7 +36,15 @@ namespace QLKHACHSAN
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            OpenChildForm(new TaiKhoanForm());
+            if (SessionManager.IsLoggedIn())
+            {
+                OpenChildForm(new TaiKhoanForm(SessionManager.MaTaiKhoan));
+            }
+            else
+            {
+                MessageBox.Show("Lỗi: Không tìm thấy thông tin người dùng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -50,12 +58,26 @@ namespace QLKHACHSAN
 
         private void button9_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new TaiKhoanForm());
+            if (SessionManager.IsLoggedIn())
+            {
+                OpenChildForm(new TaiKhoanForm(SessionManager.MaTaiKhoan));
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng đăng nhập trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void btnTk_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new TaiKhoanForm());
+            if (SessionManager.IsLoggedIn())
+            {
+                OpenChildForm(new TaiKhoanForm(SessionManager.MaTaiKhoan));
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng đăng nhập trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void btnMuaDV_Click(object sender, EventArgs e)

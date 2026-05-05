@@ -15,7 +15,6 @@ namespace QLKHACHSAN.UI
         private DichVuBLL dichVuBLL = new DichVuBLL();
         private string selectedId = string.Empty;
         private bool isEditing = false;
-        private object btnThem;
 
         public MuaDichVuForm()
         {
@@ -132,7 +131,7 @@ namespace QLKHACHSAN.UI
         /// </summary>
         private void WireUpEventHandlers()
         {
-            btnThem.Click += BtnThem_Click;
+          
             btnSua.Click += BtnSua_Click;
             btnXoa.Click += BtnXoa_Click;
             btnLuu.Click += BtnLuu_Click;

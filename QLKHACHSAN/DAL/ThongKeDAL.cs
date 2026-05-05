@@ -402,5 +402,38 @@ namespace QLKHACHSAN.DAL
                 return new DataTable();
             }
         }
+
+        /// <summary>
+        /// Get employee information
+        /// </summary>
+        public DataTable GetEmployeeInfo()
+        {
+            try
+            {
+                string sql = @"
+                    SELECT TOP (1000) 
+                        [NhanVienID],
+                        [HoTen],
+                        [SoDienThoai],
+                        [SoKhachHang],
+                        [CCCD],
+                        [DiaChiChiTiet],
+                        [MaTaiKhoan],
+                        [GioiTinh]
+                    FROM [QuanLyKhachSan].[dbo].[NhanVien]";
+
+                System.Diagnostics.Debug.WriteLine("Executing SQL: GetEmployeeInfo");
+                DataTable result = db.ExecuteQuery(sql, null);
+                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"SQL Error in GetEmployeeInfo: {ex.Message}");
+                System.Windows.Forms.MessageBox.Show("Lỗi khi lấy thông tin nhân viên: " + ex.Message, "Lỗi",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new DataTable();
+            }
+        }
     }
 }

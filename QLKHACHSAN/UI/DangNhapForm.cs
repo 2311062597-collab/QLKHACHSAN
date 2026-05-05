@@ -100,9 +100,19 @@ namespace QLKHACHSAN.UI
 
             this.Hide();
 
+            // Save login session
+            SessionManager.MaTaiKhoan = Convert.ToInt32(dt.Rows[0]["MaTaiKhoan"]);
+            SessionManager.TenDangNhap = dt.Rows[0]["TenDangNhap"].ToString();
+            SessionManager.TenChucVu = dt.Rows[0]["TenChucVu"] != System.DBNull.Value ? dt.Rows[0]["TenChucVu"].ToString() : "";
+            SessionManager.TrangThai = trangThai;
+
+            System.Diagnostics.Debug.WriteLine($"[DangNhapForm] Session saved: MaTaiKhoan={SessionManager.MaTaiKhoan}, Username={SessionManager.TenDangNhap}");
+
             Form1 frm = new Form1();
             frm.ShowDialog();
 
+            // Clear session on logout
+            SessionManager.Clear();
             this.Show();
         }
 
