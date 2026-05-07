@@ -195,12 +195,13 @@
             // 
             // cbMaNhanVien
             // 
-            this.cbMaNhanVien.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMaNhanVien.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
             this.cbMaNhanVien.FormattingEnabled = true;
             this.cbMaNhanVien.Location = new System.Drawing.Point(150, 135);
             this.cbMaNhanVien.Name = "cbMaNhanVien";
             this.cbMaNhanVien.Size = new System.Drawing.Size(220, 31);
             this.cbMaNhanVien.TabIndex = 8;
+            this.cbMaNhanVien.SelectedIndexChanged += new System.EventHandler(this.cbMaNhanVien_SelectedIndexChanged);
             // 
             // lblMaDichVu
             // 
@@ -255,7 +256,8 @@
             this.grbDanhSachDatDichVu.Size = new System.Drawing.Size(1049, 500);
             this.grbDanhSachDatDichVu.TabIndex = 1;
             this.grbDanhSachDatDichVu.TabStop = false;
-            this.grbDanhSachDatDichVu.Text = "Danh sách dịch vụ ";
+            this.grbDanhSachDatDichVu.Text = "Hóa đơn dịch vụ";
+            this.grbDanhSachDatDichVu.Enter += new System.EventHandler(this.grbDanhSachDatDichVu_Enter);
             // 
             // dgvDatDichVu
             // 

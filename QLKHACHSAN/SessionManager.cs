@@ -8,6 +8,7 @@ namespace QLKHACHSAN
     public static class SessionManager
     {
         public static int MaTaiKhoan { get; set; }
+        public static int MaNhanVien { get; set; }
         public static string TenDangNhap { get; set; }
         public static string TenChucVu { get; set; }
         public static string TrangThai { get; set; }

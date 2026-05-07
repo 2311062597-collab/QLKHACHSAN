@@ -281,33 +281,56 @@ namespace QLKHACHSAN.DAL
 
         /// <summary>
         /// Get detailed transaction data for all transactions (no aggregation)
+        /// Includes both room bookings and service invoices in one table
         /// </summary>
         public DataTable GetAllDetailedTransactions(DateTime fromDate, DateTime toDate)
         {
             try
             {
                 string sql = @"
-                    SELECT 
-                        ttt.MaThanhToan,
-                        ttt.MaDatPhong,
-                        kh.HoTen as TenKhachHang,
-                        ttt.MaPhuongThuc,
-                        ttt.SoTien as DoanhThu,
-                        CONVERT(VARCHAR(10), ttt.NgayThanhToan, 23) as NgayThanhToan,
-                        ttt.TrangThai
-                    FROM ThanhToanDatPhong ttt
-                    INNER JOIN DatPhong dp ON ttt.MaDatPhong = dp.MaDatPhong
-                    INNER JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang
-                    WHERE ttt.NgayThanhToan >= @fromDate 
-                        AND ttt.NgayThanhToan < DATEADD(DAY, 1, @toDate)
-                    ORDER BY ttt.NgayThanhToan DESC, ttt.MaThanhToan DESC";
+    -- Hóa đơn đặt phòng
+    SELECT 
+        'PHÒNG' as LoaiGiaoDich,
+        ttt.MaDatPhong as MaHoaDon,
+        kh.HoTen as TenKhachHang,
+        'Phòng' as TenChiTieu,
+        ttt.SoTien as DoanhThu,
+        CONVERT(VARCHAR(10), ttt.NgayThanhToan, 23) as NgayThanhToan,
+        pt.TenPhuongThuc as PhuongThuc
+    FROM ThanhToanDatPhong ttt
+    INNER JOIN DatPhong dp ON ttt.MaDatPhong = dp.MaDatPhong
+    INNER JOIN KhachHang kh ON dp.MaKhachHang = kh.MaKhachHang
+    LEFT JOIN PhuongThucThanhToan pt ON ttt.MaPhuongThuc = pt.MaPhuongThuc
+    WHERE ttt.NgayThanhToan >= @fromDate 
+        AND ttt.NgayThanhToan < DATEADD(DAY, 1, @toDate)
+
+    UNION ALL
+
+    -- Hóa đơn dịch vụ
+    SELECT 
+        N'DỊCH VỤ' as LoaiGiaoDich,
+        dp.MaDatPhong as MaHoaDon,
+        kh.HoTen as TenKhachHang,
+        dvu.TenDichVu as TenChiTieu,
+        dv.ThanhTien as DoanhThu,
+        CONVERT(VARCHAR(10), dv.NgayThanhToan, 23) as NgayThanhToan,
+        pt.TenPhuongThuc as PhuongThuc
+    FROM DatDichVu dv
+    INNER JOIN KhachHang kh ON dv.MaKhachHang = kh.MaKhachHang
+    INNER JOIN DichVu dvu ON dv.MaDichVu = dvu.MaDichVu
+    LEFT JOIN PhuongThucThanhToan pt ON dv.MaPhuongThuc = pt.MaPhuongThuc
+    LEFT JOIN DatPhong dp ON dv.MaDatDichVu = dp.MaDatPhong
+    WHERE dv.NgayThanhToan >= @fromDate 
+        AND dv.NgayThanhToan < DATEADD(DAY, 1, @toDate)
+
+    ORDER BY NgayThanhToan DESC, MaHoaDon DESC";
 
                 SqlParameter[] parameters = {
                     new SqlParameter("@fromDate", fromDate),
                     new SqlParameter("@toDate", toDate)
                 };
 
-                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetAllDetailedTransactions from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
+                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetAllDetailedTransactions (MERGED) from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
                 DataTable result = db.ExecuteQuery(sql, parameters);
                 System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
                 return result;
@@ -318,6 +341,7 @@ namespace QLKHACHSAN.DAL
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy chi tiết giao dịch: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
+
             }
         }
 

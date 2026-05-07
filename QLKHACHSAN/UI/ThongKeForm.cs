@@ -17,6 +17,7 @@ namespace QLKHACHSAN.UI
     /// </summary>
     public partial class ThongKeForm : Form
     {
+        private const string Caption = "Lỗi";
         private ThongKeBLL bll = new ThongKeBLL();
 
         public ThongKeForm()
@@ -416,85 +417,106 @@ namespace QLKHACHSAN.UI
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine($"PopulateChart called with title={title}, chartType={chartType}");
-
                 if (dt == null || dt.Rows.Count == 0)
                 {
-                    System.Diagnostics.Debug.WriteLine("No data to populate chart");
                     MessageBox.Show("Không có dữ liệu để vẽ biểu đồ!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                // Clear existing series and titles
                 chartThongKe.Series.Clear();
                 chartThongKe.Titles.Clear();
 
-                // Configure chart area
+                chartThongKe.BackColor = Color.White;
+                chartThongKe.BorderlineColor = Color.Gainsboro;
+                chartThongKe.BorderlineDashStyle = ChartDashStyle.Solid;
+                chartThongKe.BorderlineWidth = 1;
+
                 if (chartThongKe.ChartAreas.Count > 0)
                 {
-                    chartThongKe.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
-                    chartThongKe.ChartAreas[0].AxisX.LabelStyle.IsEndLabelVisible = true;
+                    ChartArea area = chartThongKe.ChartAreas[0];
+
+                    area.BackColor = Color.White;
+
+                    area.AxisX.Interval = 1;
+                    area.AxisX.LabelStyle.Angle = 0;
+                    area.AxisX.LabelStyle.ForeColor = Color.DimGray;
+                    area.AxisX.MajorGrid.Enabled = false;
+
+                    area.AxisY.LabelStyle.Format = "#,##0";
+                    area.AxisY.LabelStyle.ForeColor = Color.DimGray;
+                    area.AxisY.MajorGrid.LineColor = Color.Gainsboro;
+                    area.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Solid;
                 }
 
-                // Create new series
-                Series series = new Series("Series1");
+                Series series = new Series(title);
                 series.ChartType = chartType;
+                series.IsValueShownAsLabel = true;
+                series.LabelForeColor = Color.DimGray;
+                series.ToolTip = "#VALX: #VALY";
 
-                // Set series styling for better appearance
-                if (chartType == SeriesChartType.Pie)
+                if (chartType == SeriesChartType.Column)
                 {
-                    series.Label = "#PERCENT";
+                    series.Color = Color.MediumSeaGreen;
+                    series.LabelFormat = "#,##0";
+                    series["PointWidth"] = "0.45";
+                }
+                else if (chartType == SeriesChartType.Line)
+                {
+                    series.Color = Color.OrangeRed;
+                    series.BorderWidth = 3;
+                    series.MarkerStyle = MarkerStyle.Circle;
+                    series.MarkerSize = 7;
+                    series.LabelFormat = "#,##0";
+                }
+                else if (chartType == SeriesChartType.Pie)
+                {
+                    series.Label = "#PERCENT{P0}";
+                    series.LegendText = "#VALX";
                     series.ToolTip = "#VALX: #VALY";
                 }
-                else
-                {
-                    series.ToolTip = "#VALX: #VALY";
-                }
 
-                // Add data points to series
-                int pointCount = 0;
                 foreach (DataRow row in dt.Rows)
                 {
-                    try
-                    {
-                        string xValue = row[xAxisColumn]?.ToString() ?? "N/A";
-                        object yObj = row[yAxisColumn];
-                        double yValue = 0;
+                    string xValue = row[xAxisColumn]?.ToString() ?? "N/A";
 
-                        if (yObj != null && yObj != DBNull.Value)
-                        {
-                            yValue = Convert.ToDouble(yObj);
-                        }
-
-                        series.Points.AddXY(xValue, yValue);
-                        pointCount++;
-                    }
-                    catch (Exception ex)
+                    DateTime ngay;
+                    if (DateTime.TryParse(xValue, out ngay))
                     {
-                        System.Diagnostics.Debug.WriteLine($"Error processing data row: {ex.Message}");
+                        xValue = ngay.ToString("dd/MM");
                     }
+
+                    double yValue = 0;
+                    object yObj = row[yAxisColumn];
+
+                    if (yObj != null && yObj != DBNull.Value)
+                    {
+                        yValue = Convert.ToDouble(yObj);
+                    }
+
+                    series.Points.AddXY(xValue, yValue);
                 }
 
-                System.Diagnostics.Debug.WriteLine($"Added {pointCount} data points to chart");
-
-                // Add series to chart
                 chartThongKe.Series.Add(series);
 
-                // Add title
+                chartThongKe.Legends.Clear();
+                Legend legend = new Legend();
+                legend.Docking = Docking.Bottom;
+                legend.Alignment = StringAlignment.Center;
+                legend.BackColor = Color.Transparent;
+                chartThongKe.Legends.Add(legend);
+
                 Title chartTitle = new Title();
                 chartTitle.Text = title;
                 chartTitle.Font = new Font("Arial", 12, FontStyle.Bold);
+                chartTitle.ForeColor = Color.Black;
                 chartThongKe.Titles.Add(chartTitle);
 
-                // Refresh chart
                 chartThongKe.Refresh();
-                System.Diagnostics.Debug.WriteLine("Chart refreshed successfully");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error populating chart: {ex.Message}\n{ex.StackTrace}");
-                MessageBox.Show("Lỗi khi vẽ biểu đồ: " + ex.Message, "Lỗi",
+                MessageBox.Show("Lỗi khi vẽ biểu đồ: " + ex.Message, Caption,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

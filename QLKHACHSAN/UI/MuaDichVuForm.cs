@@ -27,12 +27,13 @@ namespace QLKHACHSAN.UI
         private void MuaDichVuForm_Load(object sender, EventArgs e)
         {
             this.ForeColor = Color.Black;
+
             LoadComboBoxData();
             LoadDanhSachDichVu();
             LamMoi();
+
             WireUpEventHandlers();
         }
-
         /// <summary>
         /// Load service purchase list from database
         /// </summary>
@@ -109,13 +110,14 @@ namespace QLKHACHSAN.UI
         /// Reset form controls
         /// </summary>
         private void LamMoi()
+
         {
             selectedId = string.Empty;
             isEditing = false;
 
             txtMaDatDichVu.Clear();
             cbMaKhachHang.SelectedIndex = -1;
-            cbMaNhanVien.SelectedIndex = -1;
+            TuDongChonNhanVienDangNhap();
             cbMaDichVu.SelectedIndex = -1;
             nudSoLuong.Value = 1;
             txtThanhTien.Text = "0";
@@ -125,7 +127,54 @@ namespace QLKHACHSAN.UI
             txtTimMaDatDV.Clear();
             txtTimMaKH.Clear();
         }
+        private void TuDongChonNhanVienDangNhap()
+        {
+            try
+            {
+                string tenChucVu = SessionManager.TenChucVu?.Trim().ToLower() ?? "";
+                string tenDangNhap = SessionManager.TenDangNhap?.Trim().ToLower() ?? "";
 
+                for (int i = 0; i < cbMaNhanVien.Items.Count; i++)
+                {
+                    DataRowView row = cbMaNhanVien.Items[i] as DataRowView;
+                    if (row == null) continue;
+
+                    string hoTen = row["HoTen"].ToString().Trim().ToLower();
+
+                    bool laAdmin = tenChucVu.Contains("admin") || tenDangNhap.Contains("admin");
+
+                    if (laAdmin && hoTen.Contains("admin"))
+                    {
+                        cbMaNhanVien.SelectedIndex = i;
+                        cbMaNhanVien.Enabled = false;
+                        return;
+                    }
+
+                    if (!laAdmin && hoTen.Contains(tenChucVu))
+                    {
+                        cbMaNhanVien.SelectedIndex = i;
+                        cbMaNhanVien.Enabled = false;
+                        return;
+                    }
+
+                    if (!string.IsNullOrEmpty(tenDangNhap) && hoTen.Contains(tenDangNhap))
+                    {
+                        cbMaNhanVien.SelectedIndex = i;
+                        cbMaNhanVien.Enabled = false;
+                        return;
+                    }
+                }
+
+                cbMaNhanVien.SelectedIndex = -1;
+                cbMaNhanVien.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tự chọn nhân viên đăng nhập: " + ex.Message);
+                cbMaNhanVien.SelectedIndex = -1;
+                cbMaNhanVien.Enabled = true;
+            }
+        }
         /// <summary>
         /// Wire up event handlers for buttons
         /// </summary>
@@ -515,6 +564,16 @@ namespace QLKHACHSAN.UI
         private void dgvDatDichVu_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void grbDanhSachDatDichVu_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbMaNhanVien_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }
