@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.grbDanhSachPhong = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.flpPhong = new System.Windows.Forms.FlowLayoutPanel();
             this.btnLegendDon = new System.Windows.Forms.Button();
             this.btnLegendDangChon = new System.Windows.Forms.Button();
@@ -66,27 +68,48 @@
             // 
             // grbDanhSachPhong
             // 
-            this.grbDanhSachPhong.BackColor = System.Drawing.SystemColors.Control;
+            this.grbDanhSachPhong.BackColor = System.Drawing.Color.Transparent;
+            this.grbDanhSachPhong.Controls.Add(this.label2);
+            this.grbDanhSachPhong.Controls.Add(this.label1);
             this.grbDanhSachPhong.Controls.Add(this.flpPhong);
             this.grbDanhSachPhong.Controls.Add(this.btnLegendDon);
             this.grbDanhSachPhong.Controls.Add(this.btnLegendDangChon);
             this.grbDanhSachPhong.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbDanhSachPhong.ForeColor = System.Drawing.Color.Blue;
-            this.grbDanhSachPhong.Location = new System.Drawing.Point(10, 60);
+            this.grbDanhSachPhong.Location = new System.Drawing.Point(10, 43);
             this.grbDanhSachPhong.Name = "grbDanhSachPhong";
-            this.grbDanhSachPhong.Size = new System.Drawing.Size(310, 690);
+            this.grbDanhSachPhong.Size = new System.Drawing.Size(310, 707);
             this.grbDanhSachPhong.TabIndex = 0;
             this.grbDanhSachPhong.TabStop = false;
             this.grbDanhSachPhong.Text = "Danh sách phòng";
             this.grbDanhSachPhong.Enter += new System.EventHandler(this.grbDanhSachPhong_Enter);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(165, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(91, 20);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Phòng đã đặt";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(113, 20);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Phòng còn trống";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // flpPhong
             // 
             this.flpPhong.AutoScroll = true;
             this.flpPhong.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flpPhong.Location = new System.Drawing.Point(0, 64);
+            this.flpPhong.Location = new System.Drawing.Point(0, 74);
             this.flpPhong.Name = "flpPhong";
-            this.flpPhong.Size = new System.Drawing.Size(305, 625);
+            this.flpPhong.Size = new System.Drawing.Size(305, 615);
             this.flpPhong.TabIndex = 10;
             // 
             // btnLegendDon
@@ -94,7 +117,7 @@
             this.btnLegendDon.BackColor = System.Drawing.Color.Tomato;
             this.btnLegendDon.Enabled = false;
             this.btnLegendDon.ForeColor = System.Drawing.Color.White;
-            this.btnLegendDon.Location = new System.Drawing.Point(122, 35);
+            this.btnLegendDon.Location = new System.Drawing.Point(169, 26);
             this.btnLegendDon.Name = "btnLegendDon";
             this.btnLegendDon.Size = new System.Drawing.Size(75, 23);
             this.btnLegendDon.TabIndex = 1;
@@ -105,7 +128,7 @@
             this.btnLegendDangChon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btnLegendDangChon.Enabled = false;
             this.btnLegendDangChon.ForeColor = System.Drawing.Color.White;
-            this.btnLegendDangChon.Location = new System.Drawing.Point(20, 35);
+            this.btnLegendDangChon.Location = new System.Drawing.Point(21, 26);
             this.btnLegendDangChon.Name = "btnLegendDangChon";
             this.btnLegendDangChon.Size = new System.Drawing.Size(75, 22);
             this.btnLegendDangChon.TabIndex = 0;
@@ -373,6 +396,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::QLKHACHSAN.Properties.Resources.anh_moi;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1384, 761);
             this.Controls.Add(this.grbChucNang);
             this.Controls.Add(this.grbThongTinDatPhong);
@@ -383,6 +408,7 @@
             this.Text = "DatPhongForm";
             this.Load += new System.EventHandler(this.DatPhongForm_Load);
             this.grbDanhSachPhong.ResumeLayout(false);
+            this.grbDanhSachPhong.PerformLayout();
             this.grbHoaDonTienPhong.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDonPhong)).EndInit();
             this.grbChucNang.ResumeLayout(false);
@@ -424,5 +450,7 @@
         private System.Windows.Forms.Button btnDong;
         private System.Windows.Forms.Button btnDatPhong;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -134,11 +134,7 @@ namespace QLKHACHSAN.UI
 
         private string GenerateTransferCode()
         {
-            // Generate transfer code format: [MaDatPhong][Timestamp]
-            // Example: 10001202501101530 (10001 = booking ID + timestamp)
-            string timestamp = DateTime.Now.ToString("yyyyMMddHHmm");
-            string transferCode = $"{maDatPhong:D5}{timestamp}";
-            return transferCode;
+            return "TT PHONG " + maDatPhong + " " + DateTime.Now.ToString("yyyyMMddHHmmss");
         }
 
         private void btnThanhToanCheckout_Click(object sender, EventArgs e)
@@ -165,18 +161,29 @@ namespace QLKHACHSAN.UI
                 DateTime ngayTra = dateNgayTra.Value;
                 string ghiChu = txtGhiChu.Text.Trim();
 
-                // Show transfer code if bank transfer is selected
+                // Nếu chọn chuyển khoản thì hiện popup xác nhận trước khi lưu thanh toán
                 if (IsTransferPaymentMethod())
                 {
-                    string transferCode = GenerateTransferCode();
-                    ghiChu = (string.IsNullOrWhiteSpace(ghiChu) ? "" : ghiChu + "\n") + $"Mã CK: {transferCode}";
+                    string maChuyenKhoan = GenerateTransferCode();
 
-                    MessageBox.Show(
-                        $"Mã chuyển khoản: {transferCode}\n\n" +
-                        $"Vui lòng sử dụng mã này để nhận diện giao dịch chuyển khoản của bạn.",
-                        "Mã Chuyển Khoản",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    ChuyenKhoanConfirmForm frm = new ChuyenKhoanConfirmForm(soTienTT, maChuyenKhoan);
+
+                    DialogResult confirmResult = frm.ShowDialog(this);
+
+                    if (confirmResult != DialogResult.OK)
+                    {
+                        MessageBox.Show(
+                            "Bạn đã hủy xác nhận chuyển khoản. Thanh toán chưa được lưu.",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
+                        return;
+                    }
+
+                    ghiChu = (string.IsNullOrWhiteSpace(ghiChu) ? "" : ghiChu + "\n") +
+                             "Mã CK: " + maChuyenKhoan +
+                             "\nSTK: 2143312836 - BIDV - NGUYEN MAU HAI";
                 }
 
                 bool result = checkoutBLL.ThanhToanVaCheckout(maDatPhong, maPhuongThuc, soTienTT, ngayTra, ghiChu);

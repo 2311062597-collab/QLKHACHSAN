@@ -89,6 +89,12 @@
     <Compile Include="UI\CheckoutForm.Designer.cs">
       <DependentUpon>CheckoutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ChuyenKhoanConfirmForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ChuyenKhoanConfirmForm.Designer.cs">
+      <DependentUpon>ChuyenKhoanConfirmForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DangNhapForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -174,6 +180,9 @@
     <EmbeddedResource Include="UI\CheckoutForm.resx">
       <DependentUpon>CheckoutForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ChuyenKhoanConfirmForm.resx">
+      <DependentUpon>ChuyenKhoanConfirmForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\DangNhapForm.resx">
       <DependentUpon>DangNhapForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -227,19 +236,40 @@
     <None Include="Resources\z7738595353635_f0458a46613e5b57cea3326fca87bed6.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Gemini_Generated_Image_ncty52ncty52ncty.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Gemini_Generated_Image_rjlogrjlogrjlogr.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\z7738595353635_f0458a46613e5b57cea3326fca87bed61.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Gemini_Generated_Image_rjlogrjlogrjlogr1.png" />
+    <Folder Include="UI\Helpers\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UI\Helpers\" />
+    <None Include="Resources\z7789305680187_672df96e5404ddea774632ce995b3aa2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\z7802289603880_263c887b65e411ab66215b52a0f10570.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hotel-bellanca-1670m2-sanh-12-decox-design.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pngtree-contemporary-luxury-hotel-reception-and-lounge-in-3d-rendering-image_3607603 %281%29.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hinhnen.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hotel-bellanca-1670m2-sanh-12-decox-design1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mau-thiet-ke-quay-le-tan-nho-dep-sang-trong-cho-van-phong-khach-san2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thiet-ke-hoan-thien-noi-that-khach-san-86-nha-trang-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lua-chon-cac-kich-ban-anh-sang-phu-hop.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\anh moi.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

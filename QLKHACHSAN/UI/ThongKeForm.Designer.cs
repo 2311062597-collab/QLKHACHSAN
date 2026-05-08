@@ -67,9 +67,11 @@
             this.grbBoLoc.Controls.Add(this.lblTuNgay);
             this.grbBoLoc.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbBoLoc.ForeColor = System.Drawing.Color.Blue;
-            this.grbBoLoc.Location = new System.Drawing.Point(3, 20);
+            this.grbBoLoc.Location = new System.Drawing.Point(2, 16);
+            this.grbBoLoc.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grbBoLoc.Name = "grbBoLoc";
-            this.grbBoLoc.Size = new System.Drawing.Size(1299, 100);
+            this.grbBoLoc.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grbBoLoc.Size = new System.Drawing.Size(974, 81);
             this.grbBoLoc.TabIndex = 0;
             this.grbBoLoc.TabStop = false;
             this.grbBoLoc.Text = "Bộ lọc thống kê";
@@ -78,17 +80,19 @@
             // 
             this.cbLoaiBieuDo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLoaiBieuDo.FormattingEnabled = true;
-            this.cbLoaiBieuDo.Location = new System.Drawing.Point(693, 35);
+            this.cbLoaiBieuDo.Location = new System.Drawing.Point(520, 28);
+            this.cbLoaiBieuDo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbLoaiBieuDo.Name = "cbLoaiBieuDo";
-            this.cbLoaiBieuDo.Size = new System.Drawing.Size(180, 33);
+            this.cbLoaiBieuDo.Size = new System.Drawing.Size(136, 28);
             this.cbLoaiBieuDo.TabIndex = 1;
             // 
             // lblLoaiBieuDo
             // 
             this.lblLoaiBieuDo.AutoSize = true;
-            this.lblLoaiBieuDo.Location = new System.Drawing.Point(610, 40);
+            this.lblLoaiBieuDo.Location = new System.Drawing.Point(458, 32);
+            this.lblLoaiBieuDo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLoaiBieuDo.Name = "lblLoaiBieuDo";
-            this.lblLoaiBieuDo.Size = new System.Drawing.Size(77, 25);
+            this.lblLoaiBieuDo.Size = new System.Drawing.Size(59, 20);
             this.lblLoaiBieuDo.TabIndex = 1;
             this.lblLoaiBieuDo.Text = "Biểu đồ:";
             // 
@@ -96,18 +100,20 @@
             // 
             this.dtTo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtTo.Location = new System.Drawing.Point(414, 35);
+            this.dtTo.Location = new System.Drawing.Point(310, 28);
+            this.dtTo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dtTo.Name = "dtTo";
-            this.dtTo.Size = new System.Drawing.Size(180, 29);
+            this.dtTo.Size = new System.Drawing.Size(136, 25);
             this.dtTo.TabIndex = 3;
             // 
             // lblDenNgay
             // 
             this.lblDenNgay.AutoSize = true;
             this.lblDenNgay.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDenNgay.Location = new System.Drawing.Point(320, 40);
+            this.lblDenNgay.Location = new System.Drawing.Point(240, 32);
+            this.lblDenNgay.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDenNgay.Name = "lblDenNgay";
-            this.lblDenNgay.Size = new System.Drawing.Size(88, 23);
+            this.lblDenNgay.Size = new System.Drawing.Size(68, 17);
             this.lblDenNgay.TabIndex = 2;
             this.lblDenNgay.Text = "Đến ngày :";
             // 
@@ -115,26 +121,29 @@
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(113, 36);
+            this.dateTimePicker1.Location = new System.Drawing.Point(85, 29);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(180, 29);
+            this.dateTimePicker1.Size = new System.Drawing.Size(136, 25);
             this.dateTimePicker1.TabIndex = 1;
             // 
             // lblTuNgay
             // 
             this.lblTuNgay.AutoSize = true;
             this.lblTuNgay.Font = new System.Drawing.Font("Segoe UI Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTuNgay.Location = new System.Drawing.Point(30, 40);
+            this.lblTuNgay.Location = new System.Drawing.Point(22, 32);
+            this.lblTuNgay.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTuNgay.Name = "lblTuNgay";
-            this.lblTuNgay.Size = new System.Drawing.Size(77, 23);
+            this.lblTuNgay.Size = new System.Drawing.Size(59, 17);
             this.lblTuNgay.TabIndex = 0;
             this.lblTuNgay.Text = "Từ ngày :";
             // 
             // btnThongKe
             // 
-            this.btnThongKe.Location = new System.Drawing.Point(920, 32);
+            this.btnThongKe.Location = new System.Drawing.Point(690, 26);
+            this.btnThongKe.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnThongKe.Name = "btnThongKe";
-            this.btnThongKe.Size = new System.Drawing.Size(150, 35);
+            this.btnThongKe.Size = new System.Drawing.Size(112, 28);
             this.btnThongKe.TabIndex = 4;
             this.btnThongKe.Text = "Thống kê";
             this.btnThongKe.UseVisualStyleBackColor = true;
@@ -144,9 +153,11 @@
             this.grbBieuDo.Controls.Add(this.chartThongKe);
             this.grbBieuDo.Font = new System.Drawing.Font("Segoe UI Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbBieuDo.ForeColor = System.Drawing.Color.Blue;
-            this.grbBieuDo.Location = new System.Drawing.Point(3, 135);
+            this.grbBieuDo.Location = new System.Drawing.Point(2, 110);
+            this.grbBieuDo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grbBieuDo.Name = "grbBieuDo";
-            this.grbBieuDo.Size = new System.Drawing.Size(621, 430);
+            this.grbBieuDo.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grbBieuDo.Size = new System.Drawing.Size(466, 349);
             this.grbBieuDo.TabIndex = 5;
             this.grbBieuDo.TabStop = false;
             this.grbBieuDo.Text = "Biểu đồ thống kê";
@@ -164,7 +175,8 @@
             this.chartThongKe.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartThongKe.Legends.Add(legend1);
-            this.chartThongKe.Location = new System.Drawing.Point(5, 38);
+            this.chartThongKe.Location = new System.Drawing.Point(4, 31);
+            this.chartThongKe.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chartThongKe.Name = "chartThongKe";
             series1.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.DashedDownwardDiagonal;
             series1.BackImageTransparentColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -193,7 +205,7 @@
             series2.XAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
             this.chartThongKe.Series.Add(series1);
             this.chartThongKe.Series.Add(series2);
-            this.chartThongKe.Size = new System.Drawing.Size(589, 260);
+            this.chartThongKe.Size = new System.Drawing.Size(442, 211);
             this.chartThongKe.TabIndex = 0;
             this.chartThongKe.Text = "chart1";
             this.chartThongKe.Click += new System.EventHandler(this.chartThongKe_Click);
@@ -203,9 +215,11 @@
             this.grbBangThongKe.Controls.Add(this.dgvThongKe);
             this.grbBangThongKe.Font = new System.Drawing.Font("Segoe UI Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbBangThongKe.ForeColor = System.Drawing.Color.Blue;
-            this.grbBangThongKe.Location = new System.Drawing.Point(630, 126);
+            this.grbBangThongKe.Location = new System.Drawing.Point(472, 102);
+            this.grbBangThongKe.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grbBangThongKe.Name = "grbBangThongKe";
-            this.grbBangThongKe.Size = new System.Drawing.Size(1166, 430);
+            this.grbBangThongKe.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grbBangThongKe.Size = new System.Drawing.Size(874, 349);
             this.grbBangThongKe.TabIndex = 6;
             this.grbBangThongKe.TabStop = false;
             this.grbBangThongKe.Text = "Dữ liệu thống kê";
@@ -215,14 +229,15 @@
             this.dgvThongKe.AllowUserToAddRows = false;
             this.dgvThongKe.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvThongKe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvThongKe.Location = new System.Drawing.Point(6, 30);
+            this.dgvThongKe.Location = new System.Drawing.Point(4, 24);
+            this.dgvThongKe.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgvThongKe.Name = "dgvThongKe";
             this.dgvThongKe.ReadOnly = true;
             this.dgvThongKe.RowHeadersVisible = false;
             this.dgvThongKe.RowHeadersWidth = 51;
             this.dgvThongKe.RowTemplate.Height = 24;
             this.dgvThongKe.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvThongKe.Size = new System.Drawing.Size(1154, 394);
+            this.dgvThongKe.Size = new System.Drawing.Size(866, 320);
             this.dgvThongKe.TabIndex = 7;
             // 
             // grbTongQuan
@@ -231,9 +246,11 @@
             this.grbTongQuan.Controls.Add(this.lblTongDoanhThu);
             this.grbTongQuan.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbTongQuan.ForeColor = System.Drawing.Color.Blue;
-            this.grbTongQuan.Location = new System.Drawing.Point(12, 660);
+            this.grbTongQuan.Location = new System.Drawing.Point(2, 463);
+            this.grbTongQuan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grbTongQuan.Name = "grbTongQuan";
-            this.grbTongQuan.Size = new System.Drawing.Size(1140, 70);
+            this.grbTongQuan.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grbTongQuan.Size = new System.Drawing.Size(855, 57);
             this.grbTongQuan.TabIndex = 8;
             this.grbTongQuan.TabStop = false;
             this.grbTongQuan.Tag = "";
@@ -241,33 +258,38 @@
             // 
             // txtTongDoanhThu
             // 
-            this.txtTongDoanhThu.Location = new System.Drawing.Point(226, 35);
+            this.txtTongDoanhThu.Location = new System.Drawing.Point(170, 28);
+            this.txtTongDoanhThu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTongDoanhThu.Name = "txtTongDoanhThu";
             this.txtTongDoanhThu.ReadOnly = true;
-            this.txtTongDoanhThu.Size = new System.Drawing.Size(220, 32);
+            this.txtTongDoanhThu.Size = new System.Drawing.Size(166, 27);
             this.txtTongDoanhThu.TabIndex = 10;
             this.txtTongDoanhThu.Text = "0";
             // 
             // lblTongDoanhThu
             // 
             this.lblTongDoanhThu.AutoSize = true;
-            this.lblTongDoanhThu.Location = new System.Drawing.Point(66, 38);
+            this.lblTongDoanhThu.Location = new System.Drawing.Point(50, 31);
+            this.lblTongDoanhThu.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTongDoanhThu.Name = "lblTongDoanhThu";
-            this.lblTongDoanhThu.Size = new System.Drawing.Size(145, 25);
+            this.lblTongDoanhThu.Size = new System.Drawing.Size(111, 20);
             this.lblTongDoanhThu.TabIndex = 9;
             this.lblTongDoanhThu.Text = "Tổng doanh thu:";
             // 
             // ThongKeForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1805, 851);
+            this.BackgroundImage = global::QLKHACHSAN.Properties.Resources.anh_moi;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1354, 691);
             this.Controls.Add(this.grbTongQuan);
             this.Controls.Add(this.grbBangThongKe);
             this.Controls.Add(this.grbBieuDo);
             this.Controls.Add(this.btnThongKe);
             this.Controls.Add(this.grbBoLoc);
             this.Location = new System.Drawing.Point(30, 40);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ThongKeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ThongKeForm";

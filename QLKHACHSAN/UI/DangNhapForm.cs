@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 using QLKHACHSAN.BLL;
 
@@ -12,6 +13,16 @@ namespace QLKHACHSAN.UI
         public DangNhapForm()
         {
             InitializeComponent();
+
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.MinimumSize = new Size(1000, 650);
+
+            panelRight.Dock = DockStyle.Fill;
+            panelRight.BackgroundImageLayout = ImageLayout.Stretch;
+
+            groupLogin.Anchor = AnchorStyles.None;
+
+            this.Resize += DangNhapForm_Resize;
         }
 
         private void DangNhapForm_Load(object sender, EventArgs e)
@@ -19,11 +30,34 @@ namespace QLKHACHSAN.UI
             txtUsername.Text = string.Empty;
             txtPassword.Text = string.Empty;
 
-            txtUsername.ForeColor = System.Drawing.Color.Black;
-            txtPassword.ForeColor = System.Drawing.Color.Black;
+            txtUsername.ForeColor = Color.Black;
+            txtPassword.ForeColor = Color.Black;
             txtPassword.UseSystemPasswordChar = true;
 
+            // Làm đẹp GroupBox
+            groupLogin.BackColor = Color.Transparent;
+
+            // Làm đẹp nút đăng nhập
+            btnDangNhap.FlatStyle = FlatStyle.Flat;
+            btnDangNhap.FlatAppearance.BorderSize = 0;
+            btnDangNhap.BackColor = Color.FromArgb(30, 144, 255);
+            btnDangNhap.ForeColor = Color.White;
+            btnDangNhap.Font = new Font(btnDangNhap.Font, FontStyle.Bold);
+
+            CenterLoginBox();
+
             txtUsername.Focus();
+        }
+
+        private void DangNhapForm_Resize(object sender, EventArgs e)
+        {
+            CenterLoginBox();
+        }
+
+        private void CenterLoginBox()
+        {
+            groupLogin.Left = (panelRight.ClientSize.Width - groupLogin.Width) / 2;
+            groupLogin.Top = (panelRight.ClientSize.Height - groupLogin.Height) / 2;
         }
 
         private void txtUsername_Enter(object sender, EventArgs e)
@@ -31,7 +65,7 @@ namespace QLKHACHSAN.UI
             if (txtUsername.Text == "Tên người dùng")
             {
                 txtUsername.Text = string.Empty;
-                txtUsername.ForeColor = System.Drawing.Color.Black;
+                txtUsername.ForeColor = Color.Black;
             }
         }
 
@@ -40,7 +74,7 @@ namespace QLKHACHSAN.UI
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
                 txtUsername.Text = "Tên người dùng";
-                txtUsername.ForeColor = System.Drawing.Color.Gray;
+                txtUsername.ForeColor = Color.Gray;
             }
         }
 
@@ -49,7 +83,7 @@ namespace QLKHACHSAN.UI
             if (txtPassword.Text == "Mật khẩu")
             {
                 txtPassword.Text = string.Empty;
-                txtPassword.ForeColor = System.Drawing.Color.Black;
+                txtPassword.ForeColor = Color.Black;
                 txtPassword.UseSystemPasswordChar = true;
             }
         }
@@ -59,7 +93,7 @@ namespace QLKHACHSAN.UI
             if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
                 txtPassword.Text = "Mật khẩu";
-                txtPassword.ForeColor = System.Drawing.Color.Gray;
+                txtPassword.ForeColor = Color.Gray;
                 txtPassword.UseSystemPasswordChar = false;
             }
         }
@@ -92,6 +126,7 @@ namespace QLKHACHSAN.UI
             }
 
             string trangThai = dt.Rows[0]["TrangThai"].ToString();
+
             if (trangThai == "Đã khóa")
             {
                 MessageBox.Show("Tài khoản này đã bị khóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -100,7 +135,6 @@ namespace QLKHACHSAN.UI
 
             this.Hide();
 
-            // Save login session
             SessionManager.MaTaiKhoan = Convert.ToInt32(dt.Rows[0]["MaTaiKhoan"]);
             SessionManager.TenDangNhap = dt.Rows[0]["TenDangNhap"].ToString();
             SessionManager.TenChucVu = dt.Rows[0]["TenChucVu"] != DBNull.Value
@@ -113,7 +147,6 @@ namespace QLKHACHSAN.UI
             Form1 frm = new Form1();
             frm.ShowDialog();
 
-            // Clear session on logout
             SessionManager.Clear();
             this.Show();
         }
@@ -125,7 +158,13 @@ namespace QLKHACHSAN.UI
 
         private void DangNhapForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn thoát ứng dụng?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(
+                "Bạn có chắc chắn muốn thoát ứng dụng?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
             if (result == DialogResult.No)
             {
                 e.Cancel = true;
@@ -133,6 +172,10 @@ namespace QLKHACHSAN.UI
         }
 
         private void picBanner_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
         {
 
         }

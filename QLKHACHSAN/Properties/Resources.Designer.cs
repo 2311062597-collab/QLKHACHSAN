@@ -73,9 +73,9 @@ namespace QLKHACHSAN.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Gemini_Generated_Image_ncty52ncty52ncty {
+        internal static System.Drawing.Bitmap anh_moi {
             get {
-                object obj = ResourceManager.GetObject("Gemini_Generated_Image_ncty52ncty52ncty", resourceCulture);
+                object obj = ResourceManager.GetObject("anh moi", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,6 +103,77 @@ namespace QLKHACHSAN.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap hinhnen {
+            get {
+                object obj = ResourceManager.GetObject("hinhnen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hotel_bellanca_1670m2_sanh_12_decox_design {
+            get {
+                object obj = ResourceManager.GetObject("hotel-bellanca-1670m2-sanh-12-decox-design", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hotel_bellanca_1670m2_sanh_12_decox_design1 {
+            get {
+                object obj = ResourceManager.GetObject("hotel-bellanca-1670m2-sanh-12-decox-design1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lua_chon_cac_kich_ban_anh_sang_phu_hop {
+            get {
+                object obj = ResourceManager.GetObject("lua-chon-cac-kich-ban-anh-sang-phu-hop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mau_thiet_ke_quay_le_tan_nho_dep_sang_trong_cho_van_phong_khach_san2 {
+            get {
+                object obj = ResourceManager.GetObject("mau-thiet-ke-quay-le-tan-nho-dep-sang-trong-cho-van-phong-khach-san2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pngtree_contemporary_luxury_hotel_reception_and_lounge_in_3d_rendering_image_3607603__1_ {
+            get {
+                object obj = ResourceManager.GetObject("pngtree-contemporary-luxury-hotel-reception-and-lounge-in-3d-rendering-image_3607" +
+                        "603 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap thiet_ke_hoan_thien_noi_that_khach_san_86_nha_trang_1 {
+            get {
+                object obj = ResourceManager.GetObject("thiet-ke-hoan-thien-noi-that-khach-san-86-nha-trang-1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap z7738595353635_f0458a46613e5b57cea3326fca87bed6 {
             get {
                 object obj = ResourceManager.GetObject("z7738595353635_f0458a46613e5b57cea3326fca87bed6", resourceCulture);
@@ -116,6 +187,26 @@ namespace QLKHACHSAN.Properties {
         internal static System.Drawing.Bitmap z7738595353635_f0458a46613e5b57cea3326fca87bed61 {
             get {
                 object obj = ResourceManager.GetObject("z7738595353635_f0458a46613e5b57cea3326fca87bed61", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap z7789305680187_672df96e5404ddea774632ce995b3aa2 {
+            get {
+                object obj = ResourceManager.GetObject("z7789305680187_672df96e5404ddea774632ce995b3aa2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap z7802289603880_263c887b65e411ab66215b52a0f10570 {
+            get {
+                object obj = ResourceManager.GetObject("z7802289603880_263c887b65e411ab66215b52a0f10570", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -11,7 +11,12 @@ namespace QLKHACHSAN
         public Form1()
         {
             InitializeComponent();
-            this.Load += new System.EventHandler(this.Form1_Load);
+
+            panel1.Dock = DockStyle.Left;
+
+            pnlMain.Dock = DockStyle.Fill;
+            pnlMain.BackgroundImage = Properties.Resources.anh_moi;
+            pnlMain.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void OpenChildForm(Form childForm)

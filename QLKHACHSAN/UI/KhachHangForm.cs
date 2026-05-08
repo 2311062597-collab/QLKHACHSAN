@@ -203,5 +203,10 @@ namespace QLKHACHSAN.UI
         private void dgvKH_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
         }
+
+        private void KhachHangForm_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
