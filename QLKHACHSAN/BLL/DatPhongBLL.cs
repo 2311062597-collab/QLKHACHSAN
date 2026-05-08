@@ -217,12 +217,12 @@ namespace QLKHACHSAN.BLL
         public System.Drawing.Color GetRoomStatusColor(string status)
         {
             if (status == "Trống")
-                return System.Drawing.Color.LimeGreen;
-            if (status == "Đã đặt")
                 return System.Drawing.Color.Orange;
+            if (status == "Đã đặt")
+                return System.Drawing.Color.Gray;
             if (status == "Đang sử dụng")
                 return System.Drawing.Color.Red;
-            return System.Drawing.Color.Gray;
+            return System.Drawing.Color.Orange;
         }
 
         /// <summary>

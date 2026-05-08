@@ -105,6 +105,27 @@ namespace QLKHACHSAN.UI
                 txtCCCDKH.Focus();
                 return false;
             }
+            foreach (DataGridViewRow row in dgvKH.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                string sdtCu = row.Cells["SoDienThoai"].Value?.ToString();
+                string cccdCu = row.Cells["CCCD"].Value?.ToString();
+
+                if (txtSDTKH.Text.Trim() != "" && txtSDTKH.Text.Trim() == sdtCu)
+                {
+                    MessageBox.Show("SĐT này đã tồn tại!");
+                    txtSDTKH.Focus();
+                    return false;
+                }
+
+                if (txtCCCDKH.Text.Trim() != "" && txtCCCDKH.Text.Trim() == cccdCu)
+                {
+                    MessageBox.Show("CCCD này đã tồn tại!");
+                    txtCCCDKH.Focus();
+                    return false;
+                }
+            }
 
             return true;
         }
