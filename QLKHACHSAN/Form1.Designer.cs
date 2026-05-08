@@ -60,9 +60,9 @@
             this.panel1.Controls.Add(this.btnTk);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(191, 652);
+            this.panel1.Size = new System.Drawing.Size(255, 802);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -73,10 +73,10 @@
             this.btnDangXuat.AutoSize = true;
             this.btnDangXuat.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnDangXuat.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnDangXuat.Location = new System.Drawing.Point(-2, 608);
-            this.btnDangXuat.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDangXuat.Location = new System.Drawing.Point(-3, 748);
+            this.btnDangXuat.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDangXuat.Name = "btnDangXuat";
-            this.btnDangXuat.Size = new System.Drawing.Size(191, 45);
+            this.btnDangXuat.Size = new System.Drawing.Size(255, 55);
             this.btnDangXuat.TabIndex = 4;
             this.btnDangXuat.Text = "Đăng Xuất";
             this.btnDangXuat.UseVisualStyleBackColor = false;
@@ -86,10 +86,10 @@
             // 
             this.btnThongKe.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnThongKe.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnThongKe.Location = new System.Drawing.Point(2, 327);
-            this.btnThongKe.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnThongKe.Location = new System.Drawing.Point(3, 402);
+            this.btnThongKe.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnThongKe.Name = "btnThongKe";
-            this.btnThongKe.Size = new System.Drawing.Size(189, 45);
+            this.btnThongKe.Size = new System.Drawing.Size(252, 55);
             this.btnThongKe.TabIndex = 3;
             this.btnThongKe.Text = "Thống kê";
             this.btnThongKe.UseVisualStyleBackColor = false;
@@ -100,9 +100,9 @@
             this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button9.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.button9.Location = new System.Drawing.Point(0, 1);
-            this.button9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(191, 45);
+            this.button9.Size = new System.Drawing.Size(255, 55);
             this.button9.TabIndex = 7;
             this.button9.Text = "TAKIVIVU";
             this.button9.UseVisualStyleBackColor = true;
@@ -111,19 +111,19 @@
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(0, 0);
-            this.button8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(56, 19);
+            this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 8;
             // 
             // btnNV
             // 
             this.btnNV.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnNV.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnNV.Location = new System.Drawing.Point(2, 286);
-            this.btnNV.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnNV.Location = new System.Drawing.Point(3, 352);
+            this.btnNV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnNV.Name = "btnNV";
-            this.btnNV.Size = new System.Drawing.Size(189, 45);
+            this.btnNV.Size = new System.Drawing.Size(252, 55);
             this.btnNV.TabIndex = 2;
             this.btnNV.Text = "Nhân Viên";
             this.btnNV.UseVisualStyleBackColor = false;
@@ -133,10 +133,10 @@
             // 
             this.btnKH.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnKH.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnKH.Location = new System.Drawing.Point(2, 245);
-            this.btnKH.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnKH.Location = new System.Drawing.Point(3, 302);
+            this.btnKH.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnKH.Name = "btnKH";
-            this.btnKH.Size = new System.Drawing.Size(189, 45);
+            this.btnKH.Size = new System.Drawing.Size(252, 55);
             this.btnKH.TabIndex = 6;
             this.btnKH.Text = "Khách Hàng ";
             this.btnKH.UseVisualStyleBackColor = false;
@@ -146,10 +146,10 @@
             // 
             this.btnDichVu.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnDichVu.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnDichVu.Location = new System.Drawing.Point(2, 205);
-            this.btnDichVu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDichVu.Location = new System.Drawing.Point(3, 252);
+            this.btnDichVu.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDichVu.Name = "btnDichVu";
-            this.btnDichVu.Size = new System.Drawing.Size(189, 45);
+            this.btnDichVu.Size = new System.Drawing.Size(252, 55);
             this.btnDichVu.TabIndex = 5;
             this.btnDichVu.Text = "Dịch Vụ";
             this.btnDichVu.UseVisualStyleBackColor = false;
@@ -159,10 +159,10 @@
             // 
             this.btnPhong.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnPhong.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnPhong.Location = new System.Drawing.Point(2, 162);
-            this.btnPhong.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnPhong.Location = new System.Drawing.Point(3, 199);
+            this.btnPhong.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPhong.Name = "btnPhong";
-            this.btnPhong.Size = new System.Drawing.Size(189, 45);
+            this.btnPhong.Size = new System.Drawing.Size(252, 55);
             this.btnPhong.TabIndex = 4;
             this.btnPhong.Text = " Phòng ";
             this.btnPhong.UseVisualStyleBackColor = false;
@@ -172,10 +172,10 @@
             // 
             this.btnMuaDV.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnMuaDV.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnMuaDV.Location = new System.Drawing.Point(2, 121);
-            this.btnMuaDV.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnMuaDV.Location = new System.Drawing.Point(3, 149);
+            this.btnMuaDV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnMuaDV.Name = "btnMuaDV";
-            this.btnMuaDV.Size = new System.Drawing.Size(189, 45);
+            this.btnMuaDV.Size = new System.Drawing.Size(252, 55);
             this.btnMuaDV.TabIndex = 3;
             this.btnMuaDV.Text = "Mua Dịch Vụ";
             this.btnMuaDV.UseVisualStyleBackColor = false;
@@ -185,10 +185,10 @@
             // 
             this.btnDatPhong.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnDatPhong.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnDatPhong.Location = new System.Drawing.Point(2, 80);
-            this.btnDatPhong.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDatPhong.Location = new System.Drawing.Point(3, 98);
+            this.btnDatPhong.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDatPhong.Name = "btnDatPhong";
-            this.btnDatPhong.Size = new System.Drawing.Size(189, 45);
+            this.btnDatPhong.Size = new System.Drawing.Size(252, 55);
             this.btnDatPhong.TabIndex = 2;
             this.btnDatPhong.Text = "Đặt Phòng";
             this.btnDatPhong.UseVisualStyleBackColor = false;
@@ -198,10 +198,10 @@
             // 
             this.btnTk.BackColor = System.Drawing.Color.MidnightBlue;
             this.btnTk.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnTk.Location = new System.Drawing.Point(2, 40);
-            this.btnTk.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTk.Location = new System.Drawing.Point(3, 49);
+            this.btnTk.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnTk.Name = "btnTk";
-            this.btnTk.Size = new System.Drawing.Size(189, 45);
+            this.btnTk.Size = new System.Drawing.Size(252, 55);
             this.btnTk.TabIndex = 1;
             this.btnTk.Text = "Tài Khoản";
             this.btnTk.UseVisualStyleBackColor = false;
@@ -209,25 +209,24 @@
             // 
             // pnlMain
             // 
-            this.pnlMain.BackgroundImage = global::QLKHACHSAN.Properties.Resources.anh_moi;
             this.pnlMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMain.Location = new System.Drawing.Point(191, 0);
-            this.pnlMain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlMain.Location = new System.Drawing.Point(255, 0);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1188, 652);
+            this.pnlMain.Size = new System.Drawing.Size(1584, 802);
             this.pnlMain.TabIndex = 1;
             this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1379, 652);
+            this.ClientSize = new System.Drawing.Size(1839, 802);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.panel1);
             this.ForeColor = System.Drawing.Color.Black;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";

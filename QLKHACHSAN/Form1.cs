@@ -13,10 +13,6 @@ namespace QLKHACHSAN
             InitializeComponent();
 
             panel1.Dock = DockStyle.Left;
-
-            pnlMain.Dock = DockStyle.Fill;
-            pnlMain.BackgroundImage = Properties.Resources.anh_moi;
-            pnlMain.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void OpenChildForm(Form childForm)

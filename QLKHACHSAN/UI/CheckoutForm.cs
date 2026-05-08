@@ -134,7 +134,7 @@ namespace QLKHACHSAN.UI
 
         private string GenerateTransferCode()
         {
-            return "TT PHONG " + maDatPhong + " " + DateTime.Now.ToString("yyyyMMddHHmmss");
+            return "TT PHONG " + maDatPhong;
         }
 
         private void btnThanhToanCheckout_Click(object sender, EventArgs e)
