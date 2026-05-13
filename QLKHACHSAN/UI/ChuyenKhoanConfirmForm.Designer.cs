@@ -45,15 +45,16 @@
             this.lblThongTin.TabIndex = 1;
             this.lblThongTin.Text = "Thông tin chuyển khoản";
             this.lblThongTin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+      
             // btnXacNhan
-            // 
+       
             this.btnXacNhan.Location = new System.Drawing.Point(512, 415);
             this.btnXacNhan.Name = "btnXacNhan";
             this.btnXacNhan.Size = new System.Drawing.Size(187, 23);
             this.btnXacNhan.TabIndex = 2;
             this.btnXacNhan.Text = "Xác nhận thanh toán thành công";
             this.btnXacNhan.UseVisualStyleBackColor = true;
+            this.btnXacNhan.Click += new System.EventHandler(this.btnXacNhan_Click);
             // 
             // btnHuy
             // 
@@ -63,6 +64,7 @@
             this.btnHuy.TabIndex = 3;
             this.btnHuy.Text = "Hủy";
             this.btnHuy.UseVisualStyleBackColor = true;
+            this.btnHuy.Click += new System.EventHandler(this.btnHuy_Click);
             // 
             // picQRCode
             // 

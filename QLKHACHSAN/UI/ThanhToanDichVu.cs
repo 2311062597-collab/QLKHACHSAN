@@ -11,7 +11,9 @@ using QLKHACHSAN.BLL;
 using QLKHACHSAN.DAL;
 using System.Net;
 using System.IO;
+using System.Drawing.Printing;
 namespace QLKHACHSAN.UI
+
 
 {
     public partial class ThanhToanDichVuForm : Form
@@ -22,6 +24,8 @@ namespace QLKHACHSAN.UI
         private int soLuong = 0;
         private decimal thanhTien = 0;
         private string phuongThuc = string.Empty;
+        private PrintDocument printDocument = new PrintDocument();
+        private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
         private string TaoNoiDungChuyenKhoan()
         {
             return "TTDV" + DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -70,6 +74,8 @@ namespace QLKHACHSAN.UI
         public ThanhToanDichVuForm()
         {
             InitializeComponent();
+
+            printDocument.PrintPage += PrintDocument_PrintPage;
         }
 
         /// <summary>
@@ -144,11 +150,79 @@ namespace QLKHACHSAN.UI
         /// <summary>
         /// Handle confirm button click
         /// </summary>
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font titleFont = new Font("Arial", 18, FontStyle.Bold);
+            Font headerFont = new Font("Arial", 13, FontStyle.Bold);
+            Font normalFont = new Font("Arial", 11, FontStyle.Regular);
+            Font boldFont = new Font("Arial", 11, FontStyle.Bold);
+
+            float y = 40;
+            float left = 60;
+            float lineHeight = 28;
+
+            e.Graphics.DrawString("TAKIVIVU HOTEL", titleFont, Brushes.Black, left + 210, y);
+            y += 40;
+
+            e.Graphics.DrawString("HÓA ĐƠN THANH TOÁN DỊCH VỤ", headerFont, Brushes.Black, left + 150, y);
+            y += 40;
+
+            e.Graphics.DrawString("Ngày xuất: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"), normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Tên khách hàng: " + lblCustomerNameValue.Text, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Tên dịch vụ: " + lblServiceNameValue.Text, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Số lượng: " + lblQuantityValue.Text, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Phương thức thanh toán: " + lblPaymentMethodValue.Text, normalFont, Brushes.Black, left, y);
+            y += lineHeight + 10;
+
+            e.Graphics.DrawLine(Pens.Black, left, y, left + 680, y);
+            y += 20;
+
+            e.Graphics.DrawString("SỐ TIỀN:", boldFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(lblAmountValue.Text, boldFont, Brushes.Black, left + 280, y);
+            y += lineHeight + 30;
+
+            if (picQRCode.Visible && picQRCode.Image != null)
+            {
+                e.Graphics.DrawString("Mã QR chuyển khoản:", normalFont, Brushes.Black, left, y);
+                y += lineHeight;
+
+                e.Graphics.DrawImage(picQRCode.Image, left, y, 180, 180);
+                y += 200;
+            }
+
+            e.Graphics.DrawString("Nhân viên xác nhận", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString("Khách hàng", normalFont, Brushes.Black, left + 460, y);
+            y += 90;
+
+            e.Graphics.DrawString("Cảm ơn quý khách đã sử dụng dịch vụ!", boldFont, Brushes.Black, left + 150, y);
+        }
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             try
             {
-                // Confirm payment
+                DialogResult hoiIn = MessageBox.Show(
+                    "Thanh toán thành công.\nBạn có muốn in hóa đơn không?",
+                    "In hóa đơn",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (hoiIn == DialogResult.Yes)
+                {
+                    printPreviewDialog.Document = printDocument;
+                    printPreviewDialog.Width = 900;
+                    printPreviewDialog.Height = 700;
+                    printPreviewDialog.ShowDialog();
+                }
+
                 DialogResult = DialogResult.OK;
                 this.Close();
             }
