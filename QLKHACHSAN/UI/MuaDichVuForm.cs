@@ -67,7 +67,7 @@ namespace QLKHACHSAN.UI
                 // Load Customers
                 DataTable dtCustomers = khachHangBLL.GetAll();
                 cbMaKhachHang.DataSource = dtCustomers;
-                cbMaKhachHang.DisplayMember = "TenKhachHang";
+                cbMaKhachHang.DisplayMember = "HoTen";
                 cbMaKhachHang.ValueMember = "MaKhachHang";
                 cbMaKhachHang.SelectedIndex = -1;
 
@@ -440,43 +440,55 @@ namespace QLKHACHSAN.UI
                     return;
                 }
 
-                string maDatDichVu = txtMaDatDichVu.Text.Trim();
-                string maKhachHang = cbMaKhachHang.SelectedValue?.ToString() ?? "";
-                string maNhanVien = cbMaNhanVien.SelectedValue?.ToString() ?? "";
-                string maDichVu = cbMaDichVu.SelectedValue?.ToString() ?? "";
+                // Get payment information
+                string tenKhachHang = cbMaKhachHang.Text;
+                string tenDichVu = cbMaDichVu.Text;
                 int soLuong = (int)nudSoLuong.Value;
                 decimal thanhTien = Convert.ToDecimal(txtThanhTien.Text);
+                string phuongThuc = cbMaPhuongThuc.SelectedItem.ToString();
+                string maKhachHang = cbMaKhachHang.SelectedValue?.ToString() ?? "";
+                string maDichVu = cbMaDichVu.SelectedValue?.ToString() ?? "";
 
-                // Convert payment method name to ID
-                int maPhuongThuc = GetPaymentMethodId(cbMaPhuongThuc.SelectedItem.ToString());
-                DateTime ngayThanhToan = DateTime.ParseExact(dtpNgayThanhToan.Text, "dd/MM/yyyy", null);
+                // Open payment form dialog
+                ThanhToanDichVuForm paymentForm = new ThanhToanDichVuForm();
+                paymentForm.SetPaymentInfo(tenKhachHang, tenDichVu, soLuong, thanhTien, phuongThuc, maKhachHang);
 
-                bool result = false;
-
-                if (isEditing)
+                if (paymentForm.ShowDialog() == DialogResult.OK)
                 {
-                    result = bll.Sua(maDatDichVu, maKhachHang, maNhanVien, maDichVu,
-                        soLuong, thanhTien, maPhuongThuc.ToString(), ngayThanhToan);
+                    // Process payment and save
+                    string maDatDichVu = txtMaDatDichVu.Text.Trim();
+                    string maNhanVien = cbMaNhanVien.SelectedValue?.ToString() ?? "";
+                    int maPhuongThuc = GetPaymentMethodId(phuongThuc);
+                    DateTime ngayThanhToan = DateTime.ParseExact(dtpNgayThanhToan.Text, "dd/MM/yyyy", null);
+
+                    bool result = false;
+
+                    if (isEditing)
+                    {
+                        result = bll.Sua(maDatDichVu, maKhachHang, maNhanVien, maDichVu,
+                            soLuong, thanhTien, maPhuongThuc.ToString(), ngayThanhToan);
+
+                        if (result)
+                            MessageBox.Show("Cập nhật dịch vụ thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        result = bll.Them(maKhachHang, maNhanVien, maDichVu,
+                            soLuong, thanhTien, maPhuongThuc.ToString(), ngayThanhToan);
+
+                        if (result)
+                            MessageBox.Show("Thanh toán dịch vụ thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
 
                     if (result)
-                        MessageBox.Show("Cập nhật dịch vụ thành công!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    {
+                        LoadDanhSachDichVu();
+                        LamMoi();
+                    }
                 }
-                else
-                {
-                    result = bll.Them(maKhachHang, maNhanVien, maDichVu,
-                        soLuong, thanhTien, maPhuongThuc.ToString(), ngayThanhToan);
-
-                    if (result)
-                        MessageBox.Show("Thêm dịch vụ thành công!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                if (result)
-                {
-                    LoadDanhSachDichVu();
-                    LamMoi();
-                }
+                // If user clicks Cancel, do nothing and return to MuaDichVuForm
             }
             catch (Exception ex)
             {

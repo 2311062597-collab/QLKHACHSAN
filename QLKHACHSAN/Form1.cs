@@ -13,6 +13,9 @@ namespace QLKHACHSAN
             InitializeComponent();
 
             panel1.Dock = DockStyle.Left;
+
+            // Gắn sự kiện Load
+            this.Load += Form1_Load;
         }
 
         private void OpenChildForm(Form childForm)
@@ -35,17 +38,128 @@ namespace QLKHACHSAN
             childForm.Show();
         }
 
+        private void ApplyPermission()
+        {
+            string chucVu = SessionManager.TenChucVu == null
+                ? ""
+                : SessionManager.TenChucVu.Trim().ToLower();
+
+            // Mặc định khóa hết chức năng
+            btnDatPhong.Enabled = false;        // Đặt phòng
+            btnMuaDV.Enabled = false;       // Mua dịch vụ
+            btnPhong.Enabled = false;       // Phòng
+            btnDichVu.Enabled = false;      // Dịch vụ
+            btnKH.Enabled = false;          // Khách hàng
+            btnNV.Enabled = false;          // Nhân viên
+            btnThongKe.Enabled = false;     // Thống kê
+            btnTk.Enabled = false;          // Tài khoản
+
+            // Nếu có button9 cũng là Tài khoản thì khóa luôn
+            button9.Enabled = false;
+
+            // ADMIN: được vào tất cả
+            if (chucVu.Contains("admin"))
+            {
+                btnDatPhong.Enabled = true;
+                btnMuaDV.Enabled = true;
+                btnPhong.Enabled = true;
+                btnDichVu.Enabled = true;
+                btnKH.Enabled = true;
+                btnNV.Enabled = true;
+                btnThongKe.Enabled = true;
+                btnTk.Enabled = true;
+                button9.Enabled = true;
+            }
+            // LỄ TÂN: đặt phòng, mua dịch vụ, phòng, khách hàng
+            else if (chucVu.Contains("lễ tân") || chucVu.Contains("le tan"))
+            {
+                btnDatPhong.Enabled = true;
+                btnMuaDV.Enabled = true;
+                btnPhong.Enabled = true;
+                btnKH.Enabled = true;
+
+                // Nếu muốn lễ tân được xem tài khoản cá nhân thì bật dòng này
+                btnTk.Enabled = true;
+                button9.Enabled = true;
+            }
+            // KẾ TOÁN / KẾT TOÁN: mua dịch vụ, khách hàng, thống kê
+            else if (chucVu.Contains("kế toán") ||
+                     chucVu.Contains("ke toan") ||
+                     chucVu.Contains("kết toán") ||
+                     chucVu.Contains("ket toan"))
+            {
+                btnMuaDV.Enabled = false;
+                btnKH.Enabled = true;
+                btnThongKe.Enabled = true;
+
+                // Nếu muốn kế toán được xem tài khoản cá nhân thì bật dòng này
+                btnTk.Enabled = true;
+                button9.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Chức vụ của tài khoản này chưa được phân quyền!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+        }
+
+        private void OpenDefaultFormByRole()
+        {
+            string chucVu = SessionManager.TenChucVu == null
+                ? ""
+                : SessionManager.TenChucVu.Trim().ToLower();
+
+            if (chucVu.Contains("admin"))
+            {
+                OpenChildForm(new TaiKhoanForm(SessionManager.MaTaiKhoan));
+            }
+            else if (chucVu.Contains("lễ tân") || chucVu.Contains("le tan"))
+            {
+                OpenChildForm(new DatPhongForm());
+            }
+            else if (chucVu.Contains("kế toán") ||
+                     chucVu.Contains("ke toan") ||
+                     chucVu.Contains("kết toán") ||
+                     chucVu.Contains("ket toan"))
+            {
+                OpenChildForm(new ThongKeForm());
+            }
+            else
+            {
+                pnlMain.Controls.Clear();
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             if (SessionManager.IsLoggedIn())
             {
-                OpenChildForm(new TaiKhoanForm(SessionManager.MaTaiKhoan));
+                ApplyPermission();
+                OpenDefaultFormByRole();
             }
             else
             {
-                MessageBox.Show("Lỗi: Không tìm thấy thông tin người dùng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Lỗi: Không tìm thấy thông tin người dùng!",
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
                 this.Close();
             }
+        }
+
+        private bool IsAdmin()
+        {
+            string chucVu = SessionManager.TenChucVu == null
+                ? ""
+                : SessionManager.TenChucVu.Trim().ToLower();
+
+            return chucVu.Contains("admin");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -103,6 +217,17 @@ namespace QLKHACHSAN
 
         private void btnNV_Click(object sender, EventArgs e)
         {
+            if (!IsAdmin())
+            {
+                MessageBox.Show(
+                    "Bạn không có quyền truy cập chức năng Nhân viên!",
+                    "Không có quyền",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
             OpenChildForm(new NhanVienForm());
         }
 
@@ -111,11 +236,8 @@ namespace QLKHACHSAN
             OpenChildForm(new ThongKeForm());
         }
 
-        
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void btnDangXuat_Click(object sender, EventArgs e)
@@ -128,6 +250,8 @@ namespace QLKHACHSAN
 
             if (rs == DialogResult.Yes)
             {
+                SessionManager.Clear();
+
                 this.Hide();
                 DangNhapForm dn = new DangNhapForm();
                 dn.Show();

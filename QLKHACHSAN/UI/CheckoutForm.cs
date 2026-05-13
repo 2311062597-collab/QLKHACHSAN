@@ -2,7 +2,8 @@
 using System.Data;
 using System.Windows.Forms;
 using QLKHACHSAN.BLL;
-
+using System.Drawing;
+using System.Drawing.Printing;
 namespace QLKHACHSAN.UI
 {
     public partial class CheckoutForm : Form
@@ -10,11 +11,15 @@ namespace QLKHACHSAN.UI
         private int maDatPhong;
         private CheckoutBLL checkoutBLL = new CheckoutBLL();
         private decimal tongTienTruocGiamGia = 0;
-
+        private PrintDocument printDocument = new PrintDocument();
+        private PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
         public CheckoutForm(int bookingId)
         {
             InitializeComponent();
             maDatPhong = bookingId;
+
+            printDocument.PrintPage += PrintDocument_PrintPage;
+            btnInHoaDon.Click += btnInHoaDon_Click;
         }
 
         private void CheckoutForm_Load(object sender, EventArgs e)
@@ -220,7 +225,109 @@ namespace QLKHACHSAN.UI
             string tenPhuongThuc = drv["TenPhuongThuc"]?.ToString() ?? "";
             return tenPhuongThuc.Contains("Chuyển khoản") || tenPhuongThuc.Contains("Transfer") || tenPhuongThuc.Contains("Bank");
         }
+        private void btnInHoaDon_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                printPreviewDialog.Document = printDocument;
+                printPreviewDialog.Width = 900;
+                printPreviewDialog.Height = 700;
+                printPreviewDialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi khi in hóa đơn: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
 
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font titleFont = new Font("Arial", 18, FontStyle.Bold);
+            Font headerFont = new Font("Arial", 13, FontStyle.Bold);
+            Font normalFont = new Font("Arial", 11, FontStyle.Regular);
+            Font boldFont = new Font("Arial", 11, FontStyle.Bold);
+
+            float y = 40;
+            float left = 60;
+            float lineHeight = 28;
+
+            e.Graphics.DrawString("TAKIVIVU HOTEL", titleFont, Brushes.Black, left + 210, y);
+            y += 40;
+
+            e.Graphics.DrawString("HÓA ĐƠN THANH TOÁN PHÒNG", headerFont, Brushes.Black, left + 170, y);
+            y += 40;
+
+            e.Graphics.DrawString("Ngày in: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"), normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Tên khách hàng: " + txtTenKhachHang.Text, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Phòng: " + txtMaPhong.Text, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Ngày nhận: " + dateNgayNhan.Value.ToString("dd/MM/yyyy"), normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Ngày trả: " + dateNgayTra.Value.ToString("dd/MM/yyyy"), normalFont, Brushes.Black, left, y);
+            y += lineHeight + 10;
+
+            e.Graphics.DrawLine(Pens.Black, left, y, left + 680, y);
+            y += 15;
+
+            e.Graphics.DrawString("CHI TIẾT THANH TOÁN", headerFont, Brushes.Black, left, y);
+            y += lineHeight + 5;
+
+            e.Graphics.DrawString("Tiền phòng:", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(txtTienPhong.Text + " đ", normalFont, Brushes.Black, left + 280, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Tiền dịch vụ:", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(txtTienDichVu.Text + " đ", normalFont, Brushes.Black, left + 280, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Giảm giá:", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(txtGiamGia.Text + " đ", normalFont, Brushes.Black, left + 280, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Phương thức:", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(cbPhuongThuc.Text, normalFont, Brushes.Black, left + 280, y);
+            y += lineHeight + 10;
+
+            e.Graphics.DrawLine(Pens.Black, left, y, left + 680, y);
+            y += 20;
+
+            e.Graphics.DrawString("TỔNG CỘNG:", boldFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(txtTongCong.Text + " đ", boldFont, Brushes.Black, left + 280, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Số tiền khách trả:", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(numSoTienThanhToan.Value.ToString("N0") + " đ", normalFont, Brushes.Black, left + 280, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Tiền thừa:", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(txtSoTienThua.Text + " đ", normalFont, Brushes.Black, left + 280, y);
+            y += lineHeight + 20;
+
+            if (!string.IsNullOrWhiteSpace(txtGhiChu.Text))
+            {
+                e.Graphics.DrawString("Ghi chú:", normalFont, Brushes.Black, left, y);
+                y += lineHeight;
+                e.Graphics.DrawString(txtGhiChu.Text, normalFont, Brushes.Black, left, y);
+                y += lineHeight + 20;
+            }
+
+            e.Graphics.DrawString("Nhân viên xác nhận", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString("Khách hàng", normalFont, Brushes.Black, left + 460, y);
+            y += 90;
+
+            e.Graphics.DrawString("Cảm ơn quý khách đã sử dụng dịch vụ!", boldFont, Brushes.Black, left + 150, y);
+        }
         private void btnDong_Click(object sender, EventArgs e)
         {
             this.Close();

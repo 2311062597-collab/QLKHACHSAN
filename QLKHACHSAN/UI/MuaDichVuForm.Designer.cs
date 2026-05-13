@@ -333,7 +333,7 @@
             this.btnLuu.Location = new System.Drawing.Point(24, 39);
             this.btnLuu.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnLuu.Name = "btnLuu";
-            this.btnLuu.Size = new System.Drawing.Size(100, 34);
+            this.btnLuu.Size = new System.Drawing.Size(130, 34);
             this.btnLuu.TabIndex = 4;
             this.btnLuu.Text = "Thanh toán ";
             this.btnLuu.UseVisualStyleBackColor = true;
