@@ -49,6 +49,7 @@
             this.grbTongQuan = new System.Windows.Forms.GroupBox();
             this.txtTongDoanhThu = new System.Windows.Forms.TextBox();
             this.lblTongDoanhThu = new System.Windows.Forms.Label();
+            this.btnXuatBaoCao = new System.Windows.Forms.Button();
             this.grbBoLoc.SuspendLayout();
             this.grbBieuDo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartThongKe)).BeginInit();
@@ -59,9 +60,11 @@
             // 
             // grbBoLoc
             // 
+            this.grbBoLoc.Controls.Add(this.btnXuatBaoCao);
             this.grbBoLoc.Controls.Add(this.cbLoaiBieuDo);
             this.grbBoLoc.Controls.Add(this.lblLoaiBieuDo);
             this.grbBoLoc.Controls.Add(this.dtTo);
+            this.grbBoLoc.Controls.Add(this.btnThongKe);
             this.grbBoLoc.Controls.Add(this.lblDenNgay);
             this.grbBoLoc.Controls.Add(this.dateTimePicker1);
             this.grbBoLoc.Controls.Add(this.lblTuNgay);
@@ -83,7 +86,7 @@
             this.cbLoaiBieuDo.Location = new System.Drawing.Point(693, 34);
             this.cbLoaiBieuDo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbLoaiBieuDo.Name = "cbLoaiBieuDo";
-            this.cbLoaiBieuDo.Size = new System.Drawing.Size(180, 33);
+            this.cbLoaiBieuDo.Size = new System.Drawing.Size(224, 33);
             this.cbLoaiBieuDo.TabIndex = 1;
             // 
             // lblLoaiBieuDo
@@ -137,7 +140,7 @@
             // 
             // btnThongKe
             // 
-            this.btnThongKe.Location = new System.Drawing.Point(920, 32);
+            this.btnThongKe.Location = new System.Drawing.Point(982, 13);
             this.btnThongKe.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnThongKe.Name = "btnThongKe";
             this.btnThongKe.Size = new System.Drawing.Size(149, 34);
@@ -274,6 +277,15 @@
             this.lblTongDoanhThu.TabIndex = 9;
             this.lblTongDoanhThu.Text = "Tổng doanh thu:";
             // 
+            // btnXuatBaoCao
+            // 
+            this.btnXuatBaoCao.Location = new System.Drawing.Point(982, 52);
+            this.btnXuatBaoCao.Name = "btnXuatBaoCao";
+            this.btnXuatBaoCao.Size = new System.Drawing.Size(149, 43);
+            this.btnXuatBaoCao.TabIndex = 5;
+            this.btnXuatBaoCao.Text = "Xuất báo cáo";
+            this.btnXuatBaoCao.UseVisualStyleBackColor = true;
+            // 
             // ThongKeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -283,7 +295,6 @@
             this.Controls.Add(this.grbTongQuan);
             this.Controls.Add(this.grbBangThongKe);
             this.Controls.Add(this.grbBieuDo);
-            this.Controls.Add(this.btnThongKe);
             this.Controls.Add(this.grbBoLoc);
             this.Location = new System.Drawing.Point(30, 40);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -321,5 +332,6 @@
         private System.Windows.Forms.GroupBox grbTongQuan;
         private System.Windows.Forms.Label lblTongDoanhThu;
         private System.Windows.Forms.TextBox txtTongDoanhThu;
+        private System.Windows.Forms.Button btnXuatBaoCao;
     }
 }

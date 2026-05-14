@@ -179,13 +179,13 @@
             this.dgvBangPhong.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvBangPhong.BackgroundColor = System.Drawing.Color.White;
             this.dgvBangPhong.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBangPhong.Location = new System.Drawing.Point(723, 28);
+            this.dgvBangPhong.Location = new System.Drawing.Point(712, 23);
             this.dgvBangPhong.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvBangPhong.Name = "dgvBangPhong";
             this.dgvBangPhong.RowHeadersVisible = false;
             this.dgvBangPhong.RowHeadersWidth = 51;
             this.dgvBangPhong.RowTemplate.Height = 24;
-            this.dgvBangPhong.Size = new System.Drawing.Size(1297, 686);
+            this.dgvBangPhong.Size = new System.Drawing.Size(1166, 686);
             this.dgvBangPhong.TabIndex = 9;
             this.dgvBangPhong.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBangPhong_CellContentClick);
             // 

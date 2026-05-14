@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.IO;
 using QLKHACHSAN.BLL;
 
 namespace QLKHACHSAN.UI
@@ -29,7 +30,80 @@ namespace QLKHACHSAN.UI
         {
             InitializeForm();
         }
+        private void BtnXuatBaoCao_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvThongKe.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất báo cáo!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "CSV file (*.csv)|*.csv";
+                saveFileDialog.Title = "Xuất báo cáo thống kê";
+                saveFileDialog.FileName = "BaoCaoThongKe.csv";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false, new UTF8Encoding(true));
+
+                    sw.WriteLine("BÁO CÁO THỐNG KÊ");
+                    sw.WriteLine("Từ ngày:," + dateTimePicker1.Value.ToString("dd/MM/yyyy"));
+                    sw.WriteLine("Đến ngày:," + dtTo.Value.ToString("dd/MM/yyyy"));
+                    sw.WriteLine("Loại thống kê:," + cbLoaiBieuDo.Text);
+                    sw.WriteLine("Tổng doanh thu:," + txtTongDoanhThu.Text);
+                    sw.WriteLine("");
+
+                    for (int i = 0; i < dgvThongKe.Columns.Count; i++)
+                    {
+                        sw.Write(dgvThongKe.Columns[i].HeaderText);
+
+                        if (i < dgvThongKe.Columns.Count - 1)
+                        {
+                            sw.Write(",");
+                        }
+                    }
+
+                    sw.WriteLine();
+
+                    for (int i = 0; i < dgvThongKe.Rows.Count; i++)
+                    {
+                        if (!dgvThongKe.Rows[i].IsNewRow)
+                        {
+                            for (int j = 0; j < dgvThongKe.Columns.Count; j++)
+                            {
+                                object value = dgvThongKe.Rows[i].Cells[j].Value;
+
+                                if (value != null)
+                                {
+                                    sw.Write(value.ToString());
+                                }
+
+                                if (j < dgvThongKe.Columns.Count - 1)
+                                {
+                                    sw.Write(",");
+                                }
+                            }
+
+                            sw.WriteLine();
+                        }
+                    }
+
+                    sw.Close();
+
+                    MessageBox.Show("Xuất báo cáo thành công!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xuất báo cáo: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         /// <summary>
         /// Initialize form controls and data
         /// </summary>
@@ -67,6 +141,7 @@ namespace QLKHACHSAN.UI
         {
             btnThongKe.Click += BtnThongKe_Click;
             cbLoaiBieuDo.SelectedIndexChanged += CbLoaiBieuDo_SelectedIndexChanged;
+            btnXuatBaoCao.Click += BtnXuatBaoCao_Click;
         }
 
         /// <summary>

@@ -21,11 +21,12 @@ namespace QLKHACHSAN.DAL
                     SELECT 
                         p.MaPhong,
                         p.SoPhong AS TenPhong,
+                        p.Tang,
                         lp.TenLoaiPhong,
                         p.TrangThai
                     FROM Phong p
                     INNER JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
-                    ORDER BY p.SoPhong";
+                    ORDER BY p.Tang, p.SoPhong";
 
                 return db.ExecuteQuery(query);
             }

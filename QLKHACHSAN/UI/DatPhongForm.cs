@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 using QLKHACHSAN.BLL;
 
 namespace QLKHACHSAN.UI
@@ -13,8 +14,12 @@ namespace QLKHACHSAN.UI
         private ThongKeBLL thongKeBLL = new ThongKeBLL();
         private int selectedRoomId = 0;
         private int selectedCustomerId = 0;
+        private int filterTang = 0; // 0 = tất cả tầng
         private DataTable roomsDataTable;
         private readonly DataTable dtServices;
+        private PrintDocument printLaiHoaDonDocument = new PrintDocument();
+        private PrintPreviewDialog printPreviewHoaDon = new PrintPreviewDialog();
+        private DataGridViewRow selectedInvoiceRow = null;
 
         public DatPhongForm()
         {
@@ -44,22 +49,50 @@ namespace QLKHACHSAN.UI
         /// </summary>
         private void InitializeForm()
         {
-            // Set default dates
             dateTimePicker1.Value = DateTime.Now;
             dateTimePicker2.Value = DateTime.Now.AddDays(1);
 
-            // Load room types
-            LoadRoomTypes();
+            LoadTang();
 
-            // Load rooms
+            LoadRoomTypes();
             LoadRooms();
 
-            // Setup event handlers
             btnDong.Click += BtnDong_Click;
+            btnInLaiHoaDon.Click += BtnInLaiHoaDon_Click;
+            printLaiHoaDonDocument.PrintPage += PrintLaiHoaDonDocument_PrintPage;
+
             cbLoaiPhong.SelectedIndexChanged += CbLoaiPhong_SelectedIndexChanged;
             dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
             dateTimePicker2.ValueChanged += DateTimePicker2_ValueChanged;
             numericUpDown1.ValueChanged += NumericUpDown1_ValueChanged;
+
+        }
+
+        private void LoadTang()
+        {
+            cbTang.Items.Clear();
+            cbTang.Items.Add("Tất cả tầng");
+
+            for (int i = 1; i <= 9; i++)
+            {
+                cbTang.Items.Add("Tầng " + i);
+            }
+
+            cbTang.SelectedIndex = 0;
+        }
+
+        private void CbTang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbTang.SelectedIndex <= 0)
+            {
+                filterTang = 0;
+            }
+            else
+            {
+                filterTang = cbTang.SelectedIndex;
+            }
+
+            DisplayRoomGrid();
         }
 
         /// <summary>
@@ -95,6 +128,7 @@ namespace QLKHACHSAN.UI
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+
                 DisplayRoomGrid();
             }
             catch (Exception ex)
@@ -107,6 +141,21 @@ namespace QLKHACHSAN.UI
         /// <summary>
         /// Display rooms as clickable buttons
         /// </summary>
+        private Color GetRoomTypeColor(string tenLoaiPhong)
+        {
+            tenLoaiPhong = tenLoaiPhong.Trim().ToLower();
+
+            if (tenLoaiPhong.Contains("đơn") || tenLoaiPhong.Contains("don"))
+                return Color.Orange;
+
+            if (tenLoaiPhong.Contains("đôi") || tenLoaiPhong.Contains("doi"))
+                return Color.DodgerBlue;
+
+            if (tenLoaiPhong.Contains("vip"))
+                return Color.MediumPurple;
+
+            return Color.Gray;
+        }
         private void DisplayRoomGrid()
         {
             try
@@ -124,19 +173,32 @@ namespace QLKHACHSAN.UI
                         int roomId = Convert.ToInt32(row["MaPhong"]);
                         string roomName = row["TenPhong"].ToString();
                         string status = row["TrangThai"].ToString();
+                        string tenLoaiPhong = row["TenLoaiPhong"].ToString();
+                        string tang = row["Tang"].ToString();
+                        if (filterTang > 0 && tang != filterTang.ToString())
+                        {
+                            continue;
+                        }
 
-                        btnRoom.Text = roomName + "\n" + status;
-                        btnRoom.Width = 80;
-                        btnRoom.Height = 60;
+                        btnRoom.Text = "P." + roomName + "\nTầng " + tang + "\n" + status;
+                        btnRoom.Width = 90;
+                        btnRoom.Height = 70;
                         btnRoom.Margin = new Padding(5);
                         btnRoom.Tag = roomId;
                         btnRoom.Click += BtnRoom_Click;
 
-                        // Use BLL method for color
-                        btnRoom.BackColor = bll.GetRoomStatusColor(status);
+                        if (status.Trim().ToLower().Contains("đã đặt") ||
+                        status.Trim().ToLower().Contains("đang sử dụng"))
+                        {
+                            btnRoom.BackColor = Color.Gray;
+                        }
+                        else
+                        {
+                            btnRoom.BackColor = GetRoomTypeColor(tenLoaiPhong);
+                        }
+
                         btnRoom.ForeColor = Color.White;
                         btnRoom.Font = new Font("Arial", 8, FontStyle.Bold);
-
                         flpPhong.Controls.Add(btnRoom);
                     }
                     catch (Exception ex)
@@ -671,6 +733,127 @@ namespace QLKHACHSAN.UI
         {
 
         }
+        private void BtnInLaiHoaDon_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvHoaDonPhong.CurrentRow == null)
+                {
+                    MessageBox.Show(
+                        "Vui lòng chọn một hóa đơn trong lịch sử thanh toán để in lại!",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
+                selectedInvoiceRow = dgvHoaDonPhong.CurrentRow;
+
+                printPreviewHoaDon.Document = printLaiHoaDonDocument;
+                printPreviewHoaDon.Width = 900;
+                printPreviewHoaDon.Height = 700;
+                printPreviewHoaDon.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi khi in lại hóa đơn: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private string GetCellValue(DataGridViewRow row, string columnName)
+        {
+            try
+            {
+                if (row == null)
+                    return "";
+
+                if (!dgvHoaDonPhong.Columns.Contains(columnName))
+                    return "";
+
+                object value = row.Cells[columnName].Value;
+
+                if (value == null || value == DBNull.Value)
+                    return "";
+
+                return value.ToString();
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        private void PrintLaiHoaDonDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            if (selectedInvoiceRow == null)
+                return;
+
+            Font titleFont = new Font("Arial", 18, FontStyle.Bold);
+            Font headerFont = new Font("Arial", 13, FontStyle.Bold);
+            Font normalFont = new Font("Arial", 11, FontStyle.Regular);
+            Font boldFont = new Font("Arial", 11, FontStyle.Bold);
+
+            float y = 40;
+            float left = 60;
+            float lineHeight = 28;
+
+            string loaiGiaoDich = GetCellValue(selectedInvoiceRow, "LoaiGiaoDich");
+            string maHoaDon = GetCellValue(selectedInvoiceRow, "MaHoaDon");
+            string tenKhachHang = GetCellValue(selectedInvoiceRow, "TenKhachHang");
+            string tenChiTieu = GetCellValue(selectedInvoiceRow, "TenChiTieu");
+            string doanhThu = GetCellValue(selectedInvoiceRow, "DoanhThu");
+            string ngayThanhToan = GetCellValue(selectedInvoiceRow, "NgayThanhToan");
+            string phuongThuc = GetCellValue(selectedInvoiceRow, "PhuongThuc");
+
+            e.Graphics.DrawString("TAKIVIVU HOTEL", titleFont, Brushes.Black, left + 210, y);
+            y += 40;
+
+            e.Graphics.DrawString("HÓA ĐƠN THANH TOÁN", headerFont, Brushes.Black, left + 190, y);
+            y += 40;
+
+            e.Graphics.DrawString("Mã hóa đơn: " + maHoaDon, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Loại giao dịch: " + loaiGiaoDich, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Ngày thanh toán: " + ngayThanhToan, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Ngày in lại: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"), normalFont, Brushes.Black, left, y);
+            y += lineHeight + 10;
+
+            e.Graphics.DrawLine(Pens.Black, left, y, left + 680, y);
+            y += 20;
+
+            e.Graphics.DrawString("Tên khách hàng: " + tenKhachHang, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Nội dung: " + tenChiTieu, normalFont, Brushes.Black, left, y);
+            y += lineHeight;
+
+            e.Graphics.DrawString("Phương thức: " + phuongThuc, normalFont, Brushes.Black, left, y);
+            y += lineHeight + 10;
+
+            e.Graphics.DrawLine(Pens.Black, left, y, left + 680, y);
+            y += 20;
+
+            e.Graphics.DrawString("SỐ TIỀN:", boldFont, Brushes.Black, left, y);
+            e.Graphics.DrawString(doanhThu + " đ", boldFont, Brushes.Black, left + 220, y);
+            y += lineHeight + 40;
+
+            e.Graphics.DrawString("Nhân viên xác nhận", normalFont, Brushes.Black, left, y);
+            e.Graphics.DrawString("Khách hàng", normalFont, Brushes.Black, left + 460, y);
+            y += 90;
+
+            e.Graphics.DrawString("Cảm ơn quý khách đã sử dụng dịch vụ!", boldFont, Brushes.Black, left + 150, y);
+        }
         private void btnDatPhong_Click(object sender, EventArgs e)
         {
             try
@@ -721,6 +904,16 @@ namespace QLKHACHSAN.UI
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnInLaiHoaDon_Click(object sender, EventArgs e)
         {
 
         }

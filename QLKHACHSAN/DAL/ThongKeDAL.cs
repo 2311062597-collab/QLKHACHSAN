@@ -57,30 +57,46 @@ namespace QLKHACHSAN.DAL
             try
             {
                 string sql = @"
-                    SELECT 
-                        'Phòng' as TenDichVu,
-                        COUNT(DISTINCT dp.MaDatPhong) as SoLanSuDung,
-                        SUM(ttt.SoTien) as DoanhThu
-                    FROM ThanhToanDatPhong ttt
-                    INNER JOIN DatPhong dp ON ttt.MaDatPhong = dp.MaDatPhong
-                    WHERE ttt.NgayThanhToan >= @fromDate 
-                        AND ttt.NgayThanhToan < DATEADD(DAY, 1, @toDate)
-                    GROUP BY 'Phòng'
-                    ORDER BY DoanhThu DESC";
+            SELECT 
+                TenDichVu,
+                SUM(SoLanSuDung) as SoLanSuDung,
+                SUM(DoanhThu) as DoanhThu
+            FROM
+            (
+                SELECT 
+                    N'Phòng' as TenDichVu,
+                    COUNT(DISTINCT dp.MaDatPhong) as SoLanSuDung,
+                    SUM(ttt.SoTien) as DoanhThu
+                FROM ThanhToanDatPhong ttt
+                INNER JOIN DatPhong dp ON ttt.MaDatPhong = dp.MaDatPhong
+                WHERE ttt.NgayThanhToan >= @fromDate 
+                    AND ttt.NgayThanhToan < DATEADD(DAY, 1, @toDate)
+
+                UNION ALL
+
+                SELECT 
+                    dv.TenDichVu as TenDichVu,
+                    COUNT(ddv.MaDatDichVu) as SoLanSuDung,
+                    SUM(ddv.ThanhTien) as DoanhThu
+                FROM DatDichVu ddv
+                INNER JOIN DichVu dv ON ddv.MaDichVu = dv.MaDichVu
+                WHERE ddv.NgayThanhToan >= @fromDate 
+                    AND ddv.NgayThanhToan < DATEADD(DAY, 1, @toDate)
+                GROUP BY dv.TenDichVu
+            ) AS BangDoanhThu
+            GROUP BY TenDichVu
+            ORDER BY DoanhThu DESC";
 
                 SqlParameter[] parameters = {
-                    new SqlParameter("@fromDate", fromDate),
-                    new SqlParameter("@toDate", toDate)
-                };
+            new SqlParameter("@fromDate", fromDate),
+            new SqlParameter("@toDate", toDate)
+        };
 
-                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetRevenueByService from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
                 DataTable result = db.ExecuteQuery(sql, parameters);
-                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
                 return result;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"SQL Error in GetRevenueByService: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo dịch vụ: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
@@ -95,36 +111,45 @@ namespace QLKHACHSAN.DAL
             try
             {
                 string sql = @"
-                    SELECT ISNULL(SUM(ttt.SoTien), 0) as TotalRevenue
-                    FROM ThanhToanDatPhong ttt
-                    WHERE ttt.NgayThanhToan >= @fromDate 
-                        AND ttt.NgayThanhToan < DATEADD(DAY, 1, @toDate)";
+            SELECT ISNULL(SUM(DoanhThu), 0) as TotalRevenue
+            FROM
+            (
+                SELECT 
+                    SUM(ttt.SoTien) as DoanhThu
+                FROM ThanhToanDatPhong ttt
+                WHERE ttt.NgayThanhToan >= @fromDate 
+                    AND ttt.NgayThanhToan < DATEADD(DAY, 1, @toDate)
+
+                UNION ALL
+
+                SELECT 
+                    SUM(ddv.ThanhTien) as DoanhThu
+                FROM DatDichVu ddv
+                WHERE ddv.NgayThanhToan >= @fromDate 
+                    AND ddv.NgayThanhToan < DATEADD(DAY, 1, @toDate)
+            ) AS BangTongDoanhThu";
 
                 SqlParameter[] parameters = {
-                    new SqlParameter("@fromDate", fromDate),
-                    new SqlParameter("@toDate", toDate)
-                };
+            new SqlParameter("@fromDate", fromDate),
+            new SqlParameter("@toDate", toDate)
+        };
 
-                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetTotalRevenue from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
                 DataTable dt = db.ExecuteQuery(sql, parameters);
-                System.Diagnostics.Debug.WriteLine($"Query returned {dt?.Rows.Count ?? 0} rows");
+
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    decimal result = Convert.ToDecimal(dt.Rows[0]["TotalRevenue"]);
-                    System.Diagnostics.Debug.WriteLine($"Total revenue: {result}");
-                    return result;
+                    return Convert.ToDecimal(dt.Rows[0]["TotalRevenue"]);
                 }
+
                 return 0;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"SQL Error in GetTotalRevenue: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy tổng doanh thu: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return 0;
             }
         }
-
         /// <summary>
         /// Get booking statistics by date range
         /// </summary>
@@ -161,7 +186,7 @@ namespace QLKHACHSAN.DAL
                 return new DataTable();
             }
         }
-       
+
         /// <summary>
         /// Get monthly revenue statistics
         /// </summary>
@@ -170,26 +195,39 @@ namespace QLKHACHSAN.DAL
             try
             {
                 string sql = @"
-                    SELECT 
-                        MONTH(ttt.NgayThanhToan) as Thang,
-                        SUM(ttt.SoTien) as DoanhThu
-                    FROM ThanhToanDatPhong ttt
-                    WHERE YEAR(ttt.NgayThanhToan) = @year
-                    GROUP BY MONTH(ttt.NgayThanhToan)
-                    ORDER BY MONTH(ttt.NgayThanhToan) ASC";
+            SELECT 
+                Thang,
+                SUM(DoanhThu) as DoanhThu
+            FROM
+            (
+                SELECT 
+                    MONTH(ttt.NgayThanhToan) as Thang,
+                    SUM(ttt.SoTien) as DoanhThu
+                FROM ThanhToanDatPhong ttt
+                WHERE YEAR(ttt.NgayThanhToan) = @year
+                GROUP BY MONTH(ttt.NgayThanhToan)
+
+                UNION ALL
+
+                SELECT 
+                    MONTH(ddv.NgayThanhToan) as Thang,
+                    SUM(ddv.ThanhTien) as DoanhThu
+                FROM DatDichVu ddv
+                WHERE YEAR(ddv.NgayThanhToan) = @year
+                GROUP BY MONTH(ddv.NgayThanhToan)
+            ) AS BangDoanhThuThang
+            GROUP BY Thang
+            ORDER BY Thang ASC";
 
                 SqlParameter[] parameters = {
-                    new SqlParameter("@year", year)
-                };
+            new SqlParameter("@year", year)
+        };
 
-                System.Diagnostics.Debug.WriteLine($"Executing SQL: GetMonthlyRevenue for year {year}");
                 DataTable result = db.ExecuteQuery(sql, parameters);
-                System.Diagnostics.Debug.WriteLine($"Query returned {result?.Rows.Count ?? 0} rows");
                 return result;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"SQL Error in GetMonthlyRevenue: {ex.Message}");
                 System.Windows.Forms.MessageBox.Show("Lỗi khi lấy doanh thu theo tháng: " + ex.Message, "Lỗi",
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 return new DataTable();
