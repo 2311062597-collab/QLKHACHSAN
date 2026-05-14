@@ -63,8 +63,7 @@ namespace QLKHACHSAN.UI
                 if (row.Table.Columns.Contains("TienDichVu") && row["TienDichVu"] != DBNull.Value)
                     tienDichVu = Convert.ToDecimal(row["TienDichVu"]);
 
-                txtTienPhong.Text = tienPhong.ToString("N0");
-                txtTienDichVu.Text = tienDichVu.ToString("N0");
+
 
                 tongTienTruocGiamGia = tienPhong + tienDichVu;
             }
@@ -288,7 +287,6 @@ namespace QLKHACHSAN.UI
             y += lineHeight;
 
             e.Graphics.DrawString("Tiền dịch vụ:", normalFont, Brushes.Black, left, y);
-            e.Graphics.DrawString(txtTienDichVu.Text + " đ", normalFont, Brushes.Black, left + 280, y);
             y += lineHeight;
 
             e.Graphics.DrawString("Giảm giá:", normalFont, Brushes.Black, left, y);

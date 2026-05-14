@@ -42,8 +42,6 @@ namespace QLKHACHSAN.UI
             this.txtGhiChu = new System.Windows.Forms.TextBox();
             this.txtGiamGia = new System.Windows.Forms.TextBox();
             this.lblGiamGia = new System.Windows.Forms.Label();
-            this.txtTienDichVu = new System.Windows.Forms.TextBox();
-            this.lblTienDichVu = new System.Windows.Forms.Label();
             this.txtTienPhong = new System.Windows.Forms.TextBox();
             this.lblTienPhong = new System.Windows.Forms.Label();
             this.grbPhuongThucThanhToan = new System.Windows.Forms.GroupBox();
@@ -170,8 +168,6 @@ namespace QLKHACHSAN.UI
             this.grbChiTietThanhToan.Controls.Add(this.txtGhiChu);
             this.grbChiTietThanhToan.Controls.Add(this.txtGiamGia);
             this.grbChiTietThanhToan.Controls.Add(this.lblGiamGia);
-            this.grbChiTietThanhToan.Controls.Add(this.txtTienDichVu);
-            this.grbChiTietThanhToan.Controls.Add(this.lblTienDichVu);
             this.grbChiTietThanhToan.Controls.Add(this.txtTienPhong);
             this.grbChiTietThanhToan.Controls.Add(this.lblTienPhong);
             this.grbChiTietThanhToan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -206,7 +202,7 @@ namespace QLKHACHSAN.UI
             // 
             this.txtGiamGia.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtGiamGia.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtGiamGia.Location = new System.Drawing.Point(518, 75);
+            this.txtGiamGia.Location = new System.Drawing.Point(518, 51);
             this.txtGiamGia.Name = "txtGiamGia";
             this.txtGiamGia.Size = new System.Drawing.Size(232, 26);
             this.txtGiamGia.TabIndex = 5;
@@ -218,34 +214,11 @@ namespace QLKHACHSAN.UI
             // 
             this.lblGiamGia.AutoSize = true;
             this.lblGiamGia.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGiamGia.Location = new System.Drawing.Point(430, 78);
+            this.lblGiamGia.Location = new System.Drawing.Point(431, 51);
             this.lblGiamGia.Name = "lblGiamGia";
             this.lblGiamGia.Size = new System.Drawing.Size(81, 20);
             this.lblGiamGia.TabIndex = 4;
             this.lblGiamGia.Text = "Giảm giá:";
-            // 
-            // txtTienDichVu
-            // 
-            this.txtTienDichVu.BackColor = System.Drawing.SystemColors.Control;
-            this.txtTienDichVu.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTienDichVu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTienDichVu.Location = new System.Drawing.Point(518, 45);
-            this.txtTienDichVu.Name = "txtTienDichVu";
-            this.txtTienDichVu.ReadOnly = true;
-            this.txtTienDichVu.Size = new System.Drawing.Size(232, 26);
-            this.txtTienDichVu.TabIndex = 3;
-            this.txtTienDichVu.Text = "0";
-            this.txtTienDichVu.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // lblTienDichVu
-            // 
-            this.lblTienDichVu.AutoSize = true;
-            this.lblTienDichVu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTienDichVu.Location = new System.Drawing.Point(417, 48);
-            this.lblTienDichVu.Name = "lblTienDichVu";
-            this.lblTienDichVu.Size = new System.Drawing.Size(104, 20);
-            this.lblTienDichVu.TabIndex = 2;
-            this.lblTienDichVu.Text = "Tiền dịch vụ:";
             // 
             // txtTienPhong
             // 
@@ -473,8 +446,6 @@ namespace QLKHACHSAN.UI
         private System.Windows.Forms.TextBox txtGhiChu;
         private System.Windows.Forms.TextBox txtGiamGia;
         private System.Windows.Forms.Label lblGiamGia;
-        private System.Windows.Forms.TextBox txtTienDichVu;
-        private System.Windows.Forms.Label lblTienDichVu;
         private System.Windows.Forms.TextBox txtTienPhong;
         private System.Windows.Forms.Label lblTienPhong;
         private System.Windows.Forms.GroupBox grbPhuongThucThanhToan;

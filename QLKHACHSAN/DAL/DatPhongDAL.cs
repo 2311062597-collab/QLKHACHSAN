@@ -191,6 +191,8 @@ namespace QLKHACHSAN.DAL
         // =========================
 
         public DataTable GetCustomerByPhone(string phoneNumber)
+
+
         {
             try
             {
@@ -243,7 +245,48 @@ namespace QLKHACHSAN.DAL
                 return new DataTable();
             }
         }
+        public int CreateCustomer(string hoTen, string soDienThoai, string cccd)
+        {
+            try
+            {
+                string query = @"
+            INSERT INTO KhachHang
+            (
+                HoTen,
+                SoDienThoai,
+                CCCD
+            )
+            VALUES
+            (
+                @hoTen,
+                @soDienThoai,
+                @cccd
+            );
 
+            SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                SqlParameter[] parameters =
+                {
+            new SqlParameter("@hoTen", hoTen),
+            new SqlParameter("@soDienThoai", soDienThoai),
+            new SqlParameter("@cccd", cccd)
+        };
+
+                DataTable dt = db.ExecuteQuery(query, parameters);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return Convert.ToInt32(dt.Rows[0][0]);
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi khi thêm khách hàng mới", ex);
+                return 0;
+            }
+        }
         // =========================
         // 3. ĐẶT PHÒNG
         // =========================

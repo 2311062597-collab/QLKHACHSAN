@@ -225,6 +225,8 @@
             // 
             this.dgvThongKe.AllowUserToAddRows = false;
             this.dgvThongKe.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvThongKe.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvThongKe.BackgroundColor = System.Drawing.Color.White;
             this.dgvThongKe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvThongKe.Location = new System.Drawing.Point(5, 30);
             this.dgvThongKe.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

@@ -51,10 +51,15 @@
             // 
             // dgvLoaiDV
             // 
+            this.dgvLoaiDV.AllowUserToAddRows = false;
+            this.dgvLoaiDV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLoaiDV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvLoaiDV.BackgroundColor = System.Drawing.Color.White;
             this.dgvLoaiDV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLoaiDV.Location = new System.Drawing.Point(380, 39);
             this.dgvLoaiDV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvLoaiDV.Name = "dgvLoaiDV";
+            this.dgvLoaiDV.RowHeadersVisible = false;
             this.dgvLoaiDV.RowHeadersWidth = 51;
             this.dgvLoaiDV.RowTemplate.Height = 24;
             this.dgvLoaiDV.Size = new System.Drawing.Size(1143, 686);

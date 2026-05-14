@@ -414,10 +414,15 @@
             // 
             // dgvBangNV
             // 
+            this.dgvBangNV.AllowUserToAddRows = false;
+            this.dgvBangNV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvBangNV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvBangNV.BackgroundColor = System.Drawing.Color.White;
             this.dgvBangNV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBangNV.Location = new System.Drawing.Point(739, 57);
             this.dgvBangNV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvBangNV.Name = "dgvBangNV";
+            this.dgvBangNV.RowHeadersVisible = false;
             this.dgvBangNV.RowHeadersWidth = 51;
             this.dgvBangNV.RowTemplate.Height = 24;
             this.dgvBangNV.Size = new System.Drawing.Size(800, 686);

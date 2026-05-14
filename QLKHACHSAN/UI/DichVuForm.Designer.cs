@@ -60,6 +60,10 @@
             // 
             // dgvDV
             // 
+            this.dgvDV.AllowUserToAddRows = false;
+            this.dgvDV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvDV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvDV.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -88,6 +92,7 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvDV.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvDV.RowHeadersVisible = false;
             this.dgvDV.RowHeadersWidth = 51;
             this.dgvDV.RowTemplate.Height = 24;
             this.dgvDV.Size = new System.Drawing.Size(869, 578);

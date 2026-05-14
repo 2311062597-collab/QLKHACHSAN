@@ -437,7 +437,7 @@ namespace QLKHACHSAN.UI
                     return;
                 }
 
-                if (!bll.ValidateCustomerSelected(selectedCustomerId))
+                if (!EnsureCustomerExists())
                     return;
 
                 if (!bll.ValidateRoomSelected(selectedRoomId))
@@ -578,7 +578,90 @@ namespace QLKHACHSAN.UI
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private bool EnsureCustomerExists()
+        {
+            try
+            {
+                // Nếu đã tìm thấy khách hàng rồi thì dùng luôn
+                if (selectedCustomerId > 0)
+                    return true;
 
+                string hoTen = txtTenKH.Text.Trim();
+                string sdt = txtSDT.Text.Trim();
+                string cccd = txtCCCD.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(hoTen))
+                {
+                    MessageBox.Show("Vui lòng nhập tên khách hàng!", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtTenKH.Focus();
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(sdt) || sdt.Length != 10 || !sdt.All(char.IsDigit))
+                {
+                    MessageBox.Show("Số điện thoại phải đủ 10 số!", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtSDT.Focus();
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(cccd) || cccd.Length != 12 || !cccd.All(char.IsDigit))
+                {
+                    MessageBox.Show("CCCD phải đủ 12 số!", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCCCD.Focus();
+                    return false;
+                }
+
+                // Kiểm tra lại theo số điện thoại
+                DataTable dtByPhone = bll.GetCustomerByPhone(sdt);
+                if (dtByPhone != null && dtByPhone.Rows.Count > 0)
+                {
+                    DataRow row = dtByPhone.Rows[0];
+                    selectedCustomerId = Convert.ToInt32(row["MaKhachHang"]);
+                    txtTenKH.Text = row["HoTen"].ToString();
+                    txtCCCD.Text = row["CCCD"].ToString();
+                    return true;
+                }
+
+                // Kiểm tra lại theo CCCD
+                DataTable dtByCCCD = bll.GetCustomerByIdentity(cccd);
+                if (dtByCCCD != null && dtByCCCD.Rows.Count > 0)
+                {
+                    DataRow row = dtByCCCD.Rows[0];
+                    selectedCustomerId = Convert.ToInt32(row["MaKhachHang"]);
+                    txtTenKH.Text = row["HoTen"].ToString();
+                    txtSDT.Text = row["SoDienThoai"].ToString();
+                    return true;
+                }
+
+                // Nếu khách chưa tồn tại thì tự thêm mới
+                int newCustomerId = bll.CreateCustomer(hoTen, sdt, cccd);
+
+                if (newCustomerId <= 0)
+                {
+                    MessageBox.Show("Không thể thêm khách hàng mới!", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                selectedCustomerId = newCustomerId;
+
+                MessageBox.Show("Đã thêm khách hàng mới vào hệ thống!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi kiểm tra/thêm khách hàng: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
         private void grbDanhSachPhong_Enter(object sender, EventArgs e)
         {
 
@@ -598,8 +681,7 @@ namespace QLKHACHSAN.UI
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
-                if (!bll.ValidateCustomerSelected(selectedCustomerId))
+                if (!EnsureCustomerExists())
                     return;
 
                 if (!bll.ValidateRoomSelected(selectedRoomId))

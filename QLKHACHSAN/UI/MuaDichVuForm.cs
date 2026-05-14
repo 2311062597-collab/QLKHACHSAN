@@ -587,5 +587,10 @@ namespace QLKHACHSAN.UI
         {
            
         }
+
+        private void cbMaKhachHang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

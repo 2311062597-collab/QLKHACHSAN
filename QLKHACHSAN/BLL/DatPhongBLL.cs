@@ -72,7 +72,43 @@ namespace QLKHACHSAN.BLL
 
             return dal.GetCustomerByIdentity(identityNumber);
         }
+        public int CreateCustomer(string hoTen, string soDienThoai, string cccd)
+        {
+            if (string.IsNullOrWhiteSpace(hoTen))
+            {
+                System.Windows.Forms.MessageBox.Show(
+                    "Vui lòng nhập tên khách hàng!",
+                    "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning
+                );
+                return 0;
+            }
 
+            if (string.IsNullOrWhiteSpace(soDienThoai) || soDienThoai.Length != 10)
+            {
+                System.Windows.Forms.MessageBox.Show(
+                    "Số điện thoại phải đủ 10 số!",
+                    "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning
+                );
+                return 0;
+            }
+
+            if (string.IsNullOrWhiteSpace(cccd) || cccd.Length != 12)
+            {
+                System.Windows.Forms.MessageBox.Show(
+                    "CCCD phải đủ 12 số!",
+                    "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning
+                );
+                return 0;
+            }
+
+            return dal.CreateCustomer(hoTen.Trim(), soDienThoai.Trim(), cccd.Trim());
+        }
         /// <summary>
         /// Get all room types
         /// </summary>
@@ -455,6 +491,7 @@ namespace QLKHACHSAN.BLL
         /// <summary>
         /// Check if room has active booking
         /// </summary>
+        /// 
         public bool HasActiveBooking(int roomId)
         {
             try
