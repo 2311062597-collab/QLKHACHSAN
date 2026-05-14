@@ -86,8 +86,8 @@
             this.grbDanhSachPhong.Controls.Add(this.label2);
             this.grbDanhSachPhong.Controls.Add(this.flpPhong);
             this.grbDanhSachPhong.Controls.Add(this.btnLegendDon);
-            this.grbDanhSachPhong.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbDanhSachPhong.ForeColor = System.Drawing.Color.Blue;
+            this.grbDanhSachPhong.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grbDanhSachPhong.ForeColor = System.Drawing.Color.Black;
             this.grbDanhSachPhong.Location = new System.Drawing.Point(13, 53);
             this.grbDanhSachPhong.Margin = new System.Windows.Forms.Padding(4);
             this.grbDanhSachPhong.Name = "grbDanhSachPhong";
@@ -104,7 +104,7 @@
             this.label2.Location = new System.Drawing.Point(140, 132);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(120, 25);
+            this.label2.Size = new System.Drawing.Size(119, 25);
             this.label2.TabIndex = 12;
             this.label2.Text = "Phòng đã đặt";
             // 
@@ -135,7 +135,7 @@
             this.grbHoaDonTienPhong.BackColor = System.Drawing.SystemColors.Control;
             this.grbHoaDonTienPhong.Controls.Add(this.dgvHoaDonPhong);
             this.grbHoaDonTienPhong.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbHoaDonTienPhong.ForeColor = System.Drawing.Color.Blue;
+            this.grbHoaDonTienPhong.ForeColor = System.Drawing.Color.Black;
             this.grbHoaDonTienPhong.Location = new System.Drawing.Point(815, 82);
             this.grbHoaDonTienPhong.Margin = new System.Windows.Forms.Padding(4);
             this.grbHoaDonTienPhong.Name = "grbHoaDonTienPhong";
@@ -173,7 +173,7 @@
             this.grbChucNang.Controls.Add(this.txtTongTien);
             this.grbChucNang.Controls.Add(this.lblTongTien);
             this.grbChucNang.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbChucNang.ForeColor = System.Drawing.Color.Blue;
+            this.grbChucNang.ForeColor = System.Drawing.Color.Black;
             this.grbChucNang.Location = new System.Drawing.Point(435, 612);
             this.grbChucNang.Margin = new System.Windows.Forms.Padding(4);
             this.grbChucNang.Name = "grbChucNang";
@@ -268,7 +268,7 @@
             this.grbThongTinDatPhong.Controls.Add(this.lblTenKH);
             this.grbThongTinDatPhong.Controls.Add(this.lblSDT);
             this.grbThongTinDatPhong.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbThongTinDatPhong.ForeColor = System.Drawing.Color.Blue;
+            this.grbThongTinDatPhong.ForeColor = System.Drawing.Color.Black;
             this.grbThongTinDatPhong.Location = new System.Drawing.Point(435, 82);
             this.grbThongTinDatPhong.Margin = new System.Windows.Forms.Padding(4);
             this.grbThongTinDatPhong.Name = "grbThongTinDatPhong";
@@ -469,7 +469,7 @@
             this.label3.Location = new System.Drawing.Point(43, 59);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 25);
+            this.label3.Size = new System.Drawing.Size(39, 25);
             this.label3.TabIndex = 18;
             this.label3.Text = "Vip";
             // 

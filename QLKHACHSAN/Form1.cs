@@ -20,22 +20,34 @@ namespace QLKHACHSAN
 
         private void OpenChildForm(Form childForm)
         {
-            if (currentChildForm != null)
+            pnlMain.SuspendLayout();
+
+            try
             {
-                currentChildForm.Close();
+                if (currentChildForm != null)
+                {
+                    currentChildForm.Hide();
+                    currentChildForm.Close();
+                    currentChildForm.Dispose();
+                }
+
+                currentChildForm = childForm;
+
+                childForm.TopLevel = false;
+                childForm.FormBorderStyle = FormBorderStyle.None;
+                childForm.Dock = DockStyle.Fill;
+
+                pnlMain.Controls.Clear();
+                pnlMain.Controls.Add(childForm);
+                pnlMain.Tag = childForm;
+
+                childForm.BringToFront();
+                childForm.Show();
             }
-
-            currentChildForm = childForm;
-            childForm.TopLevel = false;
-            childForm.FormBorderStyle = FormBorderStyle.None;
-            childForm.Dock = DockStyle.Fill;
-
-            pnlMain.Controls.Clear();
-            pnlMain.Controls.Add(childForm);
-            pnlMain.Tag = childForm;
-
-            childForm.BringToFront();
-            childForm.Show();
+            finally
+            {
+                pnlMain.ResumeLayout(true);
+            }
         }
 
         private void ApplyPermission()
