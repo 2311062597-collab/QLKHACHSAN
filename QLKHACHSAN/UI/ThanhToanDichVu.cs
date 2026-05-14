@@ -30,6 +30,7 @@ namespace QLKHACHSAN.UI
         {
             return "TTDV" + DateTime.Now.ToString("yyyyMMddHHmmss");
         }
+
         private void LoadVietQR(decimal soTien, string noiDungChuyenKhoan)
         {
             try
@@ -75,8 +76,11 @@ namespace QLKHACHSAN.UI
         {
             InitializeComponent();
 
+            numSoTienKhachTra.ValueChanged += NumSoTienKhachTra_ValueChanged;
+
             printDocument.PrintPage += PrintDocument_PrintPage;
         }
+
 
         /// <summary>
         /// Set payment information to display
@@ -104,6 +108,24 @@ namespace QLKHACHSAN.UI
                 lblQuantityValue.Text = soLuong.ToString();
                 lblAmountValue.Text = FormatCurrency(thanhTien);
                 lblPaymentMethodValue.Text = phuongThuc;
+
+                if (phuongThuc.Trim().ToLower().Contains("tiền mặt"))
+                {
+                    lblSoTienKhachTra.Visible = true;
+                    numSoTienKhachTra.Visible = true;
+                    lblTienThua.Visible = true;
+                    txtTienThua.Visible = true;
+
+                    numSoTienKhachTra.Value = thanhTien;
+                    TinhTienThua();
+                }
+                else
+                {
+                    lblSoTienKhachTra.Visible = false;
+                    numSoTienKhachTra.Visible = false;
+                    lblTienThua.Visible = false;
+                    txtTienThua.Visible = false;
+                }
 
                 // Show QR code if payment method is bank transfer
                 if (phuongThuc.Trim().ToLower().Contains("chuyển khoản"))
@@ -134,11 +156,35 @@ namespace QLKHACHSAN.UI
         {
             return value.ToString("C0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
         }
+        private decimal LaySoTienCanThanhToan()
+        {
+            return thanhTien;
+        }
 
+        private void TinhTienThua()
+        {
+            decimal soTienCanThanhToan = LaySoTienCanThanhToan();
+            decimal soTienKhachTra = numSoTienKhachTra.Value;
+            decimal tienThua = soTienKhachTra - soTienCanThanhToan;
+
+            if (tienThua < 0)
+            {
+                txtTienThua.Text = "Chưa đủ tiền";
+            }
+            else
+            {
+                txtTienThua.Text = tienThua.ToString("N0") + " đ";
+            }
+        }
+
+        private void NumSoTienKhachTra_ValueChanged(object sender, EventArgs e)
+        {
+            TinhTienThua();
+        }
         /// <summary>
         /// Generate QR code for bank transfer
         /// </summary>
-        
+
         /// <summary>
         /// Handle form load
         /// </summary>
@@ -187,7 +233,20 @@ namespace QLKHACHSAN.UI
 
             e.Graphics.DrawString("SỐ TIỀN:", boldFont, Brushes.Black, left, y);
             e.Graphics.DrawString(lblAmountValue.Text, boldFont, Brushes.Black, left + 280, y);
-            y += lineHeight + 30;
+            y += lineHeight;
+
+            if (phuongThuc.Trim().ToLower().Contains("tiền mặt"))
+            {
+                e.Graphics.DrawString("Khách trả:", normalFont, Brushes.Black, left, y);
+                e.Graphics.DrawString(numSoTienKhachTra.Value.ToString("N0") + " đ", normalFont, Brushes.Black, left + 280, y);
+                y += lineHeight;
+
+                e.Graphics.DrawString("Tiền thừa:", normalFont, Brushes.Black, left, y);
+                e.Graphics.DrawString(txtTienThua.Text, normalFont, Brushes.Black, left + 280, y);
+                y += lineHeight;
+            }
+
+            y += 30;
 
             if (picQRCode.Visible && picQRCode.Image != null)
             {
@@ -208,6 +267,23 @@ namespace QLKHACHSAN.UI
         {
             try
             {
+                if (phuongThuc.Trim().ToLower().Contains("tiền mặt"))
+                {
+                    decimal soTienCanThanhToan = LaySoTienCanThanhToan();
+                    decimal soTienKhachTra = numSoTienKhachTra.Value;
+
+                    if (soTienKhachTra < soTienCanThanhToan)
+                    {
+                        MessageBox.Show(
+                            "Số tiền khách trả chưa đủ!",
+                            "Cảnh báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
+                        numSoTienKhachTra.Focus();
+                        return;
+                    }
+                }
                 DialogResult hoiIn = MessageBox.Show(
                     "Thanh toán thành công.\nBạn có muốn in hóa đơn không?",
                     "In hóa đơn",
@@ -240,6 +316,11 @@ namespace QLKHACHSAN.UI
         {
             DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void grpThongTinThanhToan_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

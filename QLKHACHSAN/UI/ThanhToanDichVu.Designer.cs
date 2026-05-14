@@ -35,7 +35,7 @@ namespace QLKHACHSAN.UI
             this.pnlButtons = new System.Windows.Forms.Panel();
             this.btnConfirm = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.numCustomerPaid = new System.Windows.Forms.NumericUpDown();
+            this.lblChange = new System.Windows.Forms.Label();
             this.lblCustomerPaid = new System.Windows.Forms.Label();
             this.picQRCode = new System.Windows.Forms.PictureBox();
             this.lblQRCode = new System.Windows.Forms.Label();
@@ -49,13 +49,16 @@ namespace QLKHACHSAN.UI
             this.lblServiceName = new System.Windows.Forms.Label();
             this.lblCustomerNameValue = new System.Windows.Forms.Label();
             this.lblCustomerName = new System.Windows.Forms.Label();
-            this.lblChange = new System.Windows.Forms.Label();
+            this.lblSoTienKhachTra = new System.Windows.Forms.Label();
+            this.numSoTienKhachTra = new System.Windows.Forms.NumericUpDown();
+            this.lblTienThua = new System.Windows.Forms.Label();
+            this.txtTienThua = new System.Windows.Forms.TextBox();
             this.pnlHeader.SuspendLayout();
             this.pnlContent.SuspendLayout();
             this.grpThongTinThanhToan.SuspendLayout();
             this.pnlButtons.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numCustomerPaid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSoTienKhachTra)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlHeader
@@ -64,7 +67,7 @@ namespace QLKHACHSAN.UI
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(667, 74);
             this.pnlHeader.TabIndex = 0;
@@ -86,7 +89,7 @@ namespace QLKHACHSAN.UI
             this.pnlContent.Controls.Add(this.grpThongTinThanhToan);
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContent.Location = new System.Drawing.Point(0, 74);
-            this.pnlContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlContent.Margin = new System.Windows.Forms.Padding(4);
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
             this.pnlContent.Size = new System.Drawing.Size(667, 603);
@@ -94,9 +97,12 @@ namespace QLKHACHSAN.UI
             // 
             // grpThongTinThanhToan
             // 
+            this.grpThongTinThanhToan.Controls.Add(this.txtTienThua);
+            this.grpThongTinThanhToan.Controls.Add(this.lblTienThua);
+            this.grpThongTinThanhToan.Controls.Add(this.numSoTienKhachTra);
+            this.grpThongTinThanhToan.Controls.Add(this.lblSoTienKhachTra);
             this.grpThongTinThanhToan.Controls.Add(this.pnlButtons);
             this.grpThongTinThanhToan.Controls.Add(this.lblChange);
-            this.grpThongTinThanhToan.Controls.Add(this.numCustomerPaid);
             this.grpThongTinThanhToan.Controls.Add(this.lblCustomerPaid);
             this.grpThongTinThanhToan.Controls.Add(this.picQRCode);
             this.grpThongTinThanhToan.Controls.Add(this.lblQRCode);
@@ -113,23 +119,24 @@ namespace QLKHACHSAN.UI
             this.grpThongTinThanhToan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpThongTinThanhToan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpThongTinThanhToan.Location = new System.Drawing.Point(20, 18);
-            this.grpThongTinThanhToan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpThongTinThanhToan.Margin = new System.Windows.Forms.Padding(4);
             this.grpThongTinThanhToan.Name = "grpThongTinThanhToan";
             this.grpThongTinThanhToan.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
             this.grpThongTinThanhToan.Size = new System.Drawing.Size(627, 567);
             this.grpThongTinThanhToan.TabIndex = 0;
             this.grpThongTinThanhToan.TabStop = false;
             this.grpThongTinThanhToan.Text = "Thông Tin Thanh Toán";
+            this.grpThongTinThanhToan.Enter += new System.EventHandler(this.grpThongTinThanhToan_Enter);
             // 
             // pnlButtons
             // 
             this.pnlButtons.Controls.Add(this.btnConfirm);
             this.pnlButtons.Controls.Add(this.btnCancel);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.Location = new System.Drawing.Point(20, 487);
-            this.pnlButtons.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlButtons.Location = new System.Drawing.Point(20, 497);
+            this.pnlButtons.Margin = new System.Windows.Forms.Padding(4);
             this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Size = new System.Drawing.Size(587, 62);
+            this.pnlButtons.Size = new System.Drawing.Size(587, 52);
             this.pnlButtons.TabIndex = 12;
             // 
             // btnConfirm
@@ -138,7 +145,7 @@ namespace QLKHACHSAN.UI
             this.btnConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConfirm.ForeColor = System.Drawing.Color.White;
             this.btnConfirm.Location = new System.Drawing.Point(100, 10);
-            this.btnConfirm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnConfirm.Margin = new System.Windows.Forms.Padding(4);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(160, 43);
             this.btnConfirm.TabIndex = 0;
@@ -152,7 +159,7 @@ namespace QLKHACHSAN.UI
             this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Location = new System.Drawing.Point(327, 10);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(160, 43);
             this.btnCancel.TabIndex = 1;
@@ -160,13 +167,13 @@ namespace QLKHACHSAN.UI
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // numCustomerPaid
+            // lblChange
             // 
-            this.numCustomerPaid.Location = new System.Drawing.Point(187, 239);
-            this.numCustomerPaid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.numCustomerPaid.Name = "numCustomerPaid";
-            this.numCustomerPaid.Size = new System.Drawing.Size(160, 26);
-            this.numCustomerPaid.TabIndex = 15;
+            this.lblChange.Location = new System.Drawing.Point(387, 172);
+            this.lblChange.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblChange.Name = "lblChange";
+            this.lblChange.Size = new System.Drawing.Size(133, 28);
+            this.lblChange.TabIndex = 14;
             // 
             // lblCustomerPaid
             // 
@@ -180,7 +187,7 @@ namespace QLKHACHSAN.UI
             // 
             this.picQRCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picQRCode.Location = new System.Drawing.Point(120, 297);
-            this.picQRCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.picQRCode.Margin = new System.Windows.Forms.Padding(4);
             this.picQRCode.Name = "picQRCode";
             this.picQRCode.Size = new System.Drawing.Size(372, 192);
             this.picQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -306,13 +313,47 @@ namespace QLKHACHSAN.UI
             this.lblCustomerName.TabIndex = 0;
             this.lblCustomerName.Text = "Tên Khách Hàng:";
             // 
-            // lblChange
+            // lblSoTienKhachTra
             // 
-            this.lblChange.Location = new System.Drawing.Point(387, 172);
-            this.lblChange.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblChange.Name = "lblChange";
-            this.lblChange.Size = new System.Drawing.Size(133, 28);
-            this.lblChange.TabIndex = 14;
+            this.lblSoTienKhachTra.AutoSize = true;
+            this.lblSoTienKhachTra.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.lblSoTienKhachTra.Location = new System.Drawing.Point(24, 250);
+            this.lblSoTienKhachTra.Name = "lblSoTienKhachTra";
+            this.lblSoTienKhachTra.Size = new System.Drawing.Size(158, 20);
+            this.lblSoTienKhachTra.TabIndex = 17;
+            this.lblSoTienKhachTra.Text = "Số tiền khách trả:";
+            // 
+            // numSoTienKhachTra
+            // 
+            this.numSoTienKhachTra.Location = new System.Drawing.Point(204, 250);
+            this.numSoTienKhachTra.Maximum = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
+            this.numSoTienKhachTra.Name = "numSoTienKhachTra";
+            this.numSoTienKhachTra.Size = new System.Drawing.Size(120, 26);
+            this.numSoTienKhachTra.TabIndex = 18;
+            this.numSoTienKhachTra.ThousandsSeparator = true;
+            // 
+            // lblTienThua
+            // 
+            this.lblTienThua.AutoSize = true;
+            this.lblTienThua.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTienThua.Location = new System.Drawing.Point(356, 256);
+            this.lblTienThua.Name = "lblTienThua";
+            this.lblTienThua.Size = new System.Drawing.Size(93, 20);
+            this.lblTienThua.TabIndex = 19;
+            this.lblTienThua.Text = "Tiền thừa:";
+            // 
+            // txtTienThua
+            // 
+            this.txtTienThua.Location = new System.Drawing.Point(465, 256);
+            this.txtTienThua.Name = "txtTienThua";
+            this.txtTienThua.ReadOnly = true;
+            this.txtTienThua.Size = new System.Drawing.Size(100, 26);
+            this.txtTienThua.TabIndex = 20;
+            this.txtTienThua.Text = "0  đ";
             // 
             // ThanhToanDichVuForm
             // 
@@ -323,7 +364,7 @@ namespace QLKHACHSAN.UI
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ThanhToanDichVuForm";
@@ -336,8 +377,8 @@ namespace QLKHACHSAN.UI
             this.grpThongTinThanhToan.ResumeLayout(false);
             this.grpThongTinThanhToan.PerformLayout();
             this.pnlButtons.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numCustomerPaid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSoTienKhachTra)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -364,7 +405,10 @@ namespace QLKHACHSAN.UI
         private System.Windows.Forms.Button btnConfirm;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label lblCustomerPaid;
-        private System.Windows.Forms.NumericUpDown numCustomerPaid;
         private System.Windows.Forms.Label lblChange;
+        private System.Windows.Forms.Label lblSoTienKhachTra;
+        private System.Windows.Forms.TextBox txtTienThua;
+        private System.Windows.Forms.Label lblTienThua;
+        private System.Windows.Forms.NumericUpDown numSoTienKhachTra;
     }
 }

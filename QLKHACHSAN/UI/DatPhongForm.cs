@@ -61,6 +61,8 @@ namespace QLKHACHSAN.UI
             btnInLaiHoaDon.Click += BtnInLaiHoaDon_Click;
             printLaiHoaDonDocument.PrintPage += PrintLaiHoaDonDocument_PrintPage;
 
+            cbTang.SelectedIndexChanged += CbTang_SelectedIndexChanged;
+
             cbLoaiPhong.SelectedIndexChanged += CbLoaiPhong_SelectedIndexChanged;
             dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
             dateTimePicker2.ValueChanged += DateTimePicker2_ValueChanged;
